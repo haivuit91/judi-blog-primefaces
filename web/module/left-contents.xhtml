@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:accordionPanel multiple="true" >
+            <p:tab title="Login">
+                <p:outputLabel value="User name: " />
+                <p:inputText value="#{loginBean.user.userName}" />
+                <p:outputLabel value="Password: " />
+                <p:password value="#{loginBean.user.pwd}" />
+                <p:commandButton value="Login" action="#" /><br />
+                <p:commandLink value="Create new account" action="#" />
+            </p:tab>           
+        </p:accordionPanel>
+        <p:panelMenu style="width: 230px"  >
+            <p:submenu label="Menu" >  
+                <p:menuitem value="Home" url="http://www.primefaces.org" icon="ui-icon-home" />  
+                <p:menuitem value="Docs" url="http://www.primefaces.org/documentation.html" icon="ui-icon-document" />  
+                <p:menuitem value="Download" url="http://www.primefaces.org/downloads.html" icon="ui-icon-arrowthick-1-s" />  
+                <p:menuitem value="Support" url="http://www.primefaces.org/support.html" icon="ui-icon-wrench" />  
+            </p:submenu>   
+        </p:panelMenu>
+        <p:accordionPanel multiple="true" >
+            <p:tab title="Support Online">
+                <a href="skype:cong.itedu?call"><img src="http://mystatus.skype.com/balloon/ngocduycit" width="160" height="35" alt="My status" /></a>
+                <a href="skype:ngocduycit?call"><img src="http://mystatus.skype.com/balloon/gtd_1231" width="160" height="35" alt="My status" /></a>
+            </p:tab>          
+        </p:accordionPanel>           
+        <p:panel header="Advertisement">
+            <a href="#"><img src="#{utilBean.contextPath}/resources/images/adv/advertisment01.png" width="170" height="60" 
+                             alt="My status" style="margin-top: 10px" /></a>
+            <a href="#"><img src="#{utilBean.contextPath}/resources/images/adv/advertisment02.png" width="170" height="60"
+                             alt="My status" style="margin-top: 10px" /></a>
+            <a href="#"><img src="#{utilBean.contextPath}/resources/images/adv/advertisment03.png" width="170" height="60" 
+                             alt="My status" style="margin-top: 10px" /></a>
+        </p:panel>
+    </h:body>
+</html>
+
