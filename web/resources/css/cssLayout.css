@@ -20,14 +20,14 @@ body{
 
 #left {
     float: left;
-    background-color: #ece3a5;
+    background-color: aliceblue;
     padding: 0px;
     width: 230px;
 }
 
 #right {
     float: right;
-    background-color: #ece3a5;
+    background-color: aliceblue;
     padding: 5px;
     width: 150px;
 }

@@ -8,22 +8,24 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <p:menubar>
-            <p:menuitem value="Home" url="http://localhost:8084/Judi-JSF-PrimeFaces/index.jsf" icon="ui-icon-home" />
-            <p:menuitem value="Photos" url="#" icon="ui-icon-image" />
-            <p:menuitem value="About Us" url="#" icon="ui-icon-bookmark" />
-            <p:menuitem value="Teams" url="#" icon="ui-icon-person" />
-            <p:menuitem value="Service" url="#" icon="ui-icon-suitcase" />
-            <p:menuitem value="Contact" url="#" icon="ui-icon-contact" />
+        <h:form>
+            <p:menubar>
+                <p:menuitem value="Home" url="http://localhost:8084/Judi-JSF-PrimeFaces/index.jsf" icon="ui-icon-home" />
+                <p:menuitem value="Photos" url="#" icon="ui-icon-image" />
+                <p:menuitem value="About Us" url="#" icon="ui-icon-bookmark" />
+                <p:menuitem value="Teams" url="#" icon="ui-icon-person" />
+                <p:menuitem value="Service" url="#" icon="ui-icon-suitcase" />
+                <p:menuitem value="Contact" url="#" icon="ui-icon-contact" />
 
-            <f:facet name="options">
-                <p:inputText style="margin-right:10px" placeholder="Search" />
-                <p:commandButton icon="ui-icon-search" />
-            </f:facet>
-        </p:menubar>
-        <p:galleria value="#{imageView.images}" var="image" panelWidth="966" panelHeight="205" showCaption="true">
-            <p:graphicImage name="images/banner/#{image}" title="#{image}"/>
-        </p:galleria>
+                <f:facet name="options">
+                    <p:inputText style="margin-right:10px" placeholder="Search" />
+                    <p:commandButton icon="ui-icon-search" />
+                </f:facet>
+            </p:menubar>
+            <p:galleria value="#{imageView.images}" var="image" panelWidth="966" panelHeight="205" showCaption="true">
+                <p:graphicImage name="images/banner/#{image}" title="#{image}"/>
+            </p:galleria>
+        </h:form>
     </h:body>
 </html>
 

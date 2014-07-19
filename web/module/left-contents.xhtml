@@ -2,19 +2,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <p:panel header="Login" >
-            <p:outputLabel value="User name: " />
-            <p:inputText value="#{loginBean.user.userName}" />
-            <p:outputLabel value="Password: " />
-            <p:password value="#{loginBean.user.pwd}" />
-            <p:commandButton value="Login" action="#{loginBean.checkLogin()}" /><br />
-            <p:commandLink value="Create new account" action="#" />       
-        </p:panel>
+        <c:if test="#{sessionScope.currentUser == null}">
+            <p:panel header="Login" id="formLogin" >
+                <h:form>
+                    <p:messages />
+                    <p:outputLabel value="User name: " />
+                    <p:inputText value="#{loginBean.user.userName}" />
+                    <p:outputLabel value="Password: " />
+                    <p:password value="#{loginBean.user.pwd}" />
+                    <div align="right" style="margin-right: 25px">
+                        <p:commandButton value="Login" actionListener="#{loginBean.checkLogin()}"
+                                         update=":formLogin" /></div>
+                    <p:separator />
+                    <p:commandLink value="Create new account" action="index" />  
+                </h:form>
+            </p:panel>
+        </c:if>
+        <c:if test="#{sessionScope.currentUser != null}">
+            <h:form>
+                <p:menu style="width: 220px;">
+                    <p:submenu label="Hello: #{sessionScope.currentUser.userName}">
+                        <p:menuitem value="My Profiles" icon="ui-icon-star" />
+                        <p:menuitem value="Project-Management" url="http://localhost:8084/Judi-JSF-PrimeFaces/member/project-management.jsf"  icon="ui-icon-heart"/>
+                        <p:menuitem value="Post-Management" icon="ui-icon-heart"/>
+                        <p:menuitem value="Logout" action="#{loginBean.logout(false)}" icon="ui-icon-extlink"/>
+                    </p:submenu>
+                </p:menu>
+            </h:form>
+        </c:if>
         <h:form>
             <p:menu style="width: 220px;">
                 <p:submenu label="Menu">
