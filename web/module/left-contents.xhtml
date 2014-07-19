@@ -12,14 +12,16 @@
             <p:inputText value="#{loginBean.user.userName}" />
             <p:outputLabel value="Password: " />
             <p:password value="#{loginBean.user.pwd}" />
-            <p:commandButton value="Login" action="#" /><br />
+            <p:commandButton value="Login" action="#{loginBean.checkLogin()}" /><br />
             <p:commandLink value="Create new account" action="#" />       
         </p:panel>
         <h:form>
             <p:menu style="width: 220px;">
-                <p:submenu label="Ajax Menuitems">
-                    <p:menuitem value="Home" icon="ui-icon-home" />
+                <p:submenu label="Menu">
+                    <p:menuitem value="Home" url="http://localhost:8084/Judi-JSF-PrimeFaces/index.jsf" icon="ui-icon-home" />
                     <p:menuitem value="About Us" icon="ui-icon-heart"/>
+                    <p:menuitem value="Service" icon="ui-icon-heart"/>
+                    <p:menuitem value="Contact" icon="ui-icon-mail-closed"/>
                 </p:submenu>
             </p:menu>
         </h:form>
