@@ -69,9 +69,13 @@ body{
     border-radius:4px;-webkit-transition:all .2s ease-in-out;transition:all .2s ease-in-out;
     display:inline-block;max-width:100%;height:auto
 }
+/*Remove border in panel grid*/
 .ui-panelgrid td, .ui-panelgrid tr
 {
     border-style: none !important
 }
-
+/*Customize backgroud menu bar*/
+.ui-menubar,.ui-menu-child{
+    background: #004e8e !important;
+}
 
