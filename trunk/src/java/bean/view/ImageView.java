@@ -25,8 +25,8 @@ public class ImageView {
     @PostConstruct
     public void init() {
         images = new ArrayList<String>();
-        for (int i = 1; i <= 2; i++) {
-            images.add("banner" + i + ".jpg");
+        for (int i = 1; i <= 5; i++) {
+            images.add("slide0" + i + ".jpg");
         }
     }
  
