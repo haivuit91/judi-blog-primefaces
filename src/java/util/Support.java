@@ -158,9 +158,9 @@ public class Support {
     }
 
     public static User getCurrentUser() {
-        User user = UserDAO.getInstance().getUserByID(1);
-//        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-//        User user = (User) session.getAttribute(util.Constants.CURRENT_USER);
+//        User user = UserDAO.getInstance().getUserByID(1);
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        User user = (User) session.getAttribute(util.Constants.CURRENT_USER);
         return user;
     }
 

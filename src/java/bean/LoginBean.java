@@ -23,27 +23,19 @@ import model.entities.User;
 public class LoginBean {
 
     private final UserDAOService USER_SERVICE = UserDAO.getInstance();
-    private User user = new User();
+    private User user;
     private String message = "";
 
-    public String checkLogin() {
+    public void checkLogin() {
         FacesContext ctx = FacesContext.getCurrentInstance();
         if (USER_SERVICE.checkLogin(getUser().getUserName(), getUser().getPwd())) {
             HttpSession session = util.Support.getSession();
             User u = USER_SERVICE.getUserByUserName(getUser().getUserName());
             session.setAttribute(util.Constants.CURRENT_USER, u);
-//            try {
-//                //            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("currentUser", u);
-//                ctx.getExternalContext().redirect("/Judi-Website/index.jsf");
-//            } catch (IOException ex) {
-//                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
-//            }
-//            System.out.println("Here!");
         } else {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Invalid Login!", "Please try again!"));
         }
-        return "index";
     }
 
     public String logout(boolean isAdmin) {
@@ -55,7 +47,7 @@ public class LoginBean {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        String toPage = "index.jsf";
+        String toPage = "index";
         if(isAdmin){
             toPage = "../index.jsf?faces-redirect=true";
         }
@@ -66,6 +58,9 @@ public class LoginBean {
      * @return the user
      */
     public User getUser() {
+        if(user == null){
+            user = new User();
+        }
         return user;
     }
 
