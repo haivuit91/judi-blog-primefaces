@@ -17,7 +17,7 @@
             </h:form>
             <h:form id="formProjectList">
 
-                <p:dataTable id="projects" var="project" value="#{projectBean.projects}" widgetVar="dtProjects" 
+                <p:dataTable id="projects" var="project" value="#{projectBean.projectsByUser}" widgetVar="dtProjects" 
                              filteredValue="#{projectBean.filteredProjects}"
                              emptyMessage="No project found with given criteria" 
                              paginator="true" rows="10" paginatorPosition="bottom" 
