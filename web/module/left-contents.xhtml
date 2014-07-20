@@ -19,7 +19,7 @@
                         <p:commandButton value="Login" action="#{loginBean.checkLogin()}" ajax="false" /></div>
                     <p:growl id="msgs" showDetail="true" />
                     <p:separator />
-                    <p:commandLink value="Create new account" action="index" />  
+                    <p:commandLink value="Create new account" action="/module/registration.jsf?faces-redirect=true" ajax="false" />  
                 </h:form>
             </p:panel>
         </c:if>

@@ -12,8 +12,8 @@ body{
 }
 
 #bottom {
-    position: relative;
-    background-color: aliceblue;
+    /*position: relative;*/
+    background-color: #9999ff;
     padding: 5px;
     margin: 5px 0px 0px 0px;
 }
@@ -42,6 +42,7 @@ body{
     background-color: aliceblue;
     padding: 0px;
     margin-left: 235px;
+    min-height: 750px;
 }
 
 .right_content {
