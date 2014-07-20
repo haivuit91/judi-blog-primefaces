@@ -135,12 +135,11 @@ public class ProjectBean {
                 Project pro = projectList.get(projectList.size() - 1);
                 ProjectUserDetails pud = new ProjectUserDetails(1, user, pro, 1);
                 if (PU_SERVICE.createPUD(pud)) {
-                    msg += "Project created by: " + user.getFullName() + "\n";
+                    msg += "Project has successfully created by: " + user.getFullName() + "\n";
                 } else {
                     msg += "Create creater for project failed. \n";
                 }
             }
-            msg += "Post project Successfully";
         } else {
             msg = "Create project failed !";
         }
@@ -158,7 +157,7 @@ public class ProjectBean {
     public void updateProject(ActionEvent event) {
         String msg;
         if (PROJECT_SERVICE.updateProject(this.project)) {
-            msg = "Update project succesfully !";
+            msg = "Project has successfully updated !";
         } else {
             msg = "Update project failed !";
         }
@@ -177,7 +176,7 @@ public class ProjectBean {
         int projectID = this.project.getProjectID();
         if (PU_SERVICE.deletePUByProjectID(projectID)) {
             if (PROJECT_SERVICE.deleteProject(projectID)) {
-                msg = "Delete project succesfully !";
+                msg = "Project has successfully deleted !";
             } else {
                 msg = "Delete project failed !";
             }
@@ -212,9 +211,9 @@ public class ProjectBean {
     public void inactiveProject(ActionEvent event) {
         String msg;
         if (PROJECT_SERVICE.inactiveProject(this.project.getProjectID())) {
-            msg = "InactiveProject project succesfully !";
+            msg = "Inactive project succesfully !";
         } else {
-            msg = "InactiveProject project failed !";
+            msg = "Inactive project failed !";
         }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);

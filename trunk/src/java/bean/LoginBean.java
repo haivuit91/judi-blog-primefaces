@@ -24,17 +24,16 @@ public class LoginBean {
 
     private final UserDAOService USER_SERVICE = UserDAO.getInstance();
     private User user;
-    private String message = "";
 
     public String checkLogin() {
-        FacesContext ctx = FacesContext.getCurrentInstance();
-        if (USER_SERVICE.checkLogin(getUser().getUserName(), getUser().getPwd())) {
+        String password = util.Support.encryptMD5(getUser().getPwd());
+        if (USER_SERVICE.checkLogin(getUser().getUserName(), password)) {
+            this.addMessages("Login successfully!");
             HttpSession session = util.Support.getSession();
             User u = USER_SERVICE.getUserByUserName(getUser().getUserName());
-            session.setAttribute(util.Constants.CURRENT_USER, u);
+            session.setAttribute(util.Constants.CURRENT_USER, u);            
         } else {
-            ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
-                    "Invalid Login!", "Please try again!"));
+            this.addMessages("Username or password wrong !!!");
         }
         return "index.jsf";
     }
@@ -42,24 +41,20 @@ public class LoginBean {
     public String logout(boolean isAdmin) {
         HttpSession session = util.Support.getSession();
         session.invalidate();
-        FacesContext ctx = FacesContext.getCurrentInstance();
-//        try {
-//            ctx.getExternalContext().redirect("/Judi-Website/index.jsf");
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        String toPage = util.Constants.CONTEXT_PATH + "/index.jsf?faces-redirect=true";
-        if(isAdmin){
-            toPage = "../index.jsf?faces-redirect=true";
-        }
-        return toPage;
+        return "/index.jsf?faces-redirect=true";
+    }
+
+    public void addMessages(String msg) {
+        FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+        FacesContext.getCurrentInstance()
+                .addMessage(null, fm);
     }
 
     /**
      * @return the user
      */
     public User getUser() {
-        if(user == null){
+        if (user == null) {
             user = new User();
         }
         return user;
@@ -72,17 +67,4 @@ public class LoginBean {
         this.user = user;
     }
 
-    /**
-     * @return the message
-     */
-    public String getMessage() {
-        return message;
-    }
-
-    /**
-     * @param message the message to set
-     */
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }
