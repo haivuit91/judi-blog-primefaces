@@ -10,7 +10,7 @@
     <h:body>
         <h:form>
             <p:menubar>
-                <p:menuitem value="Home" url="http://localhost:8084/Judi-JSF-PrimeFaces/index.jsf" icon="ui-icon-home" />
+                <p:menuitem value="Home" url="/index.jsf" icon="ui-icon-home" />
                 <p:menuitem value="Photos" url="#" icon="ui-icon-image" />
                 <p:menuitem value="About Us" url="#" icon="ui-icon-bookmark" />
                 <p:menuitem value="Teams" url="#" icon="ui-icon-person" />
@@ -22,7 +22,7 @@
                     <p:commandButton icon="ui-icon-search" />
                 </f:facet>
             </p:menubar>
-            <p:galleria value="#{imageView.images}" var="image" panelWidth="966" panelHeight="205" showCaption="true">
+            <p:galleria value="#{imageView.images}" var="image" panelWidth="1022" panelHeight="205" showCaption="true">
                 <p:graphicImage name="images/banner/#{image}" title="#{image}"/>
             </p:galleria>
         </h:form>
