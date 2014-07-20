@@ -26,7 +26,7 @@ public class LoginBean {
     private User user;
     private String message = "";
 
-    public void checkLogin() {
+    public String checkLogin() {
         FacesContext ctx = FacesContext.getCurrentInstance();
         if (USER_SERVICE.checkLogin(getUser().getUserName(), getUser().getPwd())) {
             HttpSession session = util.Support.getSession();
@@ -36,6 +36,7 @@ public class LoginBean {
             ctx.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                     "Invalid Login!", "Please try again!"));
         }
+        return "index.jsf";
     }
 
     public String logout(boolean isAdmin) {
@@ -47,7 +48,7 @@ public class LoginBean {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        String toPage = "index";
+        String toPage = util.Constants.CONTEXT_PATH + "/index.jsf?faces-redirect=true";
         if(isAdmin){
             toPage = "../index.jsf?faces-redirect=true";
         }
