@@ -11,13 +11,13 @@
         <c:if test="#{sessionScope.currentUser == null}">
             <p:panel header="Login" id="formLogin" >
                 <h:form>
-                    <p:messages />
                     <p:outputLabel value="User name: " />
                     <p:inputText value="#{loginBean.user.userName}" />
                     <p:outputLabel value="Password: " />
                     <p:password value="#{loginBean.user.pwd}" />
                     <div align="right" style="margin-right: 25px">
                         <p:commandButton value="Login" action="#{loginBean.checkLogin()}" ajax="false" /></div>
+                    <p:growl id="msgs" showDetail="true" />
                     <p:separator />
                     <p:commandLink value="Create new account" action="index" />  
                 </h:form>
@@ -28,9 +28,9 @@
                 <p:menu style="width: 220px;">
                     <p:submenu label="Hello: #{sessionScope.currentUser.userName}">
                         <p:menuitem value="My Profiles" icon="ui-icon-star" />
-                        <p:menuitem value="Project-Management" url="/member/project-management.jsf"  icon="ui-icon-heart"/>
-                        <p:menuitem value="Post-Management" icon="ui-icon-heart"/>
-                        <p:menuitem value="Logout" action="#{loginBean.logout(false)}" icon="ui-icon-extlink"/>
+                        <p:menuitem value="My Project" url="/member/project-management.jsf"  icon="ui-icon-heart"/>
+                        <p:menuitem value="My Post" icon="ui-icon-heart"/>
+                        <p:menuitem value="Logout" action="#{loginBean.logout(false)}" ajax="false" icon="ui-icon-extlink"/>
                     </p:submenu>
                 </p:menu>
             </h:form>
