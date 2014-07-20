@@ -51,14 +51,10 @@ public class UserBean {
         String phone = user.getPhone();
 
         String imagePath;
-        if (user.getImagePath() == null) {
-            if (user.getGender() == 1) {
-                imagePath = "avatar_male";
-            } else {
-                imagePath = "avatar_female";
-            }
+        if (user.getGender() == 1) {
+            imagePath = "avatar_male";
         } else {
-            imagePath = user.getImagePath();
+            imagePath = "avatar_female";
         }
         Role r = Role_SERVICE.getRoleByID(4);
 
