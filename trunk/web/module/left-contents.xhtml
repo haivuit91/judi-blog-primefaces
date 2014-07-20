@@ -17,7 +17,6 @@
                     <p:password value="#{loginBean.user.pwd}" />
                     <div align="right" style="margin-right: 25px">
                         <p:commandButton value="Login" action="#{loginBean.checkLogin()}" ajax="false" /></div>
-                    <p:growl id="msgs" showDetail="true" />
                     <p:separator />
                     <p:commandLink value="Create new account" action="/module/registration.jsf?faces-redirect=true" ajax="false" />  
                 </h:form>

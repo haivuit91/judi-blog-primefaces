@@ -135,7 +135,7 @@ public class ProjectBean {
                 Project pro = projectList.get(projectList.size() - 1);
                 ProjectUserDetails pud = new ProjectUserDetails(1, user, pro, 1);
                 if (PU_SERVICE.createPUD(pud)) {
-                    msg += "Project has successfully created by: " + user.getFullName() + "\n";
+                    msg += "Project created successfully by: " + user.getFullName() + "\n";
                 } else {
                     msg += "Create creater for project failed. \n";
                 }
@@ -157,7 +157,7 @@ public class ProjectBean {
     public void updateProject(ActionEvent event) {
         String msg;
         if (PROJECT_SERVICE.updateProject(this.project)) {
-            msg = "Project has successfully updated !";
+            msg = "Project updated successfully!";
         } else {
             msg = "Update project failed !";
         }
@@ -176,7 +176,7 @@ public class ProjectBean {
         int projectID = this.project.getProjectID();
         if (PU_SERVICE.deletePUByProjectID(projectID)) {
             if (PROJECT_SERVICE.deleteProject(projectID)) {
-                msg = "Project has successfully deleted !";
+                msg = "Project deleted successfully!";
             } else {
                 msg = "Delete project failed !";
             }
@@ -195,9 +195,9 @@ public class ProjectBean {
     public void activeProject(ActionEvent event) {
         String msg;
         if (PROJECT_SERVICE.activeProject(this.project.getProjectID())) {
-            msg = "Active project succesfully !";
+            msg = "Project actived succesfully !";
         } else {
-            msg = "Active project failed !";
+            msg = "Project actived failed !";
         }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -211,9 +211,9 @@ public class ProjectBean {
     public void inactiveProject(ActionEvent event) {
         String msg;
         if (PROJECT_SERVICE.inactiveProject(this.project.getProjectID())) {
-            msg = "Inactive project succesfully !";
+            msg = "Project inactived succesfully !";
         } else {
-            msg = "Inactive project failed !";
+            msg = "Project inactived failed !";
         }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);

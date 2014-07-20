@@ -26,16 +26,21 @@ public class LoginBean {
     private User user;
 
     public String checkLogin() {
+        String page = "/index.jsf?faces-redirect=true";
         String password = util.Support.encryptMD5(getUser().getPwd());
         if (USER_SERVICE.checkLogin(getUser().getUserName(), password)) {
-            this.addMessages("Login successfully!");
-            HttpSession session = util.Support.getSession();
             User u = USER_SERVICE.getUserByUserName(getUser().getUserName());
-            session.setAttribute(util.Constants.CURRENT_USER, u);            
+            if (u.getActive() == 1) {
+                this.addMessages("Login successfully!");
+                HttpSession session = util.Support.getSession();
+                session.setAttribute(util.Constants.CURRENT_USER, u);
+            } else {
+                page = "/module/success.jsf";
+            }
         } else {
             this.addMessages("Username or password wrong !!!");
         }
-        return "index.jsf";
+        return page;
     }
 
     public String logout(boolean isAdmin) {

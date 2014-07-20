@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 import model.dao.ProjectDAO;
 import model.dao.ProjectUserDAO;
+import model.dao.RoleDAO;
 import model.dao.UserDAO;
 import model.entities.Project;
 import model.entities.ProjectUserDetails;
@@ -70,9 +71,7 @@ public class Test {
     
     
     public static void main(String[] args) throws ParseException {
-        Test t = new Test();
-        SimpleDateFormat sm = new SimpleDateFormat("dd/MM/yyyy");
-        Project p = ProjectDAO.getInstance().getProjectByID(1);
-        ProjectDAO.getInstance().activeProject(1);
+        User user = new User(1, "cong", "cong", "cong", new Date(), 1, "cong", "cong", "cong", "cong", "cong", RoleDAO.getInstance().getRoleByID(4), "cong", 1);
+        System.out.println(UserDAO.getInstance().createUser(user));
     }
 }
