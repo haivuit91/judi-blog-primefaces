@@ -24,7 +24,7 @@ public class User {
     private String address;
     private String email;
     private String phone;
-    private String pathImage;
+    private String imagePath;
     private Role role;
     private String idActive;
     private int active;
@@ -35,7 +35,7 @@ public class User {
     public User() {
     }
 
-    public User(int userID, String userName, String pwd, String fullName, Date birthday, int gender, String idCard, String address, String email, String phone, String pathImage, Role role, String idActive, int active) {
+    public User(int userID, String userName, String pwd, String fullName, Date birthday, int gender, String idCard, String address, String email, String phone, String imagePath, Role role, String idActive, int active) {
         this.userID = userID;
         this.userName = userName;
         this.pwd = pwd;
@@ -46,7 +46,7 @@ public class User {
         this.address = address;
         this.email = email;
         this.phone = phone;
-        this.pathImage = pathImage;
+        this.imagePath = imagePath;
         this.role = role;
         this.idActive = idActive;
         this.active = active;
@@ -133,12 +133,12 @@ public class User {
     }
 
     
-    public String getPathImage() {
-        return pathImage;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setPathImage(String pathImage) {
-        this.pathImage = pathImage;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Role getRole() {

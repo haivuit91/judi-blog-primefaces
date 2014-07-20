@@ -55,7 +55,7 @@ public class UserDAO implements UserDAOService {
                 user.setAddress(rs.getString("userAddress"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setPathImage(rs.getString("imagePath"));
+                user.setImagePath(rs.getString("imagePath"));
                 Role role = RoleDAO.getInstance().getRoleByID(rs.getInt("roleID"));
                 user.setRole(role);
                 user.setIdActive(rs.getString("idActive"));
@@ -93,7 +93,7 @@ public class UserDAO implements UserDAOService {
                 user.setAddress(rs.getString("userAddress"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setPathImage(rs.getString("imagePath"));
+                user.setImagePath(rs.getString("imagePath"));
                 Role role = RoleDAO.getInstance().getRoleByID(rs.getInt("roleID"));
                 user.setRole(role);
                 user.setIdActive(rs.getString("idActive"));
@@ -131,7 +131,7 @@ public class UserDAO implements UserDAOService {
                 user.setAddress(rs.getString("userAddress"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setPathImage(rs.getString("imagePath"));
+                user.setImagePath(rs.getString("imagePath"));
                 Role role = RoleDAO.getInstance().getRoleByID(rs.getInt("roleID"));
                 user.setRole(role);
                 user.setIdActive(rs.getString("idActive"));
@@ -163,7 +163,7 @@ public class UserDAO implements UserDAOService {
                 user.setAddress(rs.getString("userAddress"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setPathImage(rs.getString("imagePath"));
+                user.setImagePath(rs.getString("imagePath"));
                 Role role = RoleDAO.getInstance().getRoleByID(rs.getInt("roleID"));
                 user.setRole(role);
                 user.setIdActive(rs.getString("idActive"));
@@ -201,7 +201,8 @@ public class UserDAO implements UserDAOService {
                 user.setAddress(rs.getString("userAddress"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setPathImage(rs.getString("imagePath"));
+                user.setImagePath(rs.getString("imagePath"));
+                user.setIdActive(rs.getString("idActive"));
                 user.setActive(rs.getInt("isActive"));
                 userList.add(user);
             }
@@ -237,9 +238,10 @@ public class UserDAO implements UserDAOService {
                 user.setAddress(rs.getString("userAddress"));
                 user.setEmail(rs.getString("email"));
                 user.setPhone(rs.getString("phone"));
-                user.setPathImage(rs.getString("imagePath"));
+                user.setImagePath(rs.getString("imagePath"));
                 Role role = RoleDAO.getInstance().getRoleByID(rs.getInt("roleID"));
                 user.setRole(role);
+                user.setIdActive(rs.getString("idActive"));
                 user.setActive(rs.getInt("isActive"));
                 userList.add(user);
             }
@@ -296,6 +298,28 @@ public class UserDAO implements UserDAOService {
         }
         return isCheck;
     }
+    /**
+     *
+     * @param userName name of User
+     * @return true if userName is Exist. The opposite is false
+     */
+    @Override
+    public boolean checkEmail(String email) {
+        boolean isCheck = false;
+        try {
+            Connection conn = ConnectionFactory.getConnection();
+            String sql = "select * from tbl_user where email = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, email);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs != null) {
+                isCheck = rs.next();
+            }
+        } catch (ClassNotFoundException | SQLException ex) {
+            ex.printStackTrace();
+        }
+        return isCheck;
+    }
 
     /**
      *
@@ -321,7 +345,7 @@ public class UserDAO implements UserDAOService {
             pstmt.setString(7, user.getAddress());
             pstmt.setString(8, user.getEmail());
             pstmt.setString(9, user.getPhone());
-            pstmt.setString(10, user.getPathImage());
+            pstmt.setString(10, user.getImagePath());
             pstmt.setInt(11, user.getRole().getRoleID());
             pstmt.setString(12, user.getIdActive());
             pstmt.setInt(13, user.getActive());
@@ -383,7 +407,7 @@ public class UserDAO implements UserDAOService {
             pstmt.setString(4, user.getAddress());
             pstmt.setString(5, user.getEmail());
             pstmt.setString(6, user.getPhone());
-            pstmt.setString(7, user.getPathImage());
+            pstmt.setString(7, user.getImagePath());
             pstmt.setInt(8, user.getRole().getRoleID());
             pstmt.setString(9, user.getPwd());
             pstmt.setString(10, user.getIdCard());
@@ -485,7 +509,7 @@ public class UserDAO implements UserDAOService {
             Connection conn = ConnectionFactory.getConnection();
             String sql = "update tbl_user set imagePath = ? where userID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, user.getPathImage());
+            pstmt.setString(1, user.getImagePath());
             pstmt.setInt(2, user.getUserID());
             pstmt.executeUpdate();
             isCheck = true;

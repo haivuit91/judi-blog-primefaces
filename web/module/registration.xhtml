@@ -4,24 +4,93 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 template="./../index.xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
-                xmlns:p="http://primefaces.org/ui">
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <ui:define name="content">
         <h:form id="formSignup">
-            <p:outputLabel value="User name: " /><br/>
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
-            <p:outputLabel value="User name: " />
+            <p:growl id="msgs" showDetail="true" />
+            <p:panel header="Registration" style="display: table !important; width: 100%" >
+
+                <p:panelGrid columns="3" >
+                    <p:outputLabel for="userName" value="User Name: " />
+                    <p:inputText id="userName" value="#{userBean.user.userName}" required="true" 
+                                 requiredMessage="Please enter your username." >
+                        <f:validateLength minimum="5" maximum="25" />
+                    </p:inputText>
+                    <p:message for="userName" />
+
+                    <p:outputLabel for="password" value="Password: " />
+                    <p:password id="password" value="#{userBean.user.pwd}" required="true" feedback="true"
+                                match="password2" requiredMessage="Please enter password." >
+                        <f:validateLength minimum="5" maximum="25" />
+                    </p:password>
+                    <p:message for="password" />
+
+                    <p:outputLabel for="password2" value="Re-Password: " />
+                    <p:password id="password2" value="#{userBean.user.pwd}" required="true" feedback="true"
+                                requiredMessage="Please enter re-password." >
+                        <f:validateLength minimum="5" maximum="25" />
+                    </p:password>
+                    <p:message for="password2" />
+
+                    <p:outputLabel for="fullName" value="Full Name: " />
+                    <p:inputText id="fullName" value="#{userBean.user.fullName}" required="true" size="25" >
+                        <f:validateLength minimum="5" maximum="50" />
+                    </p:inputText>
+                    <p:message for="fullName" />
+
+                    <p:outputLabel for="birthday" value="Birth Of Date: " />
+                    <p:calendar id="birthday" value="#{userBean.user.birthday}" required="true" pattern="dd/MM/yyyy" 
+                                size="10" maxdate="#{utilBean.date}" navigator="true" >
+                        <f:convertDateTime pattern="dd/MM/yyyy" />
+                    </p:calendar>
+                    <p:message for="birthday" />
+
+                    <p:outputLabel for="gender" value="Gender: " />
+                    <p:selectOneMenu id="gender" value="#{userBean.user.gender}" >
+                        <f:selectItem itemLabel="Male" itemValue="1" />
+                        <f:selectItem itemLabel="Female" itemValue="0" />
+                    </p:selectOneMenu>
+                    <p:message for="gender" />
+
+                    <p:outputLabel for="idCard" value="IDCard: " />
+                    <p:inputMask id="idCard" value="#{userBean.user.idCard}" mask="999999999" />
+                    <p:message for="idCard" />
+
+                    <p:outputLabel for="address" value="Address: " />
+                    <p:inputTextarea id="address" value="#{userBean.user.address}" required="true" cols="40" rows="3" maxlength="150" autoResize="false" >
+                        <f:validateLength minimum="5" maximum="150" />
+                    </p:inputTextarea>
+                    <p:message for="address" />
+
+                    <p:outputLabel for="email" value="Email: " />
+                    <p:inputText id="email" required="true" label="email" size="40"
+                                 requiredMessage="Please enter your email address."
+                                 validatorMessage="Invalid email format"
+                                 value="#{userBean.user.email}">
+                        <f:validateRegex
+                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                    </p:inputText>
+                    <p:message for="email" />
+
+                    <p:outputLabel for="phone" value="Phone Number: " />
+                    <p:inputText id="phone" label="phone" size="20"
+                                 validatorMessage="Invalid phone format"
+                                 value="#{userBean.user.phone}">
+                        <f:validateRegex
+                            pattern="^[0][0-9]{9,10}$" />
+                    </p:inputText>
+                    <p:message for="phone" />
+
+                </p:panelGrid>
+                <f:facet name="footer">
+                    <p:commandButton value="Register" icon="ui-icon-circle-check" title="Sign up" 
+                                     ajax="false" style="margin-left: 140px"
+                                     action="#{userBean.createUser(event)}"/>
+                    <p:commandButton value="Reset" type="reset" icon="ui-icon-circle-close" title="Create" />
+                </f:facet>
+            </p:panel>
         </h:form>
     </ui:define>
 

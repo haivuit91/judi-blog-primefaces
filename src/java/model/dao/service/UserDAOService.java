@@ -69,6 +69,13 @@ public interface UserDAOService {
      * @return true if userName is Exist. The opposite is false
      */
     public boolean checkUser(String userName);
+    
+    /**
+     * Check isExist of User when create new User
+     * @param email name of User
+     * @return true if userName is Exist. The opposite is false
+     */
+    public boolean checkEmail(String email);
 
     /**
      * Create new User
