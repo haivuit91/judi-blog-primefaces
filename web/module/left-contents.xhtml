@@ -30,10 +30,10 @@
                                     height="200" />
 
                     <p:panelGrid columns="2" >
-                        <p:fileUpload value="#{uploadImage.file}" mode="simple" style="width:80px"
+                        <p:fileUpload value="#{uploadImage.file}" mode="simple" style="width:80px;"
                                       allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
                         <p:commandButton value="Submit" ajax="false" 
-                                         actionListener="#{uploadImage.upload}"/>
+                                         actionListener="#{uploadImage.upload}" />
                     </p:panelGrid>
                     <p:menu style="width: 100%; border: 0; background: #ccffcc">
                         <p:submenu label="Active" style="background: #ccccff">
