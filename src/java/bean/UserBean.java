@@ -52,9 +52,9 @@ public class UserBean {
 
         String imagePath;
         if (user.getGender() == 1) {
-            imagePath = "avatar_male";
+            imagePath = "images/avartar/avatar_male.jpg";
         } else {
-            imagePath = "avatar_female";
+            imagePath = "images/avartar/avatar_female.jpg";
         }
         Role r = Role_SERVICE.getRoleByID(4);
 
