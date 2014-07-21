@@ -73,8 +73,7 @@ body{
 /*Remove border in panel grid*/
 .ui-panelgrid td, .ui-panelgrid tr
 {
-    border-style: none !important
-}
+    border-style: none !important}
 /*Customize backgroud menu bar*/
 .ui-menubar,.ui-menu-child{
     background: #004e8e !important;
