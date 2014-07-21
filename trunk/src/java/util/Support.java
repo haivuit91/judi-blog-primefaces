@@ -94,7 +94,7 @@ public class Support {
             if (!idActive.isEmpty()) {
                 message.setText("Dear Mail Crawler,"
                         + "\n Click to link to complete the registered , please!"
-                        + "\n http://localhost:8084/JudiBlog/active?id=" + idActive + "");
+                        + "\n http://localhost:8084/Judi-JSF-PrimeFaces/active?id=" + idActive + "");
             } else {
                 message.setText("OK, thank you!"
                         + "\n You have registed successfully!");
