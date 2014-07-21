@@ -15,12 +15,14 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import model.dao.RoleDAO;
 import model.dao.UserDAO;
 import model.dao.service.RoleDAOService;
 import model.dao.service.UserDAOService;
+import model.entities.Project;
 import model.entities.Role;
 import model.entities.User;
 
@@ -39,7 +41,10 @@ public class UserManagerBean implements Serializable {
     private final HttpSession session;
     private FacesMessage facesMessage;
     private final Map<String, String> params;
-
+     private List<User> filteredUser;
+      private List<Role> role;
+        
+    
     UserDAOService USER_SERVICE = UserDAO.getInstance();
     RoleDAOService ROLE_SERVICE = RoleDAO.getInstance();
 
@@ -97,8 +102,6 @@ public class UserManagerBean implements Serializable {
         int userID = getUser().getUserID();
         String username = getUser().getUserName();
         String fullname = getUser().getFullName();
-        String newpass = getUser().getPwd();
-
         String address = getUser().getAddress();
         String email = getUser().getEmail();
         String phone = getUser().getPhone();
@@ -108,30 +111,16 @@ public class UserManagerBean implements Serializable {
         java.sql.Date date = new java.sql.Date(birthday.getTime());
         int gender = getUser().getGender();
         String idcard = getUser().getIdCard();
-        User user = new User(userID, username, newpass, fullname, date, gender, idcard, address, email, phone, null, roleID, null, 1);
+        User user = new User(userID, username,null, fullname, date, gender, idcard, address, email, phone, null, roleID, null, 1);
         if (USER_SERVICE.updateProfile(user)) {
 
-            System.out.println(userID);
-            System.out.println(username);
-            System.out.println(fullname);
-            System.out.println(newpass);
-            System.out.println(address);
-            System.out.println(email);
-            System.out.println(phone);
-            System.out.println(roleID);
-            System.out.println(date);
+         
 
             return "users_manager";
 
         } else {
-//            msg += " Failed";
             return "edit_user";
         }
-//        FacesMessage message = new FacesMessage(msg, "Message!");
-//
-//        FacesContext.getCurrentInstance()
-//                .addMessage(null, message);
-//       
 
     }
 
@@ -185,21 +174,19 @@ public class UserManagerBean implements Serializable {
     }
 
     /**
-     * @return the DeleteUser
+     * @param event
      */
-    public void detete(int userID) {
-        FacesMessage mess;
-        try {
-            if (USER_SERVICE.deleteUser(userID)) {
-                mess = new FacesMessage("Success!");
-            } else {
-                mess = new FacesMessage("fail!");
-            }
-            FacesContext.getCurrentInstance().addMessage("result", mess);
-        } catch (Exception ex) {
-            Logger.getLogger(UserManagerBean.class.getName()).log(Level.SEVERE, null, ex);
+     public void deleteUser(ActionEvent event) {
+        String msg;
+        int UserID = this.user.getUserID();
+        if (USER_SERVICE.deleteUser(UserID)) {
+            msg = "Delete  succesfully !";
         }
+        msg = "Delete  failed !";
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
 
     /**
      * @return the searchbyUser
@@ -214,4 +201,35 @@ public class UserManagerBean implements Serializable {
     public void setSearchbyUser(String searchbyUser) {
         this.searchbyUser = searchbyUser;
     }
+
+    /**
+     * @return the filteredUser
+     */
+    public List<User> getFilteredUser() {
+        return filteredUser;
+    }
+
+    /**
+     * @param filteredUser the filteredUser to set
+     */
+    public void setFilteredUser(List<User> filteredUser) {
+        this.filteredUser = filteredUser;
+    }
+
+    /**
+     * @return the role
+     */
+    public List<Role> getRole() {
+         role = ROLE_SERVICE.getRoles();
+        return role;
+    }
+
+    /**
+     * @param role the role to set
+     */
+    public void setRole(List<Role> role) {
+        this.role = role;
+    }
+
+
 }
