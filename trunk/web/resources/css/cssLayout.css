@@ -20,7 +20,7 @@ body{
 
 #left {
     float: left;
-    background-color: aliceblue;
+    background: #ccffcc;
     padding: 0px;
     width: 230px;
 }
@@ -42,7 +42,7 @@ body{
     background-color: aliceblue;
     padding: 0px;
     margin-left: 235px;
-    min-height: 750px;
+    min-height: 1000px;
 }
 
 .right_content {

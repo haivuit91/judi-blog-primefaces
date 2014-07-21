@@ -71,7 +71,7 @@ public class Test {
     
     
     public static void main(String[] args) throws ParseException {
-        User user = new User(1, "cong", "cong", "cong", new Date(), 1, "cong", "cong", "cong", "cong", "cong", RoleDAO.getInstance().getRoleByID(4), "cong", 1);
-        System.out.println(UserDAO.getInstance().createUser(user));
+        User user = UserDAO.getInstance().getUserByID(1);
+        System.out.println(user.getImagePath());
     }
 }

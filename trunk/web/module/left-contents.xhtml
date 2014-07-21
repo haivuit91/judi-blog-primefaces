@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -23,19 +24,30 @@
             </p:panel>
         </c:if>
         <c:if test="#{sessionScope.currentUser != null}">
-            <h:form>
-                <p:menu style="width: 220px;">
-                    <p:submenu label="Hello: #{sessionScope.currentUser.userName}">
-                        <p:menuitem value="My Profiles" icon="ui-icon-star" />
-                        <p:menuitem value="My Project" url="/member/project-management.jsf"  icon="ui-icon-heart"/>
-                        <p:menuitem value="My Post" icon="ui-icon-heart"/>
-                        <p:menuitem value="Logout" action="#{loginBean.logout(false)}" ajax="false" icon="ui-icon-extlink"/>
-                    </p:submenu>
-                </p:menu>
+            <h:form enctype="multipart/form-data">
+                <p:panel  style="display: table !important; width: 225px; background: #ccffcc"  header="Hello: #{sessionScope.currentUser.userName}" >
+                    <p:graphicImage name="#{sessionScope.currentUser.imagePath}" styleClass="content" width="100%"
+                                    height="200" />
+
+                    <p:panelGrid columns="2" >
+                        <p:fileUpload value="#{uploadImage.file}" mode="simple" style="width:80px"
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
+                        <p:commandButton value="Submit" ajax="false" 
+                                         actionListener="#{uploadImage.upload}"/>
+                    </p:panelGrid>
+                    <p:menu style="width: 100%; border: 0; background: #ccffcc">
+                        <p:submenu label="Active" style="background: #ccccff">
+                            <p:menuitem value="My Profile" icon="ui-icon-star" />
+                            <p:menuitem value="My Project" url="/member/project-management.jsf"  icon="ui-icon-heart"/>
+                            <p:menuitem value="My Post" icon="ui-icon-heart"/>
+                            <p:menuitem value="Logout" action="#{loginBean.logout(false)}" ajax="false" icon="ui-icon-extlink"/>
+                        </p:submenu>
+                    </p:menu>
+                </p:panel>
             </h:form>
         </c:if>
         <h:form>
-            <p:menu style="width: 220px;">
+            <p:menu style="width: 222px; background: #ccffcc" >
                 <p:submenu label="Menu">
                     <p:menuitem value="Home" url="/index.jsf" icon="ui-icon-home" />
                     <p:menuitem value="About Us" icon="ui-icon-heart"/>
@@ -44,11 +56,11 @@
                 </p:submenu>
             </p:menu>
         </h:form>
-        <p:panel header="Support Online">
+        <p:panel header="Support Online" style=" background: #ccffcc">
             <a href="skype:cong.itedu?call"><img src="http://mystatus.skype.com/balloon/ngocduycit" width="160" height="35" alt="My status" /></a>
             <a href="skype:ngocduycit?call"><img src="http://mystatus.skype.com/balloon/gtd_1231" width="160" height="35" alt="My status" /></a>
         </p:panel>     
-        <p:panel header="Advertisement">
+        <p:panel header="Advertisement" style=" background: #ccffcc">
             <a href="#"><img src="#{utilBean.contextPath}/resources/images/adv/advertisment01.png" width="170" height="60" 
                              alt="My status" style="margin-top: 10px" /></a>
             <a href="#"><img src="#{utilBean.contextPath}/resources/images/adv/advertisment02.png" width="170" height="60"
