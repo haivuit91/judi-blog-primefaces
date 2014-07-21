@@ -11,7 +11,7 @@
 
         <p:growl id="msgs" showDetail="true" />
         <p:fieldset legend="Project Management" style="margin-bottom:20px">
-            <h:form>
+            <h:form style="margin-bottom: 0">
                 <p:commandButton value="Create" update=":formCreate" oncomplete="PF('createProject').show()"
                                  icon="ui-icon-circle-plus" title="Create" />
             </h:form>
@@ -40,7 +40,7 @@
                     </p:column>-->
                     <h:inputHidden value="#{project.projectID}" />
                     <p:column headerText="Project Name" filterBy="#{project.projectName}" filterMatchMode="contains" 
-                              filterStyle="width: 150px;" toggleable="false" style="font-size: small" >
+                              filterStyle="width: 130px;" toggleable="false" style="font-size: small" >
                         <h:outputText value="#{project.projectName}" />
                     </p:column>
                     <!--            <p:column headerText="Start date" >
@@ -57,13 +57,13 @@
                     </p:column>-->
                     <h:inputHidden value="#{project.duration}" />
                     <p:column headerText="Description" filterBy="#{project.description}" filterMatchMode="contains" 
-                              filterStyle="width: 150px;" style="font-size: small" >
+                              filterStyle="width: 130px;" style="font-size: small" >
                         <h:outputText value="#{project.description}" />
                     </p:column>
                     <p:column headerText="Project Type" filterBy="#{project.type.typeName}" 
                               filterMatchMode="exact" style="font-size: small" >
                         <f:facet name="filter" >
-                            <p:selectOneMenu onchange="PF('dtProjects').filter()" style="width: 150px" >
+                            <p:selectOneMenu onchange="PF('dtProjects').filter()" style="width: 130px" >
                                 <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
                                 <f:selectItems value="#{projectBean.types}" var="type" itemLabel="#{type.typeName}"
                                                itemValue="#{type.typeName}"/>
@@ -92,7 +92,10 @@
                         </p:commandButton>
 
                     </p:column>
-                    <p:column headerText="Choose" width="65" style="font-size: small"  >
+                    <p:column headerText="Choose" width="98" style="font-size: small"  >
+                        <p:commandButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
+                            <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                        </p:commandButton>
                         <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-pencil" title="Edit">
                             <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                         </p:commandButton>
@@ -104,7 +107,7 @@
             </h:form>
 
             <h:form id="formCreate">
-                <p:dialog header="Create Project" widgetVar="createProject" showEffect="explode" 
+                <p:dialog header="Create Project" widgetVar="createProject" showEffect="fade" 
                           hideEffect="blind" modal="true" resizable="true">
                     <h:panelGrid id="display" columns="3" cellpadding="5" style="margin: 0 auto; " >
                         <p:outputLabel for="projectName" value="Project Name:"  />
@@ -274,6 +277,42 @@
                             </ui:repeat>
                         </h:panelGrid>
                     </p:dialog>
+                </p:dialog>
+            </h:form>
+            <h:form id="formDetails">
+                <p:dialog header="Project Details" widgetVar="projectDetails" showEffect="explode" 
+                          hideEffect="bounce" modal="true" resizable="true">
+                    <h:panelGrid id="display" columns="2" cellpadding="5" style="margin: 0 auto; " >
+                        <p:outputLabel value="Project ID:"  />
+                        <p:outputLabel value="#{projectBean.project.projectID}"  />                    
+
+                        <p:outputLabel value="Project Name:"  />
+                        <p:outputLabel value="#{projectBean.project.projectName}"  />
+
+                        <p:outputLabel value="Start Date:"  />
+                        <p:outputLabel value="#{projectBean.project.startDate}"  />                    
+
+                        <p:outputLabel value="Description:"  />
+                        <p:outputLabel value="#{projectBean.project.description}"  />
+
+                        <p:outputLabel value="Duration:"  />
+                        <p:outputLabel value="#{projectBean.project.duration} day."  />                    
+
+                        <p:outputLabel value="Project Type:"  />
+                        <p:outputLabel value="#{projectBean.project.type.typeName}"  />
+
+                        <p:outputLabel value="Users Joined:"  />
+                        <ui:repeat value="#{projectBean.project.userList}" var="user">
+                            <p:outputLabel value="#{user.userName} "  />
+                        </ui:repeat>
+
+                        <f:facet name="footer">
+                            <p:separator />
+                            <div align="right">
+                                <p:commandButton value="Cancel" onclick="PF('projectDetails').hide()" icon="ui-icon-circle-close" title="Cancel" />
+                            </div>                        
+                        </f:facet>
+                    </h:panelGrid>
                 </p:dialog>
             </h:form>
         </p:fieldset>
