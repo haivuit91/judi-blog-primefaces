@@ -46,10 +46,9 @@
                 </p:panelGrid>
             </p:fieldset>
             <p:fieldset legend="Our Photos">
-                <p:contentFlow value="#{imageView.images}" var="image" >
-                    <p:graphicImage name="images/banner/#{image}" title="#{image}" />
-                    <div class="caption">#{image}</div>
-                </p:contentFlow>
+                <p:galleria value="#{imageView.judiPhotos}" var="image" panelWidth="730" panelHeight="300" showCaption="false">
+                    <p:graphicImage name="images/judi_photos/#{image}" title="#{image}" width="100%" height="300" />
+                </p:galleria>
             </p:fieldset>
             <p:fieldset legend="Members">
                 <p:accordionPanel multiple="true">
@@ -415,7 +414,7 @@
                     </p:tab>
                 </p:accordionPanel>
             </p:fieldset>
-            
+
         </p:panel>
     </ui:define>
 
