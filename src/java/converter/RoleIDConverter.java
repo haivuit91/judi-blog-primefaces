@@ -21,7 +21,7 @@ import model.entities.Role;
  */
 @ManagedBean
 @RequestScoped
-@FacesConverter("RoleConverter")
+@FacesConverter("roleConverter")
 public class RoleIDConverter implements Converter {
 
     private final RoleDAOService ROLE_SERVICE = RoleDAO.getInstance();
@@ -36,7 +36,8 @@ public class RoleIDConverter implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         Role role = null;
         if (value != null) {
-            role = ROLE_SERVICE.getRoleByID(Integer.valueOf(value));
+            role = ROLE_SERVICE.getRolesByName(value);
+            role.getRoleName();
         }
         return role;
     }
@@ -44,7 +45,6 @@ public class RoleIDConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         Role role = (Role) value;
-        return role.getRoleID() + "";
-
+        return role.getRoleName()+ "";
     }
 }

@@ -70,6 +70,80 @@ public class UserDAO implements UserDAOService {
 
     /**
      *
+     * @return User List by the user's status
+     */
+    @Override
+    public List<User> getUserActive() {
+        List<User> userList = new ArrayList<>();
+        try {
+            Connection conn = ConnectionFactory.getConnection();
+            String sql = "select * from tbl_user where isActive = 1";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getInt("userID"));
+                user.setUserName(rs.getString("userName"));
+                user.setPwd(rs.getString("pwd"));
+                user.setFullName(rs.getString("fullName"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setGender(rs.getInt("gender"));
+                user.setIdCard(rs.getString("idCard"));
+                user.setAddress(rs.getString("userAddress"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setImagePath(rs.getString("imagePath"));
+                Role role = RoleDAO.getInstance().getRoleByID(rs.getInt("roleID"));
+                user.setRole(role);
+                user.setIdActive(rs.getString("idActive"));
+                user.setActive(rs.getInt("isActive"));
+                userList.add(user);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    /**
+     *
+     * @return User List by the user's status
+     */
+    @Override
+    public List<User> getUserInactive() {
+        List<User> userList = new ArrayList<>();
+        try {
+            Connection conn = ConnectionFactory.getConnection();
+            String sql = "select * from tbl_user where isActive = 0";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                User user = new User();
+                user.setUserID(rs.getInt("userID"));
+                user.setUserName(rs.getString("userName"));
+                user.setPwd(rs.getString("pwd"));
+                user.setFullName(rs.getString("fullName"));
+                user.setBirthday(rs.getDate("birthday"));
+                user.setGender(rs.getInt("gender"));
+                user.setIdCard(rs.getString("idCard"));
+                user.setAddress(rs.getString("userAddress"));
+                user.setEmail(rs.getString("email"));
+                user.setPhone(rs.getString("phone"));
+                user.setImagePath(rs.getString("imagePath"));
+                Role role = RoleDAO.getInstance().getRoleByID(rs.getInt("roleID"));
+                user.setRole(role);
+                user.setIdActive(rs.getString("idActive"));
+                user.setActive(rs.getInt("isActive"));
+                userList.add(user);
+            }
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return userList;
+    }
+
+    /**
+     *
      * @param userName is name of user
      * @return User List by User Name
      */
@@ -142,7 +216,7 @@ public class UserDAO implements UserDAOService {
         }
         return user;
     }
-    
+
     @Override
     public User getUserByUserName(String userName) {
         User user = new User();
@@ -225,7 +299,7 @@ public class UserDAO implements UserDAOService {
             Connection conn = ConnectionFactory.getConnection();
             String sql = "select * from tbl_user where " + key + " like '" + "%" + value + "%" + "'";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-                ResultSet rs = pstmt.executeQuery();
+            ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 User user = new User();
                 user.setUserID(rs.getInt("userID"));
@@ -298,6 +372,7 @@ public class UserDAO implements UserDAOService {
         }
         return isCheck;
     }
+
     /**
      *
      * @param userName name of User
@@ -424,20 +499,20 @@ public class UserDAO implements UserDAOService {
     /**
      * remove The User's active
      *
-     * @param user is a Object User
+     * @param userID
      * @return true if remove The user's status successful. false if failed!
      */
     @Override
-    public boolean removeUser(User user) {
+    public boolean removeUser(int userID) {
         boolean isCheck = false;
         try {
             Connection conn = ConnectionFactory.getConnection();
-            String sql = "update tbl_user set isActive='0' where userID = ?";
+            String sql = "update tbl_user set roleID = '4', isActive = '0' where userID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, user.getUserID());
+            pstmt.setInt(1, userID);
             pstmt.executeUpdate();
             isCheck = true;
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return isCheck;
@@ -445,20 +520,19 @@ public class UserDAO implements UserDAOService {
 
     /**
      *
-     * @param user is a Object User
      * @return true if restore The user's status successful. false if failed!
      */
     @Override
-    public boolean restoreUser(User user) {
+    public boolean restoreUser(int userID) {
         boolean isCheck = false;
         try {
             Connection conn = ConnectionFactory.getConnection();
-            String sql = "update tbl_user set isActive='1', idActive='' where userID = ?";
+            String sql = "update tbl_user set isActive = '1' where userID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, user.getUserID());
+            pstmt.setInt(1, userID);
             pstmt.executeUpdate();
             isCheck = true;
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
         return isCheck;
@@ -499,7 +573,7 @@ public class UserDAO implements UserDAOService {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return isCheck; 
+        return isCheck;
     }
 
     @Override
@@ -516,7 +590,22 @@ public class UserDAO implements UserDAOService {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return isCheck; 
+        return isCheck;
     }
 
+    @Override
+    public boolean makeAdmin(int userID) {
+        boolean isCheck = false;
+        try {
+            Connection conn = ConnectionFactory.getConnection();
+            String sql = "update tbl_user set roleID = '1' where userID = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userID);
+            pstmt.executeUpdate();
+            isCheck = true;
+        } catch (ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
+        }
+        return isCheck;
+    }
 }
