@@ -93,10 +93,25 @@
 
                     </p:column>
                     <p:column headerText="Choose" width="98" style="font-size: small"  >
+
+                        <!--                        <p:splitButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
+                                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                                    <p:menuitem value="Edit" update=":formUpdate" oncomplete="PF('updateProject').show()"
+                                                                icon="ui-icon-arrowrefresh-1-w" title="Edit" >
+                                                        <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                                    </p:menuitem>
+                                                    <p:menuitem value="Delete" update=":formDelete" oncomplete="PF('dialogDeleteProject').show()" 
+                                                                icon="ui-icon-circle-close" title="Delete" >
+                                                        <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                                    </p:menuitem>
+                        
+                                                </p:splitButton>-->
+
+
                         <p:commandButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
                             <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                         </p:commandButton>
-                        <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-pencil" title="Edit">
+                        <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-arrowrefresh-1-w" title="Edit">
                             <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                         </p:commandButton>
                         <p:commandButton update=":formDelete" oncomplete="PF('dialogDeleteProject').show()" icon="ui-icon-circle-close" title="Delete">
@@ -107,7 +122,7 @@
             </h:form>
 
             <h:form id="formCreate">
-                <p:dialog header="Create Project" widgetVar="createProject" showEffect="fade" 
+                <p:dialog position="center" header="Create Project" widgetVar="createProject" showEffect="fade" 
                           hideEffect="blind" modal="true" resizable="true">
                     <h:panelGrid id="display" columns="3" cellpadding="5" style="margin: 0 auto; " >
                         <p:outputLabel for="projectName" value="Project Name:"  />
@@ -154,7 +169,7 @@
             </h:form>
             <h:form id="formUpdate">
                 <p:dialog header="Update Project" widgetVar="updateProject" showEffect="explode" 
-                          hideEffect="bounce" modal="true" resizable="true">
+                          hideEffect="explode" modal="true" resizable="true">
                     <h:panelGrid id="display" columns="3" cellpadding="5" style="margin: 0 auto; " >
                         <p:outputLabel value="Project ID:"  />
                         <p:outputLabel value="#{projectBean.project.projectID}"  />                    
@@ -226,10 +241,9 @@
                 </p:confirmDialog>
             </h:form>
 
-
             <h:form id="formActive">
-                <p:confirmDialog id="confirmDialog" message="are you really want to active project:
-                                 #{projectBean.project.projectName} ?" header="Delete project" severity="alert"
+                <p:confirmDialog id="confirmDialog" message="Are you really want to active project:
+                                 #{projectBean.project.projectName} ?" header="Active project" severity="alert"
                                  widgetVar="dialogActiveProject" showEffect="fade" hideEffect="explode">
                     <h:inputHidden value="#{projectBean.project.projectID}" />
                     <p:commandButton id="confirm" value="Yes" update=":formProjectList, :msgs" 
@@ -243,8 +257,8 @@
 
 
             <h:form id="formInactive">
-                <p:confirmDialog id="confirmDialog" message="are you really want to inactive project:
-                                 #{projectBean.project.projectName} ?" header="Delete project" severity="alert"
+                <p:confirmDialog id="confirmDialog" message="Are you really want to inactive project:
+                                 #{projectBean.project.projectName} ?" header="Inactive project" severity="alert"
                                  widgetVar="dialogInactiveProject" showEffect="fade" hideEffect="explode">
                     <h:inputHidden value="#{projectBean.project.projectID}" />
                     <p:commandButton id="confirm" value="Yes" update=":formProjectList, :msgs" 
@@ -281,7 +295,7 @@
             </h:form>
             <h:form id="formDetails">
                 <p:dialog header="Project Details" widgetVar="projectDetails" showEffect="explode" 
-                          hideEffect="bounce" modal="true" resizable="true">
+                          hideEffect="explode" modal="true" resizable="true">
                     <h:panelGrid id="display" columns="2" cellpadding="5" style="margin: 0 auto; " >
                         <p:outputLabel value="Project ID:"  />
                         <p:outputLabel value="#{projectBean.project.projectID}"  />                    

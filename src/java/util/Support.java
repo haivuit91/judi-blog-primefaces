@@ -29,7 +29,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import model.dao.UserDAO;
 import model.entities.User;
 import org.apache.commons.fileupload.FileItemStream;
 
@@ -39,7 +38,6 @@ import org.apache.commons.fileupload.FileItemStream;
  */
 public class Support {
 
-    
     /**
      * Convert three args day month year to type java.sql.Date
      *
@@ -104,6 +102,56 @@ public class Support {
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Send email by SSL
+     *
+     * @param toEmail Email of user
+     * @param fullName  full name
+     * @param phone  Phone number
+     * @param title  title
+     * @param content Content
+     * @return true if send successfully
+     */
+    public static boolean sendMailContact(String fullName, String toEmail, String phone, String title, String content) {
+        boolean check;
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class",
+                "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+
+        Session session = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(util.Constants.FROM_EMAIL, util.Constants.PASSWORD_EMAIL);
+                    }
+                });
+
+        try {
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(util.Constants.FROM_EMAIL));
+            message.setRecipients(Message.RecipientType.TO,
+                    InternetAddress.parse(Constants.TO_EMAIL));
+            message.setSubject("Feedback from users. "+toEmail);
+            message.setText("Title " + title + "/n"
+                    + "Email: " + toEmail + "/n"
+                    + "Full Name: " + fullName + "/n"
+                    + "Phone: " + phone + "/n"
+                    + "Content: /n" + content);
+            Transport.send(message);
+            check = true;
+
+        } catch (MessagingException e) {
+            check = false;
+            throw new RuntimeException(e);
+        }
+        return check;
     }
 
     public static String encryptMD5(String pw) {
@@ -174,9 +222,9 @@ public class Support {
     }
 
     /**
-     * 
+     *
      * @param size length of code
-     * @return 
+     * @return
      */
     public static String randomCode(int size) {
         String str01 = "abcdefghijklmnopqrstuvwxyz";
