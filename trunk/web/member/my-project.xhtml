@@ -1,0 +1,340 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../index.xhtml">
+
+            <ui:define name="content">
+                <p:growl id="messageProject" showDetail="true" />
+                <p:fieldset legend="Project Management" style="margin-bottom:20px">
+                    <h:form style="margin-bottom: 0">
+                        <p:commandButton value="Create" update=":formCreate" oncomplete="PF('createProject').show()"
+                                         icon="ui-icon-circle-plus" title="Create" />
+                    </h:form>
+                    <h:form id="formProjectList">
+
+                        <p:dataTable id="projects" var="project" value="#{projectBean.projectsByUser}" widgetVar="dtProjects" 
+                                     filteredValue="#{projectBean.filteredProjects}"
+                                     emptyMessage="No project found with given criteria" 
+                                     paginator="true" rows="10" paginatorPosition="bottom" 
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} 
+                                     {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="5,10,20,50" >
+                            <f:facet name="header" >
+                                <span style="font-size: 50px">Project List</span>
+                                <p:commandButton id="toggler" type="button" value="Columns" style="float:right" icon="ui-icon-calculator" />
+                                <p:columnToggler datasource="projects" trigger="toggler" />
+                            </f:facet>
+                            <f:facet name="header">
+                                <p:outputPanel style="text-align: left">
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('dtProjects').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+            <!--            <p:column headerText="ID" filterBy="#{project.projectID}" filterMatchMode="contains" filterStyle="width: 20px;" >
+                                <h:outputText value="#{project.projectID}" />
+                            </p:column>-->
+                            <h:inputHidden value="#{project.projectID}" />
+                            <p:column headerText="Project Name" filterBy="#{project.projectName}" filterMatchMode="contains" 
+                                      filterStyle="width: 130px;" toggleable="false" style="font-size: small" >
+                                <h:outputText value="#{project.projectName}" />
+                            </p:column>
+                            <!--            <p:column headerText="Start date" >
+                                                <h:outputText value="#{project.startDate}" />
+                                            </p:column>-->
+                            <h:inputHidden value="#{project.startDate}" />
+            <!--            <p:column headerText="Duration" filterBy="#{project.duration}" filterStyle="width: 10px;" >
+                                <f:facet name="filter">
+                                    <p:spinner onchange="PF('dtProjects').filter()" size="2" >
+                                        <f:converter converterId="javax.faces.Integer" />
+                                    </p:spinner>
+                                </f:facet>
+                                <h:outputText value="#{project.duration}" />
+                            </p:column>-->
+                            <h:inputHidden value="#{project.duration}" />
+                            <p:column headerText="Description" filterBy="#{project.description}" filterMatchMode="contains" 
+                                      filterStyle="width: 130px;" style="font-size: small" >
+                                <h:outputText value="#{project.description}" />
+                            </p:column>
+                            <p:column headerText="Project Type" filterBy="#{project.type.typeName}" 
+                                      filterMatchMode="exact" style="font-size: small" >
+                                <f:facet name="filter" >
+                                    <p:selectOneMenu onchange="PF('dtProjects').filter()" style="width: 130px" >
+                                        <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                                        <f:selectItems value="#{projectBean.types}" var="type" itemLabel="#{type.typeName}"
+                                                       itemValue="#{type.typeName}"/>
+                                    </p:selectOneMenu>
+                                </f:facet>
+                                <h:outputText value="#{project.type.typeName}" />
+                            </p:column>
+                            <p:column headerText="Users Joined" style="font-size: small" width="100" >
+                                <p:commandButton update=":formUserJoining" icon="ui-icon-refresh" title="Edit users" 
+                                                 style="float:right" oncomplete="PF('dialogUserJoining').show()" >
+                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />                        
+                                </p:commandButton>
+                                <ui:repeat value="#{project.userList}" var="user">
+                                    <h:outputText value="#{user.userName}" />
+                                    <h:outputText value=" " />
+                                </ui:repeat>
+                            </p:column>
+                            <p:column headerText="Status" width="35" style="font-size: small;"  >
+                                <p:commandButton update=":formInactive" rendered="#{project.active == 1?'true':'false'}"
+                                                 icon="ui-icon-unlocked" oncomplete="PF('dialogInactiveProject').show()"  title="Active" >
+                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                </p:commandButton>
+                                <p:commandButton update=":formActive" rendered="#{project.active == 0?'true':'false'}"
+                                                 icon="ui-icon-locked" oncomplete="PF('dialogActiveProject').show()" title="Inactive" >
+                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                </p:commandButton>
+
+                            </p:column>
+                            <p:column headerText="Choose" width="98" style="font-size: small"  >
+
+                                <!--                        <p:splitButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
+                                                            <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                                            <p:menuitem value="Edit" update=":formUpdate" oncomplete="PF('updateProject').show()"
+                                                                        icon="ui-icon-arrowrefresh-1-w" title="Edit" >
+                                                                <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                                            </p:menuitem>
+                                                            <p:menuitem value="Delete" update=":formDelete" oncomplete="PF('dialogDeleteProject').show()" 
+                                                                        icon="ui-icon-circle-close" title="Delete" >
+                                                                <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                                            </p:menuitem>
+                                
+                                                        </p:splitButton>-->
+
+
+                                <p:commandButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
+                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                </p:commandButton>
+                                <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-arrowrefresh-1-w" title="Edit">
+                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                </p:commandButton>
+                                <p:commandButton update=":formDelete" oncomplete="PF('dialogDeleteProject').show()" icon="ui-icon-circle-close" title="Delete">
+                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
+
+                    <h:form id="formCreate">
+                        <p:dialog position="center" header="Create Project" widgetVar="createProject" showEffect="fade" 
+                                  hideEffect="blind" modal="true" resizable="true">
+                            <h:panelGrid id="display" columns="3" cellpadding="5" style="margin: 0 auto; " >
+                                <p:outputLabel for="projectName" value="Project Name:"  />
+                                <p:inputText id="projectName" value="#{projectBean.project.projectName}" 
+                                             required="true"  >
+                                    <f:validateLength minimum="6" maximum="100"/>
+                                </p:inputText>
+                                <p:message for="projectName"  />
+
+                                <p:outputLabel for="descriptiton" value="Description: "  />
+                                <p:inputTextarea id="descriptiton" value="#{projectBean.project.description}"
+                                                 required="true" cols="42" rows="4" >
+                                    <f:validateLength minimum="10" />
+                                </p:inputTextarea>
+                                <p:message for="descriptiton"  />
+
+                                <p:outputLabel for="startDate" value="Start date: "  />
+                                <p:calendar id="startDate" value="#{projectBean.project.startDate}" pattern="dd-MM-yyyy"
+                                            mask="true" effect="fold">
+                                    <f:convertDateTime pattern="dd-MM-yyyy" />
+                                </p:calendar>
+                                <p:message for="startDate"  />
+
+                                <p:outputLabel for="duration" value="Duration(Day): "  />
+                                <p:spinner id="duration" min="1" max="1000" value="#{projectBean.project.duration}"   />
+                                <p:message for="duration"  />
+
+                                <p:outputLabel for="projectType" value="Project Type: "  />
+                                <h:selectOneMenu id="projectType" value="#{projectBean.project.type}"
+                                                 converter="typeConverter" >
+                                    <f:selectItems value="#{projectBean.types}" var="type"
+                                                   itemValue="#{type}" itemLabel="#{type.typeName}" />
+                                </h:selectOneMenu>
+                                <p:message for="projectType"  />
+
+                                <f:facet name="footer">
+                                    <p:separator />
+                                    <p:commandButton value="Apply" update=":formProjectList, :messageProject" oncomplete="PF('createProject').hide()"
+                                                     icon="ui-icon-circle-check" title="Create" actionListener="#{projectBean.createProject(event)}" />
+                                    <p:commandButton value="Cancel" onclick="PF('createProject').hide()" icon="ui-icon-circle-close" title="Create" />
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formUpdate">
+                        <p:dialog header="Update Project" widgetVar="updateProject" showEffect="explode" 
+                                  hideEffect="explode" modal="true" resizable="true">
+                            <h:panelGrid id="display" columns="3" cellpadding="5" style="margin: 0 auto; " >
+                                <p:outputLabel value="Project ID:"  />
+                                <p:outputLabel value="#{projectBean.project.projectID}"  />                    
+                                <h:inputHidden value="#{projectBean.project.projectID}" />
+
+                                <p:outputLabel for="projectName" value="Project Name:"  />
+                                <p:inplace>
+                                    <p:inputText id="projectName" value="#{projectBean.project.projectName}" 
+                                                 required="true"  >
+                                        <f:validateLength minimum="6" maximum="100"/>
+                                    </p:inputText>
+                                </p:inplace>
+                                <p:message for="projectName"/>
+
+                                <p:outputLabel for="descriptiton" value="Description: "  />
+                                <p:inplace>
+                                    <p:inputTextarea id="descriptiton" value="#{projectBean.project.description}"
+                                                     required="true" cols="42" rows="4" >
+                                        <f:validateLength minimum="10" />
+                                    </p:inputTextarea>
+                                </p:inplace>
+                                <p:message for="descriptiton"  />
+
+                                <p:outputLabel for="startDate" value="Start date: "  />
+                                <p:inplace>
+                                    <p:calendar id="startDate" value="#{projectBean.project.startDate}" pattern="dd-MM-yyyy" 
+                                                mask="true" effect="fold" >
+                                        <f:convertDateTime pattern="dd-MM-yyyy" />
+                                    </p:calendar>
+                                </p:inplace>
+                                <p:message for="startDate"  />
+
+                                <p:outputLabel for="duration" value="Duration: "  />
+                                <p:inplace>
+                                    <p:spinner id="duration" min="1" max="1000" value="#{projectBean.project.duration}"   />
+                                </p:inplace>
+                                <p:message for="duration"  />
+
+                                <p:outputLabel for="projectType" value="Project Type: "  />
+                                <p:inplace>
+                                    <h:selectOneMenu id="projectType" value="#{projectBean.project.type}"
+                                                     converter="typeConverter" >
+                                        <f:selectItems value="#{projectBean.types}" var="type"
+                                                       itemValue="#{type}" itemLabel="#{type.typeName}" />
+                                    </h:selectOneMenu>
+                                </p:inplace>
+                                <p:message for="projectType"  />
+
+                                <f:facet name="footer">
+                                    <p:separator />
+                                    <p:commandButton value="Save" update=":formProjectList, :messageProject" oncomplete="PF('updateProject').hide()"
+                                                     icon="ui-icon-circle-check" title="Save" actionListener="#{projectBean.updateProject(event)}" />
+                                    <p:commandButton value="Cancel" onclick="PF('updateProject').hide()" icon="ui-icon-circle-close" title="Create" />
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formDelete">
+                        <p:confirmDialog id="confirmDialog" message="are you really want to delete project:
+                                         #{projectBean.project.projectName} ?" header="Delete project" severity="alert"
+                                         widgetVar="dialogDeleteProject" showEffect="fade" hideEffect="explode">
+                            <h:inputHidden value="#{projectBean.project.projectID}" />
+                            <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
+                                             actionListener="#{projectBean.deleteProject(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+                                             oncomplete="PF('dialogDeleteProject').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('dialogDeleteProject').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+                    <h:form id="formActive">
+                        <p:confirmDialog id="confirmDialog" message="Are you really want to active project:
+                                         #{projectBean.project.projectName} ?" header="Active project" severity="alert"
+                                         widgetVar="dialogActiveProject" showEffect="fade" hideEffect="explode">
+                            <h:inputHidden value="#{projectBean.project.projectID}" />
+                            <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
+                                             actionListener="#{projectBean.activeProject(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+                                             oncomplete="PF('dialogActiveProject').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('dialogActiveProject').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+
+                    <h:form id="formInactive">
+                        <p:confirmDialog id="confirmDialog" message="Are you really want to inactive project:
+                                         #{projectBean.project.projectName} ?" header="Inactive project" severity="alert"
+                                         widgetVar="dialogInactiveProject" showEffect="fade" hideEffect="explode">
+                            <h:inputHidden value="#{projectBean.project.projectID}" />
+                            <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
+                                             actionListener="#{projectBean.inactiveProject(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+                                             oncomplete="PF('dialogInactiveProject').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('dialogInactiveProject').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+                    <h:form id="formUserJoining">
+                        <p:dialog header="Edit user joining project" widgetVar="dialogUserJoining" showEffect="fold" 
+                                  hideEffect="fold" modal="true" resizable="true">
+                            <h3 style="margin-top: 0">Basic PickList</h3>
+                            <p:pickList id="pickList" value="#{projectBean.usersDualList}" var="usersDual" itemLabel="#{usersDual.userName}" itemValue="#{usersDual}" />
+
+                            <p:commandButton id="citySubmit" value="Submit" update="displayCities" oncomplete="PF('cityDialog').show()" style="margin-top:5px" />
+
+                            <p:dialog modal="true" showEffect="fade" hideEffect="fade" widgetVar="cityDialog">
+                                <h:panelGrid id="displayCities" columns="2">
+                                    <h:outputText value="Source: " style="font-weight:bold" />
+                                    <ui:repeat value="#{projectBean.usersDualList.source}" var="item">
+                                        <h:outputText value="#{item.userName}" style="margin-right:5px" />
+                                    </ui:repeat>
+
+                                    <h:outputText value="Target: " style="font-weight:bold" />
+                                    <ui:repeat value="#{projectBean.usersDualList.target}" var="item">
+                                        <h:outputText value="#{item.userName}" style="margin-right:5px" />
+                                    </ui:repeat>
+                                </h:panelGrid>
+                            </p:dialog>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="formDetails">
+                        <p:dialog header="Project Details" widgetVar="projectDetails" showEffect="explode" 
+                                  hideEffect="explode" modal="true" resizable="true">
+                            <h:panelGrid id="display" columns="2" cellpadding="5" style="margin: 0 auto; " >
+                                <p:outputLabel value="Project ID:"  />
+                                <p:outputLabel value="#{projectBean.project.projectID}"  />                    
+
+                                <p:outputLabel value="Project Name:"  />
+                                <p:outputLabel value="#{projectBean.project.projectName}"  />
+
+                                <p:outputLabel value="Start Date:"  />
+                                <p:outputLabel value="#{projectBean.project.startDate}"  />                    
+
+                                <p:outputLabel value="Description:"  />
+                                <p:outputLabel value="#{projectBean.project.description}"  />
+
+                                <p:outputLabel value="Duration:"  />
+                                <p:outputLabel value="#{projectBean.project.duration} day."  />                    
+
+                                <p:outputLabel value="Project Type:"  />
+                                <p:outputLabel value="#{projectBean.project.type.typeName}"  />
+
+                                <p:outputLabel value="Users Joined:"  />
+                                <ui:repeat value="#{projectBean.project.userList}" var="user">
+                                    <p:outputLabel value="#{user.userName} "  />
+                                </ui:repeat>
+
+                                <f:facet name="footer">
+                                    <p:separator />
+                                    <div align="right">
+                                        <p:commandButton value="Cancel" onclick="PF('projectDetails').hide()" icon="ui-icon-circle-close" title="Cancel" />
+                                    </div>                        
+                                </f:facet>
+                            </h:panelGrid>
+                        </p:dialog>
+                    </h:form>
+                </p:fieldset>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
