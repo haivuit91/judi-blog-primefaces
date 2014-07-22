@@ -527,7 +527,7 @@ public class UserDAO implements UserDAOService {
         boolean isCheck = false;
         try {
             Connection conn = ConnectionFactory.getConnection();
-            String sql = "update tbl_user set isActive = '1' where userID = ?";
+            String sql = "update tbl_user set isActive = '1', idActive = '' where userID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setInt(1, userID);
             pstmt.executeUpdate();

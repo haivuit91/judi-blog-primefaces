@@ -37,15 +37,25 @@ public class ActiveAccount extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        int dem = 0;
         String idActive = request.getParameter("id");
 //        response.getWriter().print(idActive);
         List<User> userList = USER_SERVICE.getAllUser();
-        for (User user : userList) {
-            if(user.getIdActive().equals(idActive)){
-                if(USER_SERVICE.restoreUser(user.getUserID())){
-                    
+        if (idActive != null) {
+            for (User user : userList) {
+                if (user.getActive() == 0) {
+                    if (user.getIdActive().equals(idActive)) {
+                        if (USER_SERVICE.restoreUser(user.getUserID())) {
+                            dem++;
+                        }
+                    }
                 }
             }
+        }
+        if (dem > 0) {
+            response.sendRedirect(util.Constants.CONTEXT_PATH + "/module/active-success.jsf");
+        } else {
+            response.sendRedirect(util.Constants.CONTEXT_PATH + "/module/active-success.jsf");
         }
     }
 
