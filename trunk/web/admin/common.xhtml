@@ -16,14 +16,20 @@
 
 
         <div id="top" class="top">
-            topád
+            <ui:insert name="top">
+                <ui:include src="top-image.xhtml" />
+            </ui:insert>
         </div>
         <div>
             <div id="left">
-                left
+                <ui:insert name="left">
+                    <ui:include src="top-menu.xhtml" />
+                </ui:insert>
             </div>
             <div id="content" class="left_content">
-                <ui:insert name="content">Content</ui:insert>
+                <ui:insert name="content">
+                    
+                </ui:insert>
             </div>
         </div>
     </h:body>
