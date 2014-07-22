@@ -154,6 +154,10 @@ public class Constants {
     /**
      * type administrator email
      */
+    public static final String TO_EMAIL = "king.vandalism1@gmail.com";
+    /**
+     * type administrator email
+     */
     public static final String FROM_EMAIL = "king.vandalism@gmail.com";
     /**
      * type password of admin email
