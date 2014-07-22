@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package bean;
+package controller.bean;
 
 import java.util.Date;
 import javax.faces.application.FacesMessage;
