@@ -1,0 +1,254 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./common.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form id="formListUsers">
+                        <!--                        <p:commandButton style="float: left" value="Add user" update=":formCreate" oncomplete="PF('createProject').show()"
+                                                                 icon="ui-icon-circle-plus" title="Create" />-->
+                        <p:growl id="msgs" showDetail="true" />
+                        <h:panelGroup id="result2">
+                            <p:dataTable var="listUser" value="#{userManager.allUser}" paginator="true" rows="20"  
+                                         paginatorTemplate="{FirstPageLink} {PageLinks} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="10,20,30,50"
+                                         widgetVar="userFilter" emptyMessage="No found users" filteredValue="#{userManager.searchUser}">
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <h:outputText value="Search:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('userFilter').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                    </p:outputPanel>
+                                </f:facet>
+
+                                <p:column style="width:25px">  
+                                    <f:facet name="header">ID</f:facet>  
+                                    <h:outputText value="#{listUser.userID}" />  
+                                </p:column>
+
+                                <p:column sortBy="#{listUser.userName}" filterBy="#{listUser.userName}" style="width:110px">  
+                                    <f:facet name="header">Username</f:facet>  
+                                    <h:outputText value="#{listUser.userName}" />  
+                                </p:column>
+
+                                <p:column sortBy="#{listUser.fullName}" filterBy="#{listUser.fullName}" style="width:120px">  
+                                    <f:facet name="header">Full name</f:facet>  
+                                    <h:outputText value="#{listUser.fullName}" />  
+                                </p:column>
+
+                                <p:column sortBy="#{listUser.birthday}" filterBy="#{listUser.birthday}" style="width:110px">  
+                                    <f:facet name="header">Birthday</f:facet>  
+                                    <h:outputText value="#{listUser.birthday}" >
+                                        <f:convertDateTime dateStyle="default" pattern="dd/MM/yyyy" timeZone="vi_VN" type="date"/> 
+                                    </h:outputText>  
+                                </p:column>
+
+                                <p:column filterBy="#{listUser.gender > 0 ? 'Female': 'Male'}" headerText="Gender" style="width:110px">
+                                    <f:facet name="filter">
+                                        <p:selectOneMenu onchange="PF('userFilter').filter()" >
+                                            <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
+                                            <f:selectItems value="#{listUser.gender > 0 ? 'Female': 'Male'}" />
+                                        </p:selectOneMenu>
+                                    </f:facet>
+                                    <h:outputText value="#{listUser.gender > 0 ? 'Female': 'Male'}" />
+                                </p:column>
+
+                                <p:column sortBy="#{listUser.email}" filterBy="#{listUser.email}">  
+                                    <f:facet name="header">Email</f:facet>  
+                                    <h:outputText value="#{listUser.email}" />  
+                                </p:column>
+
+                                <p:column sortBy="#{listUser.phone}" filterBy="#{listUser.phone}" style="width:120px">  
+                                    <f:facet name="header">Phone</f:facet>  
+                                    <h:outputText value="#{listUser.phone}" />  
+                                </p:column>
+
+                                <p:column filterBy="#{listUser.role.roleName}" headerText="Role" style="width:110px">
+                                    <f:facet name="filter">
+                                        <p:selectCheckboxMenu label="All roles" onchange="PF('userFilter').filter()" panelStyle="width:125px" scrollHeight="100">
+                                            <f:selectItems var="role" value="#{userManager.roles}" itemLabel="#{role.roleName}" itemValue="#{role.roleName}"/>
+                                        </p:selectCheckboxMenu>
+                                    </f:facet>
+                                    <h:outputText value="#{listUser.role.roleName}" />
+                                </p:column>
+
+                                <p:column style="width:115px">
+                                    <p:splitButton update=":userViews" oncomplete="PF('viewDialog').show()" value="View" icon="ui-icon-search">
+                                        <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
+                                        <p:menuitem update=":editUser" oncomplete="PF('editDialog').show()" value="Edit" icon="ui-icon-pencil" >
+                                            <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
+                                        </p:menuitem>
+                                        <p:menuitem update=":userDelete" oncomplete="PF('deleteDialog').show()" value="Delete" icon="ui-icon-trash" >
+                                            <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
+                                        </p:menuitem>
+                                        <p:menuitem update=":userBan" oncomplete="PF('banDialog').show()" value="Ban" icon="ui-icon-cancel" 
+                                                    rendered="#{listUser.active == 1 ? 'true':'false'}">
+                                            <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
+                                        </p:menuitem>
+                                        <p:menuitem update=":userRestore" oncomplete="PF('restoreDialog').show()" value="Restore" icon="ui-icon-arrowreturnthick-1-w" 
+                                                    rendered="#{listUser.active == 0 ? 'true':'false'}">
+                                            <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
+                                        </p:menuitem>
+                                        <p:separator rendered="#{listUser.role.roleID != 1 and listUser.active == 1 ? 'true':'false'}" />
+                                        <p:menuitem update=":makeAdmin" oncomplete="PF('makeadminDialog').show()" value="Make admin"
+                                                    rendered="#{listUser.role.roleID != 1 and listUser.active == 1 ? 'true':'false'}" >
+                                            <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
+                                        </p:menuitem>
+                                    </p:splitButton>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+                    </h:form>
+
+                    <h:form id="userViews">
+                        <p:dialog header="User Info" widgetVar="viewDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="userViews" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty userManager.user}" columnClasses="label,value">
+                                    <h:outputText value="Username:" />
+                                    <h:outputText value="#{userManager.user.userName}" />
+
+                                    <h:outputText value="Full name:" />
+                                    <h:outputText value="#{userManager.user.fullName}" />
+
+                                    <h:outputText value="Birthday:" />
+                                    <h:outputText value="#{userManager.user.birthday}" />
+
+                                    <h:outputText value="Gender:" />
+                                    <h:outputText value="#{userManager.user.gender > 0 ? 'Female' : 'Male'}" />
+
+                                    <h:outputText value="Address:" />
+                                    <h:outputText value="#{userManager.user.address}" />
+
+                                    <h:outputText value="Email:" />
+                                    <h:outputText value="#{userManager.user.email}" />
+
+                                    <h:outputText value="Phone:" />
+                                    <h:outputText value="#{userManager.user.phone}" />
+
+                                    <h:outputText value="Role:" />
+                                    <h:outputText value="#{userManager.user.role.roleName}" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.deleteUser(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('deleteDialog').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('viewDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form id="editUser">
+                        <p:dialog header="Edit user" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="editUser" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty userManager.user}" columnClasses="label,value">
+                                    <p:outputLabel for="userName" value="Username:" />
+                                    <p:inplace>
+                                        <p:inputText id="userName" value="#{userManager.user.userName}" />
+                                    </p:inplace>
+
+                                    <p:outputLabel for="fullName" value="Full name:" />
+                                    <p:inplace>
+                                        <p:inputText id="fullName" value="#{userManager.user.fullName}" 
+                                                     required="true"  >
+                                            <f:validateLength minimum="6" maximum="100"/>
+                                        </p:inputText>
+                                    </p:inplace>
+
+                                    <p:outputLabel for="birthday" value="Birthday:"/>
+                                    <p:inplace>
+                                        <p:calendar id="birthday" value="#{userManager.user.birthday}" pattern="dd/MM/yyyy" 
+                                                    navigator="true" mask="true" effect="fold" >
+                                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                                        </p:calendar>
+                                    </p:inplace>
+                                    
+                                    <p:outputLabel for="email" value="Email:" />
+                                    <p:inplace>
+                                        <p:inputText id="email" value="#{userManager.user.email}" />
+                                    </p:inplace>
+                                    
+                                    <p:outputLabel for="address" value="Address:" />
+                                    <p:inplace>
+                                        <p:inputText id="address" value="#{userManager.user.address}" />
+                                    </p:inplace>
+
+<!--                                    <p:outputLabel for="gender" value="Gender:" />
+                                    <p:inplace>
+                                        <p:selectOneMenu id="gender" value="#{userManager.user.gender > 0 ? 'Female' : 'Male'}">
+                                            <f:selectItem itemLabel="Female" itemValue="1" />
+                                            <f:selectItem itemLabel="Male" itemValue="0" />
+                                        </p:selectOneMenu>
+                                    </p:inplace>-->
+
+                                    <p:outputLabel for="roleID" value="Role:" />
+                                    <p:inplace>
+                                        <p:selectOneMenu id="roleID" value="#{userManager.user.role}" converter="roleConverter" >
+                                            <f:selectItems value="#{userManager.roles}" var="role"
+                                                           itemValue="#{role}" itemLabel="#{role.roleName}" />
+                                        </p:selectOneMenu>
+                                    </p:inplace>
+                                </p:panelGrid>
+                            </p:outputPanel>
+                            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.editUser(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('editDialog').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('editDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:dialog>
+                    </h:form>
+
+                    <h:form id="userDelete">
+                        <p:confirmDialog id="confirmDialog" message="are you really want to delete #{userManager.user.userName}?"
+                                         header="Delete user" severity="alert" widgetVar="deleteDialog" showEffect="fade" hideEffect="explode">
+                            <h:inputHidden value="#{userManager.user.userID}"/>
+                            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.deleteUser(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('deleteDialog').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('deleteDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+                    <h:form id="userBan">
+                        <p:confirmDialog id="confirmDialog" message="are you really want to ban #{userManager.user.userName}?"
+                                         header="Ban user" severity="alert" widgetVar="banDialog" showEffect="fade" hideEffect="explode">
+                            <h:inputHidden value="#{userManager.user.userID}"/>
+                            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.removeUser(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('banDialog').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('banDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+                    <h:form id="userRestore">
+                        <p:confirmDialog id="confirmDialog" message="are you really want to restore #{userManager.user.userName}?"
+                                         header="Restore user" severity="alert" widgetVar="restoreDialog" showEffect="fade" hideEffect="explode">
+                            <h:inputHidden value="#{userManager.user.userID}"/>
+                            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.restoreUser(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('restoreDialog').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('restoreDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:confirmDialog>
+                    </h:form>
+
+                    <h:form id="makeAdmin">
+                        <p:confirmDialog id="confirmDialog" message="are you really want to make admin?"
+                                         header="Make admin" severity="alert" widgetVar="makeadminDialog" showEffect="fade" hideEffect="explode">
+                            <h:inputHidden value="#{userManager.user.userID}"/>
+                            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.makeAdmin(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('makeadminDialog').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('makeadminDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:confirmDialog>
+                    </h:form>
+                </f:view>  
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
