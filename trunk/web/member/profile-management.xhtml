@@ -1,0 +1,77 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../index.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="content">
+        <p:growl id="msgs" showDetail="true" />
+        <h:form id="formProfileList">      
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Username:"/>
+                <p:outputLabel value="#{sessionScope.currentUser.userName}"/>
+
+                <p:outputLabel value="Full name:"/>
+                <p:outputLabel value="#{sessionScope.currentUser.fullName}"/>
+
+                <p:outputLabel value="Birthday"/>
+                <p:outputLabel value="#{sessionScope.currentUser.birthday}"/>
+
+                <p:outputLabel value="gender"/>
+                <p:outputLabel value="#{sessionScope.currentUser.gender > 0 ? 'Female' : 'Male'}"/>
+
+                <p:outputLabel value="Email"/>
+                <p:outputLabel value="#{sessionScope.currentUser.email}"/>
+
+                <p:outputLabel value="address"/>
+                <p:outputLabel value="#{sessionScope.currentUser.address}"/>
+
+                <p:outputLabel value="phone"/>
+                <p:outputLabel value="#{sessionScope.currentUser.phone}"/>
+                <p:commandButton  update=":editUser" oncomplete="PF('editDialog').show()" value="Edit" icon="ui-icon-pencil" >
+                    <f:setPropertyActionListener value="#{userManager}" target="#{sessionScope.currentUser.user}" />
+
+                </p:commandButton>
+                <p:commandButton id="cancel" value="Cancel"  icon="ui-icon-close" type="button"/>
+            </p:panelGrid>
+
+        </h:form>
+        <h:form id="editUser">
+            <p:dialog header="Edit user" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                <p:outputPanel id="editUser" style="text-align:center;">
+                    <p:panelGrid  columns="2"  columnClasses="label,value">
+                        <p:outputLabel for="userName" value="Username:" />
+                        <p:inplace>
+                            <p:inputText id="userName" value="#{sessionScope.currentUser.userName}" disabled="true"/>
+                        </p:inplace>
+
+                        <p:outputLabel for="fullName" value="Full name:" />
+                        <p:inplace>
+                            <p:inputText id="fullName" value="#{sessionScope.currentUser.fullName}" 
+                                         required="true"  >
+                                <f:validateLength minimum="6" maximum="100"/>
+                            </p:inputText>
+                        </p:inplace>
+
+                        <p:outputLabel for="email" value="Email:" />
+                        <p:inplace>
+                            <p:inputText id="email" value="#{sessionScope.currentUser.email}" />
+                        </p:inplace>
+
+                        <p:outputLabel for="address" value="Address:" />
+                        <p:inplace>
+                            <p:inputText id="address" value="#{sessionScope.currentUser.address}" />
+                        </p:inplace>
+
+                    </p:panelGrid>
+                </p:outputPanel>
+                <p:commandButton id="confirm" value="Yes" update=":formProfileList" actionListener="#{userBean.editUser(event)}"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('editDialog').hide()"/>                    
+                <p:commandButton id="cancel" value="Cancel" onclick="PF('editDialog').hide()"
+                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+            </p:dialog>
+        </h:form>
+    </ui:define>
+</ui:composition>
