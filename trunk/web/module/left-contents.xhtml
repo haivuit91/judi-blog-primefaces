@@ -36,6 +36,8 @@
                     </p:panelGrid>
                     <p:menu style="width: 100%; border: 0; background: #ccffcc">
                         <p:submenu label="Active" style="background: #ccccff">
+                            <p:menuitem value="Admin" icon="ui-icon-person" url="/admin/common.jsf"
+                                        rendered="#{sessionScope.currentUser.role.roleID == 1?'true':'false'}" />
                             <p:menuitem value="My Profile" icon="ui-icon-star" />
                             <p:menuitem value="My Project" url="/member/project-management.jsf"  icon="ui-icon-heart"/>
                             <p:menuitem value="My Post" icon="ui-icon-heart"/>
@@ -49,7 +51,9 @@
             <p:menu style="width: 222px; background: #ccffcc" >
                 <p:submenu label="Menu">
                     <p:menuitem value="Home" url="/index.jsf" icon="ui-icon-home" />
+                    <p:menuitem value="Photos" url="/module/about.jsf" icon="ui-icon-heart"/>
                     <p:menuitem value="About Us" url="/module/about.jsf" icon="ui-icon-heart"/>
+                    <p:menuitem value="Teams" url="/module/team.jsf" icon="ui-icon-heart"/>
                     <p:menuitem value="Service" url="/module/service.jsf" icon="ui-icon-heart"/>
                     <p:menuitem value="Contact" url="/module/contact.jsf" icon="ui-icon-mail-closed"/>
                 </p:submenu>

@@ -9,7 +9,7 @@
 
     <ui:define name="content">
 
-        <p:growl id="msgs" showDetail="true" />
+        <p:growl id="messageProject" showDetail="true" />
         <p:fieldset legend="Project Management" style="margin-bottom:20px">
             <h:form style="margin-bottom: 0">
                 <p:commandButton value="Create" update=":formCreate" oncomplete="PF('createProject').show()"
@@ -160,7 +160,7 @@
 
                         <f:facet name="footer">
                             <p:separator />
-                            <p:commandButton value="Apply" update=":formProjectList, :msgs" oncomplete="PF('createProject').hide()"
+                            <p:commandButton value="Apply" update=":formProjectList, :messageProject" oncomplete="PF('createProject').hide()"
                                              icon="ui-icon-circle-check" title="Create" actionListener="#{projectBean.createProject(event)}" />
                             <p:commandButton value="Cancel" onclick="PF('createProject').hide()" icon="ui-icon-circle-close" title="Create" />
                         </f:facet>
@@ -220,7 +220,7 @@
 
                         <f:facet name="footer">
                             <p:separator />
-                            <p:commandButton value="Save" update=":formProjectList, :msgs" oncomplete="PF('updateProject').hide()"
+                            <p:commandButton value="Save" update=":formProjectList, :messageProject" oncomplete="PF('updateProject').hide()"
                                              icon="ui-icon-circle-check" title="Save" actionListener="#{projectBean.updateProject(event)}" />
                             <p:commandButton value="Cancel" onclick="PF('updateProject').hide()" icon="ui-icon-circle-close" title="Create" />
                         </f:facet>
@@ -232,7 +232,7 @@
                                  #{projectBean.project.projectName} ?" header="Delete project" severity="alert"
                                  widgetVar="dialogDeleteProject" showEffect="fade" hideEffect="explode">
                     <h:inputHidden value="#{projectBean.project.projectID}" />
-                    <p:commandButton id="confirm" value="Yes" update=":formProjectList, :msgs" 
+                    <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
                                      actionListener="#{projectBean.deleteProject(event)}"
                                      styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
                                      oncomplete="PF('dialogDeleteProject').hide()"/>                    
@@ -246,7 +246,7 @@
                                  #{projectBean.project.projectName} ?" header="Active project" severity="alert"
                                  widgetVar="dialogActiveProject" showEffect="fade" hideEffect="explode">
                     <h:inputHidden value="#{projectBean.project.projectID}" />
-                    <p:commandButton id="confirm" value="Yes" update=":formProjectList, :msgs" 
+                    <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
                                      actionListener="#{projectBean.activeProject(event)}"
                                      styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
                                      oncomplete="PF('dialogActiveProject').hide()"/>                    
@@ -261,7 +261,7 @@
                                  #{projectBean.project.projectName} ?" header="Inactive project" severity="alert"
                                  widgetVar="dialogInactiveProject" showEffect="fade" hideEffect="explode">
                     <h:inputHidden value="#{projectBean.project.projectID}" />
-                    <p:commandButton id="confirm" value="Yes" update=":formProjectList, :msgs" 
+                    <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
                                      actionListener="#{projectBean.inactiveProject(event)}"
                                      styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
                                      oncomplete="PF('dialogInactiveProject').hide()"/>                    
