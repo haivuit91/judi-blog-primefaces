@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package bean;
+package controller.bean;
 
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
