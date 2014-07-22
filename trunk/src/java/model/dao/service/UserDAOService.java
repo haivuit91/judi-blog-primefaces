@@ -16,12 +16,28 @@ public interface UserDAOService {
 
     /**
      * get All User from DB
+     *
      * @return User List by the user's status
      */
     public List<User> getAllUser();
 
     /**
+     * get User Active from DB
+     *
+     * @return User List by the user's status
+     */
+    public List<User> getUserActive();
+
+    /**
+     * get User Not Active from DB
+     *
+     * @return User List by the user's status
+     */
+    public List<User> getUserInactive();
+
+    /**
      * Get UserList like username
+     *
      * @param userName is name of user
      * @return User List by User Name
      */
@@ -29,6 +45,7 @@ public interface UserDAOService {
 
     /**
      * Get UserList by userID
+     *
      * @param userID is id of user
      * @return User by UserID
      */
@@ -36,12 +53,15 @@ public interface UserDAOService {
 
     /**
      * Get UserList by userID
+     *
      * @param userName is name of user
      * @return User by UserID
      */
     public User getUserByUserName(String userName);
+
     /**
      * get User list by attributes and keyword
+     *
      * @param key is attributes used to search
      * @param value is keyword use for searching
      * @return
@@ -50,6 +70,7 @@ public interface UserDAOService {
 
     /**
      * Get User list by Role
+     *
      * @param roleID is name of user
      * @return User List by Role
      */
@@ -57,6 +78,7 @@ public interface UserDAOService {
 
     /**
      * Check username and password when Login
+     *
      * @param userName name of User
      * @param password password of User
      * @return true if userName and password == true. The opposite is false
@@ -65,13 +87,15 @@ public interface UserDAOService {
 
     /**
      * Check isExist of User when create new User
+     *
      * @param userName name of User
      * @return true if userName is Exist. The opposite is false
      */
     public boolean checkUser(String userName);
-    
+
     /**
      * Check isExist of User when create new User
+     *
      * @param email name of User
      * @return true if userName is Exist. The opposite is false
      */
@@ -79,6 +103,7 @@ public interface UserDAOService {
 
     /**
      * Create new User
+     *
      * @param user is a Object User
      * @return true if create User successful. false if failed!
      */
@@ -86,6 +111,7 @@ public interface UserDAOService {
 
     /**
      * Update user's profile by User
+     *
      * @param user is a Object User
      * @return true if update Profile of User successful. false if failed!
      */
@@ -93,40 +119,43 @@ public interface UserDAOService {
 
     /**
      * Update user's avatar by User
+     *
      * @param user is a Object User
      * @return true if update Profile of User successful. false if failed!
      */
     public boolean updateAvatar(User user);
-    
+
     /**
      * Update user's password by User
+     *
      * @param user is a Object User
      * @return true if update Profile of User successful. false if failed!
      */
     public boolean updatePassword(User user);
+
     /**
      * update profile of User by Administrator
+     *
      * @param user is a Object User
      * @return true if update Profile of User successful. false if failed!
      */
-
     public boolean updateUserByAdmin(User user);
 
     /**
      * remove The User's active
      *
-     * @param user is a Object User
+     * @param userID
      * @return true if remove The user's status successful. false if failed!
      */
-    public boolean removeUser(User user);
+    public boolean removeUser(int userID);
 
     /**
      * restore The User's active
      *
-     * @param user is a Object User
-     * @return true if remove The user's status successful. false if failed!
+     * @param userID
+     * @return true if restore The user's status successful. false if failed!
      */
-    public boolean restoreUser(User user);
+    public boolean restoreUser(int userID);
 
     /**
      * Delete User
@@ -135,4 +164,11 @@ public interface UserDAOService {
      * @return true if delete The user's status successful. false if failed!
      */
     public boolean deleteUser(int userID);
+
+    /**
+     *
+     * @param userID
+     * @return true if make administrator successful
+     */
+    public boolean makeAdmin(int userID);
 }
