@@ -23,16 +23,16 @@
             </p:panel>
         </c:if>
         <c:if test="#{sessionScope.currentUser != null}">
+            <p:growl id="msgs" showDetail="true" />
             <h:form enctype="multipart/form-data">
                 <p:panel  style="display: table !important; width: 225px; background: #ccffcc"  header="Hello: #{sessionScope.currentUser.userName}" >
                     <p:graphicImage name="#{sessionScope.currentUser.imagePath}" styleClass="content" width="100%"
-                                    height="200" />
-
+                                    height="200" id="avatar" />
                     <p:panelGrid columns="2" >
                         <p:fileUpload value="#{uploadImage.file}" mode="simple" style="width:80px;"
-                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/"/> 
-                        <p:commandButton value="Submit" ajax="false" 
-                                         actionListener="#{uploadImage.upload}" />
+                                      allowTypes="/(\.|\/)(gif|jpe?g|png)$/" /> 
+                        <p:commandButton value="Submit" ajax="false" actionListener="#{uploadImage.upload}"
+                                         update="avatar"/>
                     </p:panelGrid>
                     <p:menu style="width: 100%; border: 0; background: #ccffcc">
                         <p:submenu label="Active" style="background: #ccccff">

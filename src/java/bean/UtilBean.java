@@ -11,6 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -28,7 +31,7 @@ public class UtilBean {
      */
     public UtilBean() {
     }
-
+ 
     /**
      * @return the contextPath
      */
