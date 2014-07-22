@@ -10,6 +10,13 @@
     <ui:define name="content">
         <h:form id="formContact">
             <p:growl id="msgs" showDetail="true" />
+            <p:panel header="Feadback" style="display: table !important; width: 100%" >
+                <p style="color: #004e8e; font-size: larger; font-weight: bold; text-align: justify">
+                    I have problem about my web site. <br/>
+                    Please, sent for me your comments to us. <br/>
+                    Thank you so much!
+                </p>
+            </p:panel>
             <p:panel header="CONTACT ME" style="display: table !important; width: 100%" >
 
                 <p:panelGrid columns="3" >
@@ -46,8 +53,8 @@
                     <p:message for="title" />
 
                     <p:outputLabel for="content" value="Content: " />
-                    <p:inputTextarea id="content" value="#{contactBean.content}" required="true" cols="40" rows="3" maxlength="150" autoResize="false" >
-                        <f:validateLength minimum="5" maximum="150" />
+                    <p:inputTextarea id="content" value="#{contactBean.content}" required="true" cols="40" rows="5" maxlength="1000" autoResize="false" >
+                        <f:validateLength minimum="5" maximum="1000" />
                     </p:inputTextarea>
                     <p:message for="content" />
                 </p:panelGrid>
@@ -55,7 +62,7 @@
                     <p:commandButton value="Submit" icon="ui-icon-circle-check" title="Submit" 
                                      ajax="false" style="margin-left: 140px"
                                      action="#{contactBean.submit(event)}"/>
-                    <p:commandButton value="Reset" type="reset" icon="ui-icon-circle-close" title="Create" />
+                    <p:commandButton value="Reset" type="reset" icon="ui-icon-circle-close" title="Reset" ajax="false" />
                 </f:facet>
             </p:panel>
         </h:form>

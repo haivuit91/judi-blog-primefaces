@@ -108,9 +108,9 @@ public class Support {
      * Send email by SSL
      *
      * @param toEmail Email of user
-     * @param fullName  full name
-     * @param phone  Phone number
-     * @param title  title
+     * @param fullName full name
+     * @param phone Phone number
+     * @param title title
      * @param content Content
      * @return true if send successfully
      */
@@ -138,12 +138,16 @@ public class Support {
             message.setFrom(new InternetAddress(util.Constants.FROM_EMAIL));
             message.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(Constants.TO_EMAIL));
-            message.setSubject("Feedback from users. "+toEmail);
-            message.setText("Title " + title + "/n"
-                    + "Email: " + toEmail + "/n"
-                    + "Full Name: " + fullName + "/n"
-                    + "Phone: " + phone + "/n"
-                    + "Content: /n" + content);
+            message.setHeader("Content-Type", "text/plain; charset=UTF-8");
+            message.setHeader("Content-Encoding", "ISO-8859-9");
+            message.setSubject("Feedback from users. " + toEmail);
+            String body = "Title " + title + "\n"
+                    + "Email: " + toEmail + "\n"
+                    + "Full Name: " + fullName + "\n"
+                    + "Phone: " + phone + "\n"
+                    + "Content: \n" + content;
+            message.setText(body);
+            message.setContent(body, "text/plain; charset=UTF-8");
             Transport.send(message);
             check = true;
 
