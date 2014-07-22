@@ -22,6 +22,7 @@ public class UtilBean {
 
     private String contextPath;
     private String date;
+    private String titlePage;
     /**
      * Creates a new instance of UtilBean
      */
@@ -43,6 +44,23 @@ public class UtilBean {
         DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
         date=df.format(new Date());
         return date;
+    }
+
+    /**
+     * @return the titlePage
+     */
+    public String getTitlePage() {
+        if(titlePage == null){
+            titlePage = "Home";
+        }
+        return titlePage;
+    }
+
+    /**
+     * @param titlePage the titlePage to set
+     */
+    public void setTitlePage(String titlePage) {
+        this.titlePage = titlePage;
     }
     
 }
