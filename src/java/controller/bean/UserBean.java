@@ -86,18 +86,20 @@ public class UserBean {
                 .addMessage(null, fm);
     }
 
-      public void edituser(ActionEvent event) {
+    public void editUser(ActionEvent event) {
 
-       String msg ;
+        String msg;
+
         if (USER_SERVICE.updateProfile(this.user)) {
-            
+
             msg = "profile updated successfully!";
-            
+
         } else {
             msg = "Update profile failed !";
         }
          this.addMessages(msg);
-      }
+    }
+
     /**
      * @return the user
      */

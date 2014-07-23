@@ -76,7 +76,7 @@
                             <p:column headerText="Users Joined" style="font-size: small" width="100" >
                                 <p:commandButton update=":formUserJoining" icon="ui-icon-refresh" title="Edit users" 
                                                  style="float:right" oncomplete="PF('dialogUserJoining').show()" >
-                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />                        
+                                    <f:setPropertyActionListener value="#{project}" target="#{projectUserBean.project}" />                        
                                 </p:commandButton>
                                 <ui:repeat value="#{project.userList}" var="user">
                                     <h:outputText value="#{user.userName}" />
@@ -275,21 +275,24 @@
                     <h:form id="formUserJoining">
                         <p:dialog header="Edit user joining project" widgetVar="dialogUserJoining" showEffect="fold" 
                                   hideEffect="fold" modal="true" resizable="true">
-                            <h3 style="margin-top: 0">Basic PickList</h3>
-                            <p:pickList id="pickList" value="#{projectBean.usersDualList}" var="usersDual" itemLabel="#{usersDual.userName}" itemValue="#{usersDual}" />
 
-                            <p:commandButton id="citySubmit" value="Submit" update="displayCities" oncomplete="PF('cityDialog').show()" style="margin-top:5px" />
+                            <h3 style="margin-top: 0">Basic PickList</h3>
+                            <p:pickList id="pickList" value="#{projectUserBean.users}" var="users" itemLabel="#{users}" itemValue="#{users}" />
+
+                            <p:commandButton id="citySubmit" value="Submit" update="displayCities" oncomplete="PF('cityDialog').show()" style="margin-top:5px" >
+                                <f:setPropertyActionListener value="#{users}" target="#{projectUserBean.users}" />
+                            </p:commandButton>
 
                             <p:dialog modal="true" showEffect="fade" hideEffect="fade" widgetVar="cityDialog">
                                 <h:panelGrid id="displayCities" columns="2">
                                     <h:outputText value="Source: " style="font-weight:bold" />
-                                    <ui:repeat value="#{projectBean.usersDualList.source}" var="item">
-                                        <h:outputText value="#{item.userName}" style="margin-right:5px" />
+                                    <ui:repeat value="#{projectUserBean.users.source}" var="item">
+                                        <h:outputText value="#{item}" style="margin-right:5px" />
                                     </ui:repeat>
 
                                     <h:outputText value="Target: " style="font-weight:bold" />
-                                    <ui:repeat value="#{projectBean.usersDualList.target}" var="item">
-                                        <h:outputText value="#{item.userName}" style="margin-right:5px" />
+                                    <ui:repeat value="#{projectUserBean.users.target}" var="item">
+                                        <h:outputText value="#{item}" style="margin-right:5px" />
                                     </ui:repeat>
                                 </h:panelGrid>
                             </p:dialog>
