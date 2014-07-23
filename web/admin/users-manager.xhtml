@@ -319,10 +319,10 @@
                     </h:form>
 
                     <h:form id="makeAdmin">
-                        <p:confirmDialog id="confirmDialog" message="are you really want to make admin?"
+                        <p:confirmDialog id="confirmDialog" appendTo="@(body)" message="are you really want to make admin?"
                                          header="Make admin" severity="alert" widgetVar="makeadminDialog" showEffect="fade" hideEffect="explode">
                             <h:inputHidden value="#{userManager.user.userID}"/>
-                            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.makeAdmin(event)}"
+                            <p:commandButton id="confirm" ajax="true" process="@all" value="Yes" update=":formListUsers" actionListener="#{userManager.makeAdmin(event)}"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('makeadminDialog').hide()"/>                    
                             <p:commandButton id="cancel" value="Cancel" onclick="PF('makeadminDialog').hide()"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
