@@ -18,7 +18,6 @@
 
         <h:body>
             <p:layout fullPage="true">
-
                 <p:layoutUnit position="north" size="68" closable="true">
                     <h:form> 
                         <p:menubar>
@@ -45,14 +44,15 @@
                                 <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
                             </p:submenu>
                             <p:submenu label="Project management">
-                                <p:menuitem value="All users" url="#" icon="ui-icon-calculator" />
+                                <p:menuitem value="All users" url="project-manager.jsf" icon="ui-icon-calculator" />
                                 <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
                             </p:submenu>
                         </p:panelMenu>
                     </h:form>
                 </p:layoutUnit>
 
-                <p:layoutUnit position="center">
+                <p:layoutUnit position="center" >
+                    <p:growl id="msgs" showDetail="true" />
                     <ui:insert name="content">Content</ui:insert>
                 </p:layoutUnit>
             </p:layout>
