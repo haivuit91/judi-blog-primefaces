@@ -88,7 +88,7 @@ public class UserBean {
 
       public void edituser(ActionEvent event) {
 
-       String msg = "";
+       String msg ;
         if (USER_SERVICE.updateProfile(this.user)) {
             
             msg = "profile updated successfully!";
@@ -96,7 +96,7 @@ public class UserBean {
         } else {
             msg = "Update profile failed !";
         }
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+         this.addMessages(msg);
       }
     /**
      * @return the user
