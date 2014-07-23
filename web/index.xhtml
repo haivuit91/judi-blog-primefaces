@@ -13,22 +13,23 @@
     </h:head>
 
     <h:body>
-        
-        <div id="top" class="top">
-            <ui:insert name="top">
-                <ui:include src="module/top.xhtml" />
-            </ui:insert>
-        </div>
-        <div>
-            <div id="left">
-                <ui:insert name="left">
-                    <ui:include src="module/left-contents.xhtml" />
+        <div id="wapper">
+            <div id="top" class="top">
+                <ui:insert name="top">
+                    <ui:include src="module/top.xhtml" />
                 </ui:insert>
             </div>
-            <div id="content" class="left_content">
-                <ui:insert name="content">
-                    <ui:include src="module/index-contents.xhtml" />
-                </ui:insert>
+            <div>
+                <div id="left">
+                    <ui:insert name="left">
+                        <ui:include src="module/left-contents.xhtml" />
+                    </ui:insert>
+                </div>
+                <div id="content" class="left_content">
+                    <ui:insert name="content">
+                        <ui:include src="module/index-contents.xhtml" />
+                    </ui:insert>
+                </div>
             </div>
         </div>
         <div id="bottom">
