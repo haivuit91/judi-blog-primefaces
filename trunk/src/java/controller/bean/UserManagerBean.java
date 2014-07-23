@@ -63,59 +63,65 @@ public class UserManagerBean implements Serializable {
         return listUser;
     }
 
-    public List<User> getUserNotActive() {
+    public List<User> getUserInaActive() {
         listUser = USER_SERVICE.getUserInactive();
         return listUser;
     }
 
-    public void editUser(ActionEvent event) {
+    public void addUser(ActionEvent event) {
         String msg = "";
-        System.out.println("Username: " + this.user.getUserName());
-        System.out.println("Full name: " + this.user.getFullName());
-        System.out.println("Birthday: " + this.user.getBirthday());
-        System.out.println("Gender: " + this.user.getGender());
-        System.out.println("Email: " + this.user.getEmail());
-        System.out.println("Address: " + this.user.getAddress());
-        System.out.println("Phone: " + this.user.getPhone());
-        System.out.println("ID Card: " + this.user.getIdCard());
-        System.out.println("Role: " + this.user.getRole().getRoleName());
-//        if (!USER_SERVICE.checkUser(this.user.getUserName())) {
-//            if (USER_SERVICE.updateProfile(this.user)) {
-//                msg = "Edit user successfully!";
-//            } else {
-//                msg = "Edit user failed!";
-//            }
-//        } else {
-            msg = "Edit user!";
-//        }
+        Role roleID = ROLE_SERVICE.getRoleByID(this.user.getRole().getRoleID());
+        User addUser = new User(1, this.user.getUserName(), "123456", this.user.getFullName(), this.user.getBirthday(),
+                this.user.getGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(), this.user.getPhone(),
+                null, roleID, null, 1);
+        if (USER_SERVICE.createUser(addUser)) {
+            msg = "Add user successfully!";
+        } else {
+            msg = "Add user failed!";
+        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public String adduser() {
+    public void editUser(ActionEvent event) {
         String msg = "";
-        String username = getUser().getUserName();
-        String fullname = getUser().getFullName();
-        String newpass = getUser().getPwd();
-        String address = getUser().getAddress();
-        String email = getUser().getEmail();
-        String phone = getUser().getPhone();
-        int role = getUser().getRole().getRoleID();
-        Role roleID = ROLE_SERVICE.getRoleByID(role);
-        Date birthday = getUser().getBirthday();
-        java.sql.Date date = new java.sql.Date(birthday.getTime());
-        int gender = getUser().getGender();
-        String idcard = getUser().getIdCard();
-
-        User user = new User(1, username, newpass, fullname, birthday, gender, idcard, address, email, phone, null, roleID, null, 1);
-        if (USER_SERVICE.createUser(user)) {
-            return "users_manager";
-
+//        System.out.println("User id: " + this.user.getUserID());
+//        System.out.println("Username: " + this.user.getUserName());
+//        System.out.println("Full name: " + this.user.getFullName());
+//        System.out.println("Birthday: " + this.user.getBirthday());
+//        System.out.println("Gender: " + this.user.getGender());
+//        System.out.println("Email: " + this.user.getEmail());
+//        System.out.println("Address: " + this.user.getAddress());
+//        System.out.println("Phone: " + this.user.getPhone());
+//        System.out.println("ID Card: " + this.user.getIdCard());
+//        System.out.println("Role: " + this.user.getRole().getRoleID());
+        Role roleID = ROLE_SERVICE.getRoleByID(this.user.getRole().getRoleID());
+        User editUser = new User(this.user.getUserID(), this.user.getUserName(), null, this.user.getFullName(), this.user.getBirthday(),
+                this.user.getGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(), this.user.getPhone(),
+                null, roleID, null, 1);
+        if (USER_SERVICE.updateProfile(editUser)) {
+            msg = "Edit user successfully!";
         } else {
-//            msg += " Failed";
-            return "add_edit_user";
+            msg = "Edit user failed!";
         }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+        FacesContext.getCurrentInstance().addMessage(null, message);
+    }
 
+    /**
+     * Reset password
+     *
+     * @param event
+     */
+    public void resetPass(ActionEvent event) {
+        String msg;
+        if (USER_SERVICE.resetPass(this.user.getUserID())) {
+            msg = "Reset password successfully!";
+        } else {
+            msg = "Reset password failed!";
+        }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     /**
