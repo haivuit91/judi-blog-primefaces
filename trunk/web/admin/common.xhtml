@@ -1,37 +1,63 @@
-<?xml version='1.0' encoding='UTF-8' ?> 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-    <h:head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <h:outputStylesheet name="./css/default.css"/>
-        <h:outputStylesheet name="./css/cssAdmin.css"/>
-        <title>Facelets Template</title>
-    </h:head>
+    <f:view contentType="text/html">
+        <h:head>
+            <f:facet name="first">
+                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+                <title>PrimeFaces</title>
+                <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+                <h:outputStylesheet name="./css/default.css"/>
+                <h:outputStylesheet name="./css/cssLayout.css"/>
+            </f:facet>
+        </h:head>
 
-    <h:body>
+        <h:body>
+            <p:layout fullPage="true">
 
+                <p:layoutUnit position="north" size="68" closable="true">
+                    <h:form> 
+                        <p:menubar>
+                            <p:menuitem value="Home" url="admin.jsf" icon="ui-icon-home" />
+                            <p:menuitem value="Example" url="#" icon="ui-icon-image" />
 
-        <div id="top" class="top">
-            <ui:insert name="top">
-                <ui:include src="top-image.xhtml" />
-            </ui:insert>
-        </div>
-        <div>
-            <div id="left">
-                <ui:insert name="left">
-                    <ui:include src="top-menu.xhtml" />
-                </ui:insert>
-            </div>
-            <div id="content" class="left_content">
-                <ui:insert name="content">
-                    
-                </ui:insert>
-            </div>
-        </div>
-    </h:body>
+                            <f:facet name="options">
+                                <p:inputText style="margin-right:10px" placeholder="Search" />
+                                <p:commandButton icon="ui-icon-search" />
+                            </f:facet>
+                        </p:menubar>
+                    </h:form>
+                </p:layoutUnit>
 
+                <p:layoutUnit position="west" size="200" collapsible="true">
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Users management">
+                                <p:menuitem value="All users" url="users-manager.jsf" icon="ui-icon-calculator" />
+                                <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
+                            </p:submenu>
+                            <p:submenu label="Post management">
+                                <p:menuitem value="All users" url="#" icon="ui-icon-calculator" />
+                                <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
+                            </p:submenu>
+                            <p:submenu label="Project management">
+                                <p:menuitem value="All users" url="#" icon="ui-icon-calculator" />
+                                <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </p:layoutUnit>
+
+                <p:layoutUnit position="center">
+                    <ui:insert name="content">Content</ui:insert>
+                </p:layoutUnit>
+            </p:layout>
+        </h:body>
+
+    </f:view>
 </html>
+
