@@ -174,11 +174,13 @@ public class UserManagerBean implements Serializable {
 
     public void makeAdmin(ActionEvent event) {
         String msg;
-        if (USER_SERVICE.makeAdmin(this.user.getUserID())) {
-            msg = "Make administrator succesfully!";
-        } else {
+        System.out.println(this.user.getUserID());
+        System.out.println(this.user.getUserName());
+//        if (USER_SERVICE.makeAdmin(this.user.getUserID())) {
+//            msg = "Make administrator succesfully!";
+//        } else {
             msg = "Make administrator failed!";
-        }
+//        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
