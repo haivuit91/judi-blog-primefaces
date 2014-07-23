@@ -8,70 +8,35 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="content">
         <p:growl id="messageProfile" showDetail="true" />
-        <h:form id="formProfileList">      
-            <p:panelGrid columns="2">
-                <p:outputLabel value="Username:"/>
-                <p:outputLabel value="#{sessionScope.currentUser.userName}"/>
+        <h:form id="formProfileList" style="margin-left: 200px">      
+           
+            <p:panelGrid  columns="2" >
+                <p:outputLabel value="Username:" style="font-weight: bold"/>
+                <p:inputText value="#{userBean.user.userName}" disabled="true"/>
+                <p:outputLabel value="Full name:" style="font-weight: bold"/>
+                <p:inputText value="#{sessionScope.currentUser.fullName}"/>
+                <p:outputLabel value="gender " style="font-weight: bold" />
+                <p:selectOneMenu id="gender" value="#{sessionScope.currentUser.gender}">
+                    <f:selectItem itemLabel="Female" itemValue="1" />
+                     <f:selectItem itemLabel="Male" itemValue="0" />
+                </p:selectOneMenu>
+                <p:outputLabel value="Email" style="font-weight: bold" />
+                <p:inputText value="#{sessionScope.currentUser.email}"/>
 
-                <p:outputLabel value="Full name:"/>
-                <p:outputLabel value="#{sessionScope.currentUser.fullName}"/>
+                <p:outputLabel value="address" style="font-weight: bold" />
+                <p:inputText value="#{sessionScope.currentUser.address}"/>
 
-                <p:outputLabel value="Birthday"/>
-                <p:outputLabel value="#{sessionScope.currentUser.birthday}"/>
+                <p:outputLabel value="phone" style="font-weight: bold" />
+                <p:inputText value="#{sessionScope.currentUser.phone}"/>
 
-                <p:outputLabel value="gender"/>
-                <p:outputLabel value="#{sessionScope.currentUser.gender > 0 ? 'Female' : 'Male'}"/>
-
-                <p:outputLabel value="Email"/>
-                <p:outputLabel value="#{sessionScope.currentUser.email}"/>
-
-                <p:outputLabel value="address"/>
-                <p:outputLabel value="#{sessionScope.currentUser.address}"/>
-
-                <p:outputLabel value="phone"/>
-                <p:outputLabel value="#{sessionScope.currentUser.phone}"/>
-                <p:commandButton  update=":editUser" oncomplete="PF('editDialog').show()" value="Edit" icon="ui-icon-pencil" >
-                    <f:setPropertyActionListener value="#{userManager}" target="#{sessionScope.currentUser.user}" />
-
-                </p:commandButton>
-                <p:commandButton id="cancel" value="Cancel"  icon="ui-icon-close" type="button"/>
+                <p:outputLabel for="birthday" value="BirthDate: " style="font-weight: bold"/>
+                <p:calendar id="birthday" value="#{sessionScope.currentUser.birthday}" required="true" pattern="dd/MM/yyyy" >
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </p:calendar>
+                <p:message for="birthday" />
             </p:panelGrid>
-
-        </h:form>
-        <h:form id="editUser">
-            <p:dialog header="Edit user" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
-                <p:outputPanel id="editUser" style="text-align:center;">
-                    <p:panelGrid  columns="2"  columnClasses="label,value">
-                        <p:outputLabel for="userName" value="Username:" />
-                        <p:inplace>
-                            <p:inputText id="userName" value="#{sessionScope.currentUser.userName}" disabled="true"/>
-                        </p:inplace>
-
-                        <p:outputLabel for="fullName" value="Full name:" />
-                        <p:inplace>
-                            <p:inputText id="fullName" value="#{sessionScope.currentUser.fullName}" 
-                                         required="true"  >
-                                <f:validateLength minimum="6" maximum="100"/>
-                            </p:inputText>
-                        </p:inplace>
-
-                        <p:outputLabel for="email" value="Email:" />
-                        <p:inplace>
-                            <p:inputText id="email" value="#{sessionScope.currentUser.email}" />
-                        </p:inplace>
-
-                        <p:outputLabel for="address" value="Address:" />
-                        <p:inplace>
-                            <p:inputText id="address" value="#{sessionScope.currentUser.address}" />
-                        </p:inplace>
-
-                    </p:panelGrid>
-                </p:outputPanel>
-                <p:commandButton id="confirm" value="Yes" update=":formProfileList" actionListener="#{userBean.edituser(event)}"
-                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('editDialog').hide()"/>                    
-                <p:commandButton id="cancel" value="Cancel" onclick="PF('editDialog').hide()"
-                                 styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
-            </p:dialog>
+            <p:commandButton action="#{userBean.edituser()}" ajax="fals" value="Save" />
+            <p:commandButton action="#" value="Cancel"/>    
         </h:form>
     </ui:define>
 </ui:composition>
