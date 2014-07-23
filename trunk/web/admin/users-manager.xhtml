@@ -28,29 +28,29 @@
                                     </p:outputPanel>
                                 </f:facet>
 
-                                <p:column style="width:25px">  
+                                <p:column width="25">  
                                     <f:facet name="header">ID</f:facet>  
                                     <h:outputText value="#{listUser.userID}" />  
                                 </p:column>
 
-                                <p:column sortBy="#{listUser.userName}" filterBy="#{listUser.userName}" style="width:110px">  
+                                <p:column sortBy="#{listUser.userName}" filterBy="#{listUser.userName}" width="110">  
                                     <f:facet name="header">Username</f:facet>  
                                     <h:outputText value="#{listUser.userName}" />  
                                 </p:column>
 
-                                <p:column sortBy="#{listUser.fullName}" filterBy="#{listUser.fullName}" style="width:150px">  
+                                <p:column sortBy="#{listUser.fullName}" filterBy="#{listUser.fullName}" width="150">  
                                     <f:facet name="header">Full name</f:facet>  
                                     <h:outputText value="#{listUser.fullName}" />  
                                 </p:column>
 
-                                <p:column sortBy="#{listUser.birthday}" filterBy="#{listUser.birthday}" style="width:110px">  
+                                <p:column sortBy="#{listUser.birthday}" filterBy="#{listUser.birthday}" width="110">  
                                     <f:facet name="header">Birthday</f:facet>  
                                     <h:outputText value="#{listUser.birthday}" >
                                         <f:convertDateTime dateStyle="default" pattern="dd/MM/yyyy" timeZone="vi_VN" type="date"/> 
                                     </h:outputText>  
                                 </p:column>
 
-                                <p:column filterBy="#{listUser.gender}" headerText="Gender" style="width:110px">
+                                <p:column filterBy="#{listUser.gender}" headerText="Gender" width="110">
                                     <f:facet name="filter">
                                         <p:selectOneMenu onchange="PF('userFilter').filter()" >
                                             <f:selectItem itemLabel="Select One" itemValue="#{null}" noSelectionOption="true" />
@@ -66,12 +66,12 @@
                                     <h:outputText value="#{listUser.email}" />  
                                 </p:column>
 
-                                <p:column sortBy="#{listUser.phone}" filterBy="#{listUser.phone}" style="width:120px">  
+                                <p:column sortBy="#{listUser.phone}" filterBy="#{listUser.phone}" width="120">  
                                     <f:facet name="header">Phone</f:facet>  
                                     <h:outputText value="#{listUser.phone}" />  
                                 </p:column>
 
-                                <p:column filterBy="#{listUser.role.roleName}" headerText="Role" style="width:95px">
+                                <p:column filterBy="#{listUser.role.roleName}" headerText="Role" width="95">
                                     <f:facet name="filter">
                                         <p:selectCheckboxMenu label="All roles" onchange="PF('userFilter').filter()" panelStyle="width:125px" scrollHeight="100">
                                             <f:selectItems var="role" value="#{userManager.roles}" itemLabel="#{role.roleName}" itemValue="#{role.roleName}"/>
@@ -80,8 +80,14 @@
                                     <h:outputText value="#{listUser.role.roleName}" />
                                 </p:column>
 
-                                <p:column style="width:113px">
-                                    <p:splitButton update=":userViews" oncomplete="PF('viewDialog').show()" value="View" icon="ui-icon-search">
+                                <p:column width="40">  
+                                    <f:facet name="header">Status</f:facet>
+                                    <p:commandButton update=":formListUsers" actionListener="#{userManager.restoreUser(event)}" icon="ui-icon-locked" rendered="#{listUser.active == 0 ? 'true':'false'}"/>
+                                    <p:commandButton update=":formListUsers" actionListener="#{userManager.removeUser(event)}" icon="ui-icon-unlocked" rendered="#{listUser.active == 1 ? 'true':'false'}"/>
+                                </p:column>
+
+                                <p:column width="71">
+                                    <p:splitButton update=":userViews" oncomplete="PF('viewDialog').show()" icon="ui-icon-search">
                                         <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
                                         <p:menuitem update=":editUser" oncomplete="PF('editDialog').show()" value="Edit" icon="ui-icon-pencil" >
                                             <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
@@ -114,7 +120,7 @@
                                 <p:panelGrid  columns="2" rendered="#{not empty userManager.user}" columnClasses="label,value">
                                     <h:outputText value="ID:" />
                                     <h:outputText value="#{userManager.user.userID}" />
-                                    
+
                                     <h:outputText value="Username:" />
                                     <h:outputText value="#{userManager.user.userName}" />
 
@@ -194,7 +200,7 @@
                                     </p:selectOneMenu>
                                 </p:panelGrid>
                             </p:outputPanel>
-                            <p:commandButton id="confirm" value="Add" update=":formListUsers" actionListener="#{userManager.adduser(event)}"
+                            <p:commandButton id="confirm" value="Add" update=":formListUsers" actionListener="#{userManager.addUser(event)}"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('addDialog').hide()"/>                    
                             <p:commandButton id="cancel" value="Cancel" onclick="PF('addDialog').hide()"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
