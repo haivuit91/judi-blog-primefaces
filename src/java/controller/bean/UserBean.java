@@ -86,18 +86,33 @@ public class UserBean {
                 .addMessage(null, fm);
     }
 
-    public void editUser(ActionEvent event) {
-
+    public void editUser() {
         String msg;
+        String username = getUser().getUserName();
+        String fullname = getUser().getFullName();
+        String address = getUser().getAddress();
+        String email = getUser().getEmail();
+        String phone = getUser().getPhone();
+          Date birthday = getUser().getBirthday();
+        java.sql.Date date = new java.sql.Date(birthday.getTime());
+        int gender = getUser().getGender();
+        String idcard = getUser().getIdCard();
+        User user = new User(1, username, null, fullname, date, gender, idcard, address, email, phone, null, null, null, 1);
+        if (USER_SERVICE.updateProfile(user)) {
 
-        if (USER_SERVICE.updateProfile(this.user)) {
+           
 
-            msg = "profile updated successfully!";
+            msg ="TD";
 
         } else {
-            msg = "Update profile failed !";
+//            msg += " Failed";
+             msg ="TB";
         }
-         this.addMessages(msg);
+        FacesMessage message = new FacesMessage(msg, "Message!");
+
+        FacesContext.getCurrentInstance()
+                .addMessage(null, message);
+       
     }
 
     /**
