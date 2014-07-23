@@ -67,7 +67,7 @@
 
                     </p:panelGrid>
                 </p:outputPanel>
-                <p:commandButton id="confirm" value="Yes" update=":formProfileList" actionListener="#{userBean.editUser(event)}"
+                <p:commandButton id="confirm" value="Yes" update=":formProfileList" actionListener="#{userBean.edituser(event)}"
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('editDialog').hide()"/>                    
                 <p:commandButton id="cancel" value="Cancel" onclick="PF('editDialog').hide()"
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
