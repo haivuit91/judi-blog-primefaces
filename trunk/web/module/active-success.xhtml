@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./../index.xhtml"
+                xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="content">
+        <p:panel  style="display: table !important; width: 100%;"  header="Information" >
+            <p:outputLabel style="color: red" value="Your account has been actived successfully." /><br />
+            <p:link style="color: blue" href="/index.jsf" value="Return to the index page" />
+        </p:panel>
+    </ui:define>
+
+</ui:composition>
