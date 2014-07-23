@@ -140,7 +140,15 @@ public interface UserDAOService {
      * @return true if update Profile of User successful. false if failed!
      */
     public boolean updateUserByAdmin(User user);
-
+    
+    /**
+     * remove The User's active
+     *
+     * @param userID
+     * @return true if reset password successful. false if failed!
+     */
+    public boolean resetPass(int userID);
+    
     /**
      * remove The User's active
      *
