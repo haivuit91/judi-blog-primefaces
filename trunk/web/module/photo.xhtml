@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Photo</title>
+    </h:head>
+    <h:body>
+
+        <ui:composition template="./../index.xhtml">
+
+            <ui:define name="content">
+
+                <p:panel style="display: table !important; width: 100%" header="Judi Team" >
+                    <p:commandButton type="button" onclick="PF('switcher').previous();"
+                                     icon="ui-icon-circle-triangle-w" id="gg"/>
+                    <p:commandButton type="button" onclick="PF('switcher').next();"
+                                     icon="ui-icon-circle-triangle-e" id="ff"/>
+
+                    <p:imageSwitch effect="wipe" widgetVar="switcher" id="ss"
+                                   slideshowAuto="false">
+                        <ui:repeat value="#{imageView.photo_JUDI}" var="aa" id="manuelSwitcherImages">
+                            <p:graphicImage name="images/photo_view/#{aa}" id="image" width="100%" height="400px"/>
+                        </ui:repeat>
+                    </p:imageSwitch>
+                </p:panel>
+<!--                <p:panel style="display: table !important; width: 100%" header="LUD Team" >
+                    <p:commandButton type="button" onclick="PF('switcher').previous();"
+                                     icon="ui-icon-circle-triangle-w" id="truoc"/>
+                    <p:commandButton type="button" onclick="PF('switcher').next();"
+                                     icon="ui-icon-circle-triangle-e" id="sau"/>
+
+                    <p:imageSwitch effect="wipe" widgetVar="switcher" id="aa"
+                                   slideshowAuto="false">
+                        <ui:repeat value="#{imageView.photo_LUD}" var="LUD" >
+                            <p:graphicImage name="images/photo_view/#{LUD}" id="image" width="100%" height="400px"/>
+                        </ui:repeat>
+                    </p:imageSwitch>
+                </p:panel>-->
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>
