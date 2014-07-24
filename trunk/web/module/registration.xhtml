@@ -35,7 +35,7 @@
                     <p:message for="password2" />
 
                     <p:outputLabel for="fullName" value="Full Name: " />
-                    <p:inputText id="fullName" value="#{userBean.user.fullName}" required="true" size="25" >
+                    <p:inputText id="fullName" value="#{userBean.user.fullName}" required="true" size="30" >
                         <f:validateLength minimum="5" maximum="50" />
                     </p:inputText>
                     <p:message for="fullName" />
@@ -59,7 +59,8 @@
                     <p:message for="idCard" />
 
                     <p:outputLabel for="address" value="Address: " />
-                    <p:inputTextarea id="address" value="#{userBean.user.address}" required="true" cols="40" rows="3" maxlength="150" autoResize="false" >
+                    <p:inputTextarea id="address" value="#{userBean.user.address}" required="true" 
+                                     cols="41" rows="4" maxlength="150" autoResize="true" >
                         <f:validateLength minimum="5" maximum="150" />
                     </p:inputTextarea>
                     <p:message for="address" />
