@@ -331,4 +331,8 @@ public class ProjectBean {
         this.usersJoining = usersJoining;
     }
 
+    public List<Project> getAllProject() {
+        List<Project> projectList = PROJECT_SERVICE.getProjects();
+        return projectList;
+    }
 }
