@@ -13,8 +13,6 @@
             <ui:define name="content">
                 <f:view>
                     <h:form id="formListUsers">
-                        <p:commandButton style="float: left" value="Add user" update=":addUser" oncomplete="PF('addDialog').show()"
-                                         icon="ui-icon-circle-plus" title="Create" />
                         <p:growl id="msgs" showDetail="true" />
                         <h:panelGroup id="result2">
                             <p:dataTable var="listUser" value="#{userManager.allUser}" paginator="true" rows="20"
@@ -22,10 +20,17 @@
                                          rowsPerPageTemplate="10,20,30,50"
                                          widgetVar="userFilter" emptyMessage="No found users" filteredValue="#{userManager.searchUser}">
                                 <f:facet name="header">
-                                    <p:outputPanel>
-                                        <h:outputText value="Search:" />
-                                        <p:inputText id="globalFilter" onkeyup="PF('userFilter').filter()" style="width:150px" placeholder="Enter keyword"/>
-                                    </p:outputPanel>
+                                    <p:outputLabel value="Users management" style="font-size: 30px"/>
+                                    <p:toolbar style="border: none; background: none">
+                                        <f:facet name="left">
+                                            <p:commandButton value="Add user" update=":addUser" oncomplete="PF('addDialog').show()"
+                                                             icon="ui-icon-circle-plus" title="Create" />
+                                        </f:facet>
+                                        <f:facet name="right">
+                                            <h:outputText value="Search:" />
+                                            <p:inputText id="globalFilter" onkeyup="PF('userFilter').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                        </f:facet>
+                                    </p:toolbar>
                                 </f:facet>
 
                                 <p:column width="25">  
