@@ -36,7 +36,7 @@
                     </p:panelGrid>
                     <p:menu style="width: 100%; border: 0; background: #ccffcc">
                         <p:submenu label="Active" style="background: #ccccff">
-                            <p:menuitem value="Admin" icon="ui-icon-person" url="/admin/common.jsf"
+                            <p:menuitem value="Admin" icon="ui-icon-person" url="/admin/admin.jsf"
                                         rendered="#{sessionScope.currentUser.role.roleID == 1?'true':'false'}" />
                             <p:menuitem value="My Profile" url="/member/profile-management.jsf" icon="ui-icon-star" />
                             <p:menuitem value="My Project" url="/member/my-project.jsf"  icon="ui-icon-heart"/>
