@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <body>
+
+        <ui:composition template="./../index.xhtml">
+
+            <ui:define name="content">
+                <f:view>
+                    <h:form id="formListPost">
+                        <p:commandButton style="float: left" value="Create Post" update=":addPost" oncomplete="PF('addDialog').show()"
+                                         icon="ui-icon-circle-plus" title="Create" />
+
+
+                        <p:growl id="msgs" showDetail="true" />
+                        <h:panelGroup id="result2">
+                            <p:dataTable var="listPost" value="#{postBean.listPost}" paginator="true" rows="20"
+                                         paginatorTemplate="{FirstPageLink} {PageLinks} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="2,4,6,8"
+                                         widgetVar="postFilter" emptyMessage="No found users" filteredValue="#{postBean.filteredPost}">
+                                <f:facet name="header">
+                                    <p:outputPanel>
+                                        <h:outputText value="Search:" />
+                                        <p:inputText id="globalFilter" onkeyup="PF('postFilter').fiter()" style="width:150px" placeholder="Enter keyword"/>
+                                    </p:outputPanel>
+                                </f:facet>
+
+                                <p:column  style="width:25px">  
+                                    <f:facet name="header">ID</f:facet>  
+                                    <h:outputText value="#{listPost.postID}"  />  
+                                </p:column>
+
+                                <p:column sortBy="#{listPost.title}" filterBy="#{listPost.title}" style="width:110px">  
+                                    <f:facet name="header">Title</f:facet>  
+                                    <h:outputText value="#{listPost.title}" />  
+                                </p:column>
+
+                                <p:column sortBy="#{listPost.postDate}" filterBy="#{listPost.postDate}" style="width:150px">  
+                                    <f:facet name="header">Date Post</f:facet>  
+                                    <h:outputText value="#{listPost.postDate}" />  
+                                </p:column>
+
+                                <p:column sortBy="#{listPost.category.catName}" filterBy="#{listPost.category.catName}" style="width:110px">  
+                                    <f:facet name="header">Category</f:facet>  
+                                    <h:outputText value="#{listPost.category.catName}" />  
+                                </p:column>
+
+                                <p:column style="width:115px">
+                                    <p:splitButton update=":postViews" oncomplete="PF('viewDialog').show()" value="View" icon="ui-icon-search">
+                                        <f:setPropertyActionListener value="#{listPost}" target="#{postBean.post}" />
+
+                                    </p:splitButton>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
+                    </h:form>
+                    <h:form id="postViews">
+                        <p:dialog header="Post Info" widgetVar="viewDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="postViews" style="text-align:center;">
+                                <p:panelGrid  columns="2" rendered="#{not empty postBean.post}" columnClasses="label,value">
+                                    <h:outputText value="ID:" />
+                                    <h:outputText value="#{postBean.post.postID}" />
+
+                                    <h:outputText value="Title:" />
+                                    <h:outputText value="#{postBean.post.title}" />
+
+                                    <h:outputText value="DatePost:" />
+                                    <h:outputText value="#{postBean.post.postDate}" />
+
+
+                                    <h:outputText value="Category:" />
+                                    <h:outputText value="#{postBean.post.category.catName}" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                            <p:commandButton id="confirm" value="Reset pass" update=":formListPost" actionListener="#{postBean.resetPass(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('viewDialog').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('viewDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:dialog>
+                    </h:form>
+                    <h:form id="addPost">
+                        <p:dialog width="600px" height="400px" header="Create Post" widgetVar="addDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="addPost" style="text-align:center;">
+                                <p:panelGrid style="text-align: left" columns="2" rendered="#{not empty postBean.post}" columnClasses="label,value">
+                                    <p:outputLabel for="title" value="Title:" />
+                                    <p:inputText id="title" value="#{postBean.post.title}"  required="true">
+                                        
+                                    </p:inputText>
+
+                                    <p:outputLabel for="catID" value="Category:" />
+                                    <p:selectOneMenu id="catID" value="#{postBean.post.category}" converter="CategoryConverter" >
+                                        <f:selectItems value="#{postBean.category}" var="cat"
+                                                       itemValue="#{cat}" itemLabel="#{cat.catName}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="editor" value="Content:" />
+                                    <p:editor id="editor" widgetVar="editorWidget" value="#{postBean.post.content}" width="450" />
+                                     <h:outputText id="display" value="#{postBean.post.content}" escape="false" />
+                                   
+                                </p:panelGrid>
+                            </p:outputPanel>
+                            <p:commandButton style="float: right " id="confirm" value="Add" update=":formListPost" actionListener="#{postBean.insertPost(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('addDialog').hide()"/>                    
+                            <p:commandButton style="float: right " id="cancel" value="Cancel" onclick="PF('addDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:dialog>
+                    </h:form>
+                </f:view>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
