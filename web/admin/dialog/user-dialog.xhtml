@@ -38,7 +38,7 @@
                     <h:outputText value="#{userManager.user.role.roleName}" />
                 </p:panelGrid>
             </p:outputPanel>
-            <p:commandButton id="confirm" value="Reset pass" update=":formListUsers" actionListener="#{userManager.resetPass(event)}"
+            <p:commandButton id="confirm" value="Reset pass" update=":formList" actionListener="#{userManager.resetPass(event)}"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('viewDialog').hide()"/>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('viewDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
@@ -92,7 +92,7 @@
                     </p:selectOneMenu>
                 </p:panelGrid>
             </p:outputPanel>
-            <p:commandButton id="confirm" value="Add" update=":formListUsers" actionListener="#{userManager.addUser(event)}"
+            <p:commandButton id="confirm" value="Add" update=":formList" actionListener="#{userManager.addUser(event)}"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('addDialog').hide()"/>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('addDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
@@ -170,7 +170,7 @@
                     </p:inplace>
                 </p:panelGrid>
             </p:outputPanel>
-            <p:commandButton id="confirm" value="Save" update=":formListUsers" actionListener="#{userManager.editUser(event)}"
+            <p:commandButton id="confirm" value="Save" update=":formList" actionListener="#{userManager.editUser(event)}"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-disk" oncomplete="PF('editDialog').hide()"/>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('editDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
@@ -181,7 +181,7 @@
         <p:confirmDialog id="confirmDialog" message="are you really want to delete #{userManager.user.userName}?"
                          header="Delete user" severity="alert" widgetVar="deleteDialog" showEffect="fade" hideEffect="explode">
             <h:inputHidden value="#{userManager.user.userID}"/>
-            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.deleteUser(event)}"
+            <p:commandButton id="confirm" value="Yes" update=":formList" actionListener="#{userManager.deleteUser(event)}"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('deleteDialog').hide()"/>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('deleteDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
@@ -192,7 +192,7 @@
         <p:confirmDialog id="confirmDialog" message="are you really want to ban #{userManager.user.userName}?"
                          header="Ban user" severity="alert" widgetVar="banDialog" showEffect="fade" hideEffect="explode">
             <h:inputHidden value="#{userManager.user.userID}"/>
-            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.removeUser(event)}"
+            <p:commandButton id="confirm" value="Yes" update=":formList" actionListener="#{userManager.removeUser(event)}"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('banDialog').hide()"/>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('banDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
@@ -203,7 +203,7 @@
         <p:confirmDialog id="confirmDialog" message="are you really want to restore #{userManager.user.userName}?"
                          header="Restore user" severity="alert" widgetVar="restoreDialog" showEffect="fade" hideEffect="explode">
             <h:inputHidden value="#{userManager.user.userID}"/>
-            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.restoreUser(event)}"
+            <p:commandButton id="confirm" value="Yes" update=":formList" actionListener="#{userManager.restoreUser(event)}"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('restoreDialog').hide()"/>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('restoreDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
@@ -214,7 +214,7 @@
         <p:confirmDialog id="confirmDialog" message="are you really want to make admin?"
                          header="Make admin" severity="alert" widgetVar="makeadminDialog" showEffect="fade" hideEffect="explode">
             <h:inputHidden value="#{userManager.user.userID}"/>
-            <p:commandButton id="confirm" value="Yes" update=":formListUsers" actionListener="#{userManager.makeAdmin(event)}"
+            <p:commandButton id="confirm" value="Yes" update=":formList" actionListener="#{userManager.makeAdmin(event)}"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('makeadminDialog').hide()"/>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('makeadminDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
