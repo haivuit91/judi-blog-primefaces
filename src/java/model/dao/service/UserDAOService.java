@@ -139,9 +139,10 @@ public interface UserDAOService {
      * remove The User's active
      *
      * @param userID
+     * @param pwd
      * @return true if reset password successful. false if failed!
      */
-    public boolean resetPass(int userID);
+    public boolean resetPass(int userID, String pwd);
     
     /**
      * remove The User's active

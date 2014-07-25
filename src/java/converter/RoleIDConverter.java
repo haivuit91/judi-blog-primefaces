@@ -1,12 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package converter;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
@@ -15,12 +8,6 @@ import model.dao.RoleDAO;
 import model.dao.service.RoleDAOService;
 import model.entities.Role;
 
-/**
- *
- * @author AMIN
- */
-@ManagedBean
-@RequestScoped
 @FacesConverter("roleConverter")
 public class RoleIDConverter implements Converter {
 
@@ -34,17 +21,23 @@ public class RoleIDConverter implements Converter {
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        Role role = null;
+        Role roleName = null;
         if (value != null) {
-            role = ROLE_SERVICE.getRolesByName(value);
-            role.getRoleName();
+            roleName = ROLE_SERVICE.getRolesByName(value);
+            roleName.setRoleName(value);
         }
-        return role;
+        return roleName;
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        Role role = (Role) value;
-        return role.getRoleName()+ "";
+        String roleName = "";
+        if (value instanceof Role) {
+            Role role = (Role) value;
+            roleName = role.getRoleName();
+        } else if (value instanceof String) {
+            roleName = (String) value;
+        }
+        return roleName;
     }
 }
