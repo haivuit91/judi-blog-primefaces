@@ -50,12 +50,17 @@
                                     <h:outputText value="#{listPost.category.catName}" />  
                                 </p:column>
 
-                                <p:column style="width:115px">
-                                    <p:splitButton update=":postViews" oncomplete="PF('viewDialog').show()" value="View" icon="ui-icon-search">
+                                <p:column style="width:100px">
+                                    <p:splitButton update=":postViews" oncomplete="PF('viewDialog').show()" value="View" icon="ui-icon-search" >
                                         <f:setPropertyActionListener value="#{listPost}" target="#{postBean.post}" />
-
-                                    </p:splitButton>
+                                        <p:menuitem update=":postDelete" oncomplete="PF('deleteDialog').show()" value="Delete" icon="ui-icon-trash" >
+                                        <f:setPropertyActionListener value="#{listPost}" target="#{postBean.post}" />
+                                     </p:menuitem>
+                                    </p:splitButton>                                  
                                 </p:column>
+                                
+                                    
+
                             </p:dataTable>
                         </h:panelGroup>
                     </h:form>
@@ -89,7 +94,7 @@
                                 <p:panelGrid style="text-align: left" columns="2" rendered="#{not empty postBean.post}" columnClasses="label,value">
                                     <p:outputLabel for="title" value="Title:" />
                                     <p:inputText id="title" value="#{postBean.post.title}"  required="true">
-                                        
+
                                     </p:inputText>
 
                                     <p:outputLabel for="catID" value="Category:" />
@@ -99,8 +104,8 @@
                                     </p:selectOneMenu>
                                     <p:outputLabel for="editor" value="Content:" />
                                     <p:editor id="editor" widgetVar="editorWidget" value="#{postBean.post.content}" width="450" />
-                                     <h:outputText id="display" value="#{postBean.post.content}" escape="false" />
-                                   
+                                    <h:outputText id="display" value="#{postBean.post.content}" escape="false" />
+
                                 </p:panelGrid>
                             </p:outputPanel>
                             <p:commandButton style="float: right " id="confirm" value="Add" update=":formListPost" actionListener="#{postBean.insertPost(event)}"
@@ -108,6 +113,16 @@
                             <p:commandButton style="float: right " id="cancel" value="Cancel" onclick="PF('addDialog').hide()"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
                         </p:dialog>
+                    </h:form>
+                    <h:form id="postDelete">
+                        <p:confirmDialog  id="confirmDialog" message="are you really want to delete #{postBean.post.postID}?"
+                                         header="Delete post" severity="alert" widgetVar="deleteDialog" showEffect="fade" hideEffect="explode">
+                            <h:inputHidden value="#{postBean.post.postID}"/>
+                            <p:commandButton id="confirm" value="Yes" update=":formListPost" actionListener="#{postBean.deleteUser(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('deleteDialog').hide()"/>                    
+                            <p:commandButton id="cancel" value="Cancel" onclick="PF('deleteDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:confirmDialog>
                     </h:form>
                 </f:view>
             </ui:define>
