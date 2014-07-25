@@ -73,49 +73,13 @@ public class UserDAO implements UserDAOService {
      * @return User List by the user's status
      */
     @Override
-    public List<User> getUserActive() {
+    public List<User> getUserActive(int isActive) {
         List<User> userList = new ArrayList<>();
         try {
             Connection conn = ConnectionFactory.getConnection();
-            String sql = "select * from tbl_user where isActive = 1";
+            String sql = "select * from tbl_user where isActive = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                User user = new User();
-                user.setUserID(rs.getInt("userID"));
-                user.setUserName(rs.getString("userName"));
-                user.setPwd(rs.getString("pwd"));
-                user.setFullName(rs.getString("fullName"));
-                user.setBirthday(rs.getDate("birthday"));
-                user.setGender(rs.getInt("gender"));
-                user.setIdCard(rs.getString("idCard"));
-                user.setAddress(rs.getString("userAddress"));
-                user.setEmail(rs.getString("email"));
-                user.setPhone(rs.getString("phone"));
-                user.setImagePath(rs.getString("imagePath"));
-                Role role = RoleDAO.getInstance().getRoleByID(rs.getInt("roleID"));
-                user.setRole(role);
-                user.setIdActive(rs.getString("idActive"));
-                user.setActive(rs.getInt("isActive"));
-                userList.add(user);
-            }
-        } catch (SQLException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        return userList;
-    }
-
-    /**
-     *
-     * @return User List by the user's status
-     */
-    @Override
-    public List<User> getUserInactive() {
-        List<User> userList = new ArrayList<>();
-        try {
-            Connection conn = ConnectionFactory.getConnection();
-            String sql = "select * from tbl_user where isActive = 0";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, isActive);
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 User user = new User();
@@ -495,7 +459,7 @@ public class UserDAO implements UserDAOService {
         }
         return isCheck;
     }
-    
+
     /**
      * remove The User's active
      *
