@@ -2,17 +2,17 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
 
         <ui:composition template="./common.xhtml">
+
             <ui:define name="content">
-                <f:view>
-                    <h:form id="frmData">
-                        <p:commandButton value="New post" oncomplete="PF('newPost').show()" update=":frmNewPost"/>
+                <h:form id="formList">
+                        <p:commandButton value="New post" oncomplete="PF('newPost').show()"/>
                         <p:growl id="msgs" showDetail="true" />
                         <p:dataTable var="post" value="#{postManagementBean.listPost}" paginator="true" rows="20">
                             <p:column headerText="Title" width="560">
@@ -29,50 +29,18 @@
                             </p:column>
                             <p:column headerText="Action" width="120" style="text-align: center">
                                 <p:splitButton value="More" icon="ui-icon-carat-2-n-s">
-                                    <p:menuitem ajax="false" value="Delete" actionListener="#{postManagementBean.delete2(post)}" update=":frmData" icon="ui-icon-trash"/>
-                                    <p:menuitem ajax="false" value="#{post.isActive ? 'Disable':'Enable'}" actionListener="#{postManagementBean.active(post)}" icon="#{post.isActive ? 'ui-icon-locked':'ui-icon-unlocked'}" update=":frmData"/>
+                                    <p:menuitem value="Delete" oncomplete="PF('confirm').show()" update=":frmConfirm" icon="ui-icon-trash">
+                                        <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.seletedPost}"/>
+                                    </p:menuitem>
+                                    <p:menuitem value="#{post.isActive ? 'Disable':'Enable'}" update=":frmConfirActive" oncomplete="PF('confirmActive').show()" icon="#{post.isActive ? 'ui-icon-locked':'ui-icon-unlocked'}">
+                                         <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.seletedPost}"/>
+                                    </p:menuitem>
                                 </p:splitButton>
                             </p:column>
                         </p:dataTable>
                     </h:form>
-
-                    <h:form id="frmNewPost">
-                        <p:dialog  width="820" height="500" appendTo="@(body)" header="New post" widgetVar="newPost" resizable="true" modal="true">
-                            <p:panelGrid columns="4">
-                                <p:outputLabel value="Title"/>
-                                <p:inputText size="71" value=""/>
-                                <p:outputLabel value="Category"/>
-                                <p:selectOneMenu style="width: 100px" >
-                                    <f:selectItem itemLabel="Bài tập"/>
-                                </p:selectOneMenu>
-                            </p:panelGrid>
-                            <p:panelGrid columns="1">
-                                <p:outputLabel value="Content"/>
-                                <p:editor height="385"/>
-                            </p:panelGrid>
-                            <p:panelGrid columns="2">
-                                <p:commandButton icon="ui-icon-check" value="Save"/>
-                                <p:commandButton icon="ui-icon-closethick" value="Close"/>
-                            </p:panelGrid>
-                        </p:dialog>
-                    </h:form>
-                    <h:form id="frmEditPost">
-                        <p:dialog appendTo="@(body)" header="Edit post" widgetVar="editPost" resizable="true" modal="true">
-                            <p:panelGrid columns="2">
-                                <p:outputLabel for="title" value="Title"/>
-                                <p:inplace>
-                                    <p:inputText id="title" value="#{postManagementBean.test}"/>
-
-                                </p:inplace>
-                                <p:commandButton actionListener="#{postManagementBean.test(event)}" />
-                            </p:panelGrid>
-                        </p:dialog>
-                    </h:form>
-
-
-
-                </f:view>  
             </ui:define>
+
         </ui:composition>
 
     </body>
