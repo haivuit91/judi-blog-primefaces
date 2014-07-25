@@ -1,4 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
@@ -14,49 +14,66 @@
                 <h:outputStylesheet name="./css/default.css"/>
                 <h:outputStylesheet name="./css/cssLayout.css"/>
             </f:facet>
+
+            <style type="text/css">
+                .ui-layout-north {
+                    z-index:20 !important;
+                    overflow:visible !important;;
+                }
+
+                .ui-layout-north .ui-layout-unit-content {
+                    overflow:visible !important;
+                }
+            </style>
         </h:head>
 
         <h:body>
-            <div id="top" class="top">
-                <h:form> 
-                    <p:menubar>
-                        <p:menuitem value="Admin" url="/admin/admin.jsf" icon="ui-icon-image" />
-                        <p:menuitem value="Home" url="/index.jsf" icon="ui-icon-home" />
+            <p:layout fullPage="true" >
+                <p:layoutUnit id="top" position="north" size="50" style="padding: 0px;">
+                    <h:form> 
+                        <p:menubar style="background: #045491; color: #fff">
+                            <p:menuitem value="Admin" url="/admin/admin.jsf" icon="ui-icon-image" />
+                            <p:menuitem value="Home" url="/index.jsf" icon="ui-icon-home" />
 
-                        <f:facet name="options">
-                            <p:inputText style="margin-right:10px" placeholder="Search" />
-                            <p:commandButton icon="ui-icon-search" />
-                        </f:facet>
-                    </p:menubar>
-                </h:form>
-            </div>
+                            <f:facet name="options">
+                                <p:splitButton value="haivv" icon="ui-icon-person">
+                                    <p:menuitem value="User profile" icon="ui-icon-person" />
+                                    <p:menuitem value="Settings" icon="ui-icon-gear" />
+                                    <p:separator />
+                                    <p:menuitem value="Logout" icon="ui-icon-extlink" />
+                                </p:splitButton>
+                            </f:facet>
+                        </p:menubar>
+                    </h:form>
+                </p:layoutUnit>
 
-            <div id="content" class="center_content">
-                <p:layout fullPage="true">
-                    <p:layoutUnit position="west" size="200" collapsible="true">
-                        <h:form>
-                            <p:panelMenu>
-                                <p:submenu label="Users management">
-                                    <p:menuitem value="All users" url="users-manager.jsf" icon="ui-icon-calculator" />
-                                    <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
-                                </p:submenu>
-                                <p:submenu label="Post management">
-                                    <p:menuitem value="All post" url="post-management.jsf" icon="ui-icon-calculator" />
-                                    <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
-                                </p:submenu>
-                                <p:submenu label="Project management">
-                                    <p:menuitem value="All users" url="project-manager.jsf" icon="ui-icon-calculator" />
-                                    <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
-                                </p:submenu>
-                            </p:panelMenu>
-                        </h:form>
-                    </p:layoutUnit>
+                <p:layoutUnit id="left" position="west" size="150" resizable="true" collapsible="true" header="Management" minSize="150" maxSize="200">
+                    <h:form>
+                        <p:panelMenu>
+                            <p:submenu label="Users">
+                                <p:menuitem value="All users" url="users-manager.jsf" icon="ui-icon-calculator" />
+                                <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
+                            </p:submenu>
+                            <p:submenu label="Posts">
+                                <p:menuitem value="All users" url="#" icon="ui-icon-calculator" />
+                                <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
+                            </p:submenu>
+                            <p:submenu label="Projects">
+                                <p:menuitem value="All users" url="project-manager.jsf" icon="ui-icon-calculator" />
+                                <p:menuitem value="Add user" url="#" icon="ui-icon-circle-plus" />
+                            </p:submenu>
+                        </p:panelMenu>
+                    </h:form>
+                </p:layoutUnit>
 
-                    <p:layoutUnit position="center" >
-                        <ui:insert name="content">Content</ui:insert>
-                    </p:layoutUnit>
-                </p:layout>
-            </div>
+                <p:layoutUnit id="center" position="center">
+                    <ui:insert name="content">Content</ui:insert>
+                </p:layoutUnit>
+            </p:layout>
+
+            <ui:include src="dialog/user-dialog.xhtml"/>
+
         </h:body>
     </f:view>
 </html>
+F
