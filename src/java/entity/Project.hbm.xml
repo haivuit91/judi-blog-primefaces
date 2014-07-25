@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 25, 2014 9:34:06 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="entity.Project" table="project" catalog="db_judiwebsite">
+        <id name="projectId" type="java.lang.Integer">
+            <column name="projectID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="type" class="entity.Type" fetch="select">
+            <column name="typeID" not-null="true" />
+        </many-to-one>
+        <property name="projectName" type="string">
+            <column name="projectName" length="105" not-null="true" />
+        </property>
+        <property name="description" type="string">
+            <column name="description" length="205" not-null="true" />
+        </property>
+        <property name="startDate" type="date">
+            <column name="startDate" length="10" not-null="true" />
+        </property>
+        <property name="duration" type="int">
+            <column name="duration" not-null="true" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <set name="projectUserDetailses" table="project_user_details" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="projectID" not-null="true" />
+            </key>
+            <one-to-many class="entity.ProjectUserDetails" />
+        </set>
+    </class>
+</hibernate-mapping>

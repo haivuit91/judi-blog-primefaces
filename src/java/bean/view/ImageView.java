@@ -36,7 +36,7 @@ public class ImageView {
             judiPhotos.add("judi" + i + ".jpg");
         }
         photo_JUDI = new ArrayList<String>();
-        for(int i=1; i<=19 ; i++){
+        for(int i=1; i<25 ; i++){
             photo_JUDI.add(i+".jpg");
         }
 

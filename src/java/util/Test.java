@@ -3,75 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package util;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import dao.RoleDAOImpl;
+import dao.UserDAOImpl;
+import entity.Role;
+import entity.User;
 import java.util.List;
-import model.dao.ProjectDAO;
-import model.dao.ProjectUserDAO;
-import model.dao.RoleDAO;
-import model.dao.UserDAO;
-import model.entities.Project;
-import model.entities.ProjectUserDetails;
-import model.entities.User;
 
 /**
  *
  * @author cong0_000
  */
 public class Test {
-    public void test(){
-        List<Project> list = ProjectDAO.getInstance().getProjects();
-        for (Project project : list) {
-            System.out.println(project.getUserList().size());
-        }
-    }
-    public List<String> getUserNameNotJoined(Project p){
-        List<User> users = UserDAO.getInstance().getAllUser();
-        List<String> usersName = new ArrayList<>();
-        for (User user : users) {
-            usersName.add(user.getUserName());
-        }
-        List<User> usersJoined = p.getUserList();
-        List<String> usersNameJoined = new ArrayList<>();
-        for (User user : usersJoined) {
-            usersNameJoined.add(user.getUserName());
-        }
-        usersName.removeAll(usersNameJoined);
-        return usersName;
-    }
-    
-    public String getDateFormat(Date d){
-        String date = new SimpleDateFormat("dd/MM/yyyy").format(d);
-        return date;
-    }
-    public List<User> getUserNameNotJoined2(Project p) {
-        List<User> users = UserDAO.getInstance().getAllUser();
-        List<String> usersName = new ArrayList<>();
-        for (User user : users) {
-            usersName.add(user.getUserName());
-        }
-        List<User> usersJoined = p.getUserList();
-        List<String> usersNameJoined = new ArrayList<>();
-        for (User user : usersJoined) {
-            usersNameJoined.add(user.getUserName());
-        }
-        usersName.removeAll(usersNameJoined);
-        List<User> userList = new ArrayList<>();
-        for (String userName : usersName) {
-            User u = UserDAO.getInstance().getUserByUserName(userName);
-            userList.add(u);
-        }
-        return userList;
-    }
-    
-    
-    public static void main(String[] args) throws ParseException {
-        User user = UserDAO.getInstance().getUserByID(1);
-        System.out.println(user.getImagePath());
+
+    public static void main(String[] args) {
+        User user = UserDAOImpl.getInstance().getUserByID(1);
+        System.out.println(user.getUserName());
+        List<Role> roles = RoleDAOImpl.getInstance().getRoles();
+        System.out.println(roles.size());
+        Role r = RoleDAOImpl.getInstance().getRoleByID(3);
+        
+        System.out.println(r.isActive());
+//        
+//        Role role = new Role("Mod", true);
+//        System.out.println(RoleDAOImpl.getInstance().createRole(role));
+        System.out.println(RoleDAOImpl.getInstance().deleteRole(r));
+        System.out.println(RoleDAOImpl.getInstance().getRoles().size());
     }
 }
