@@ -464,16 +464,18 @@ public class UserDAO implements UserDAOService {
      * remove The User's active
      *
      * @param userID
+     * * @param pwd
      * @return true if reset password successful. false if failed!
      */
     @Override
-    public boolean resetPass(int userID) {
+    public boolean resetPass(int userID, String pwd) {
         boolean isCheck = false;
         try {
             Connection conn = ConnectionFactory.getConnection();
-            String sql = "update tbl_user set pwd = '123456' where userID = ?";
+            String sql = "update tbl_user set pwd = ? where userID = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, userID);
+            pstmt.setString(1, pwd);
+            pstmt.setInt(2, userID);
             pstmt.executeUpdate();
             isCheck = true;
         } catch (ClassNotFoundException | SQLException e) {

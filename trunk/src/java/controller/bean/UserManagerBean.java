@@ -59,26 +59,33 @@ public class UserManagerBean implements Serializable {
     }
 
     public List<User> getUserActive() {
-        listUser = USER_SERVICE.getUserActive();
-        return listUser;
-    }
-
-    public List<User> getUserInaActive() {
-        listUser = USER_SERVICE.getUserInactive();
+        listUser = USER_SERVICE.getUserActive(this.user.getActive());
         return listUser;
     }
 
     public void addUser(ActionEvent event) {
         String msg = "";
-        Role roleID = ROLE_SERVICE.getRoleByID(this.user.getRole().getRoleID());
-        User addUser = new User(1, this.user.getUserName(), "123456", this.user.getFullName(), this.user.getBirthday(),
-                this.user.getGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(), this.user.getPhone(),
-                null, roleID, null, 1);
-        if (USER_SERVICE.createUser(addUser)) {
-            msg = "Add user successfully!";
-        } else {
+
+        System.out.println("Username: " + this.user.getUserName());
+        System.out.println("Full name: " + this.user.getFullName());
+        System.out.println("Birthday: " + this.user.getBirthday());
+        System.out.println("Gender: " + this.user.getGender());
+        System.out.println("Email: " + this.user.getEmail());
+        System.out.println("Address: " + this.user.getAddress());
+        System.out.println("Phone: " + this.user.getPhone());
+        System.out.println("ID Card: " + this.user.getIdCard());
+        System.out.println("Role: " + this.user.getRole().getRoleID());
+
+//        Role roleID = ROLE_SERVICE.getRoleByID(this.user.getRole().getRoleID());
+//        String pwd = util.Support.encryptMD5("123456");
+//        User addUser = new User(1, this.user.getUserName(), pwd, this.user.getFullName(), this.user.getBirthday(),
+//                this.user.getGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(), this.user.getPhone(),
+//                null, roleID, null, 1);
+//        if (USER_SERVICE.createUser(addUser)) {
+//            msg = "Add user successfully!";
+//        } else {
             msg = "Add user failed!";
-        }
+//        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
@@ -115,7 +122,9 @@ public class UserManagerBean implements Serializable {
      */
     public void resetPass(ActionEvent event) {
         String msg;
-        if (USER_SERVICE.resetPass(this.user.getUserID())) {
+        System.out.println(this.user.getUserID());
+        String pwd = util.Support.encryptMD5("123456");
+        if (USER_SERVICE.resetPass(this.user.getUserID(), pwd)) {
             msg = "Reset password successfully!";
         } else {
             msg = "Reset password failed!";
@@ -179,7 +188,7 @@ public class UserManagerBean implements Serializable {
 //        if (USER_SERVICE.makeAdmin(this.user.getUserID())) {
 //            msg = "Make administrator succesfully!";
 //        } else {
-            msg = "Make administrator failed!";
+        msg = "Make administrator failed!";
 //        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);

@@ -9,7 +9,7 @@
     <h:form id="userViews">
         <p:dialog header="User Info" widgetVar="viewDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
             <p:outputPanel id="userViews" style="text-align:center;">
-                <p:panelGrid  columns="2" rendered="#{not empty userManager.user}" columnClasses="label,value">
+                <p:panelGrid style="text-align: left" columns="2" rendered="#{not empty userManager.user}" columnClasses="label,value">
                     <h:outputText value="ID:" />
                     <h:outputText value="#{userManager.user.userID}" />
 
