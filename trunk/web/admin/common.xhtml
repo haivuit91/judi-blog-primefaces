@@ -36,7 +36,7 @@
                             <p:menuitem value="Home" url="/index.jsf" icon="ui-icon-home" />
 
                             <f:facet name="options">
-                                <p:splitButton value="haivv" icon="ui-icon-person">
+                                <p:splitButton value="#{sessionScope.currentUser.userName}" icon="ui-icon-person">
                                     <p:menuitem value="User profile" icon="ui-icon-person" />
                                     <p:menuitem value="Settings" icon="ui-icon-gear" />
                                     <p:separator />
