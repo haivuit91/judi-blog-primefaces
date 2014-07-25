@@ -62,10 +62,11 @@ public class PostManagementBean {
     }
 
     public void active(ActionEvent event) {
-        System.out.println("active:" + selectedPost.getPostID());
+        System.out.println("active:" + selectedPost.isIsActive());
         FacesMessage mes;
         String strMess;
         try {
+            selectedPost = POST_SERVICE.getPostByID(selectedPost.getPostID());
             if (POST_SERVICE.activePost(!selectedPost.isIsActive(), selectedPost.getPostID())) {
                 if (selectedPost.isIsActive()) {
                     strMess = "Disable success !";
