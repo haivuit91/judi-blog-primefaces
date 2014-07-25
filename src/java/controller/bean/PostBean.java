@@ -9,9 +9,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Part;
 import model.dao.CategoryDAO;
@@ -37,8 +39,15 @@ public class PostBean {
     private final UserDAOService userService = UserDAO.getInstance();
     private final FacesContext facesContext;
     private Post post;
+   // private Category category;
     private Part image;
     private String action = "Publish";
+    
+    private List<Post> filteredPost;
+    private List<Category> category;
+    private Category categorys;
+    private List<Post> posts;
+    
 
     /**
      * Creates a new instance of PostBean
@@ -64,7 +73,7 @@ public class PostBean {
             if (POST_SERVICE.insertPost(post)) {
                 return "/Judi-PrimeFaces/index.jsf";
             } else {
-                return "/Judi-PrimeFaces/member/create-post.jsf";
+                return "/Judi-PrimeFaces/member/user-post.jsf";
             }
 
         } catch (Exception ex) {
@@ -121,22 +130,32 @@ public class PostBean {
         }
         return null;
     }
-
-    public String detete(int postID) {
-
-        try {
-            if (POST_SERVICE.deletePost(postID)) {
-                return "post-management";
-            } else {
-                return "/Judi-PrimeFaces/index.jsf";
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(PostBean.class
-                    .getName()).log(Level.SEVERE, null, ex);
+     public void deleteUser(ActionEvent event) throws Exception {
+        String msg;
+        if (POST_SERVICE.deletePost(this.post.getPostID())) {
+            msg = "Deleted user successfully!";
+        } else {
+            msg = "Delete user failed!";
         }
-        return null;
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
+
+//    public String detete(int postID) {
+//
+//        try {
+//            if (POST_SERVICE.deletePost(postID)) {
+//                return "post-management";
+//            } else {
+//                return "/Judi-PrimeFaces/index.jsf";
+//            }
+//
+//        } catch (Exception ex) {
+//            Logger.getLogger(PostBean.class
+//                    .getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return null;
+//    }
 
     public String editPost(Post post) {
         this.post = post;
@@ -144,10 +163,36 @@ public class PostBean {
         return "/Judi-PrimeFaces/member/createpost.jsf";
     }
 
+    /**
+     * @return the categorys
+     */
+    public Category getCategorys() {
+        return categorys;
+    }
+
+    /**
+     * @param categorys the categorys to set
+     */
+    public void setCategorys(Category categorys) {
+        this.categorys = categorys;
+    }
+    public class EditorView {
+     
+    private String text;
+ 
+    public String getText() {
+        return text;
+    }
+ 
+    public void setText(String text) {
+        this.text = text;
+    }
+}
+
     public List<Category> getListCategory() {
         return CATEGORY_SERVICE.getList();
     }
-
+     
     /**
      * @return the post
      */
@@ -174,6 +219,39 @@ public class PostBean {
      */
     public void setImage(Part image) {
         this.image = image;
+    }
+
+   
+
+    /**
+     * @return the category
+     */
+    public List<Category> getCategory() {
+        category = CATEGORY_SERVICE.getList();
+        return category;
+    }
+
+    /**
+     * @param category the category to set
+     */
+    public void setCategory(List<Category> category) {
+        this.category = category;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public List<Post> getFilteredPost() {
+        return filteredPost;
+    }
+
+    public void setFilteredPost(List<Post> filteredPost) {
+        this.filteredPost = filteredPost;
     }
 
 }
