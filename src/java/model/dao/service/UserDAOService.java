@@ -24,16 +24,10 @@ public interface UserDAOService {
     /**
      * get User Active from DB
      *
+     * @param isActive
      * @return User List by the user's status
      */
-    public List<User> getUserActive();
-
-    /**
-     * get User Not Active from DB
-     *
-     * @return User List by the user's status
-     */
-    public List<User> getUserInactive();
+    public List<User> getUserActive(int isActive);
 
     /**
      * Get UserList like username
