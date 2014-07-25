@@ -17,6 +17,7 @@ import model.dao.CategoryDAO;
 import model.dao.PostDAO;
 import model.dao.service.CategoryDAOService;
 import model.dao.service.PostDAOService;
+import model.entities.Category;
 import model.entities.Post;
 
 /**
@@ -31,26 +32,23 @@ public class PostManagementBean {
     private final CategoryDAOService CATEGORY_SERVICE = CategoryDAO.getInstance();
     private final FacesContext facesContext;
     private List<Post> listPost;
-    private Post seletedPost;
+    private List<Category> listCategory;
+    private Post selectedPost; 
     private String test;
 
     /**
      * Creates a new instance of PostManagementBean
      */
     public PostManagementBean() {
-        seletedPost = new Post();
+        selectedPost = new Post();
         this.facesContext = FacesContext.getCurrentInstance();
     }
 
-    public void test(ActionEvent event){
-        System.out.println("valefffffffffffffffffff;"+test);
-    }
-    
-    public void delete2(Post post) {
-        System.out.println("delete:" + post.getPostID());
+    public void delete(ActionEvent event) {
+        System.out.println("post id: " + selectedPost.getPostID());
         FacesMessage mess;
         try {
-            if (POST_SERVICE.deletePost(post.getPostID())) {
+            if (POST_SERVICE.deletePost(selectedPost.getPostID())) {
                 mess = new FacesMessage("Success!");
             } else {
                 mess = new FacesMessage("fail!");
@@ -63,21 +61,49 @@ public class PostManagementBean {
         }
     }
 
-    public void active(Post post) {
+    public void active(ActionEvent event) {
+        System.out.println("active:" + selectedPost.getPostID());
+        FacesMessage mes;
+        String strMess;
+        try {
+            if (POST_SERVICE.activePost(!selectedPost.isIsActive(), selectedPost.getPostID())) {
+                if (selectedPost.isIsActive()) {
+                    strMess = "Disable success !";
+                } else {
+                    strMess = "Enable success !";
+                }
+            } else {
+                if (selectedPost.isIsActive()) {
+                    strMess = "Disable faile !";
+                } else {
+                    strMess = "Enable faile !";
+                }
+            }
+            mes = new FacesMessage("Message", strMess);
+            facesContext.addMessage("result", mes);
+
+        } catch (Exception ex) {
+            Logger.getLogger(PostManagementBean.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    public void active2(Post post) {
         System.out.println("active:" + post.getPostID());
         FacesMessage mes;
         String strMess;
         try {
             if (POST_SERVICE.activePost(!post.isIsActive(), post.getPostID())) {
-                if(post.isIsActive())
+                if (post.isIsActive()) {
                     strMess = "Disable success !";
-                else
+                } else {
                     strMess = "Enable success !";
+                }
             } else {
-                if(post.isIsActive())
+                if (post.isIsActive()) {
                     strMess = "Disable faile !";
-                else
+                } else {
                     strMess = "Enable faile !";
+                }
             }
             mes = new FacesMessage("Message", strMess);
             facesContext.addMessage("result", mes);
@@ -88,7 +114,13 @@ public class PostManagementBean {
         }
     }
 
+    public List<Category> getListCategory() {
+        return CATEGORY_SERVICE.getList();
+    }
 
+    public void setListCategory(List<Category> listCategory) {
+        this.listCategory = listCategory;
+    }
     public List<Post> getListPost() throws Exception {
         return POST_SERVICE.getListPost();
     }
@@ -98,11 +130,11 @@ public class PostManagementBean {
     }
 
     public Post getSeletedPost() {
-        return seletedPost;
+        return selectedPost;
     }
 
     public void setSeletedPost(Post seletedPost) {
-        this.seletedPost = seletedPost;
+        this.selectedPost = seletedPost;
     }
 
     public String getTest() {
@@ -113,7 +145,4 @@ public class PostManagementBean {
         this.test = test;
     }
 
-    
-    
-    
 }
