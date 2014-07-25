@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 25, 2014 9:34:06 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="entity.Category" table="category" catalog="db_judiwebsite">
+        <id name="categoryId" type="java.lang.Integer">
+            <column name="categoryID" />
+            <generator class="identity" />
+        </id>
+        <property name="categoryName" type="string">
+            <column name="categoryName" length="65" not-null="true" unique="true" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+        <set name="posts" table="post" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="categoryID" not-null="true" />
+            </key>
+            <one-to-many class="entity.Post" />
+        </set>
+    </class>
+</hibernate-mapping>

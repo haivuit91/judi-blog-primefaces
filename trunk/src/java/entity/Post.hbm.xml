@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 25, 2014 9:34:06 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+    <class name="entity.Post" table="post" catalog="db_judiwebsite">
+        <id name="postId" type="java.lang.Integer">
+            <column name="postID" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="category" class="entity.Category" fetch="select">
+            <column name="categoryID" not-null="true" />
+        </many-to-one>
+        <many-to-one name="user" class="entity.User" fetch="select">
+            <column name="userID" not-null="true" />
+        </many-to-one>
+        <property name="title" type="string">
+            <column name="title" length="145" not-null="true" />
+        </property>
+        <property name="content" type="string">
+            <column name="content" length="20000" not-null="true" />
+        </property>
+        <property name="imagePath" type="string">
+            <column name="imagePath" length="105" />
+        </property>
+        <property name="postDate" type="date">
+            <column name="postDate" length="10" not-null="true" />
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
