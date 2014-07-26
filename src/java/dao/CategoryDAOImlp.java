@@ -9,17 +9,16 @@ package dao;
 import entity.Category;
 import hibernate.HibernateUtil;
 import java.util.List;
-import model.dao.service.CategoryDAOService;
 import org.hibernate.HibernateException;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import service.CategoryDAO;
 
 /**
  *
  * @author monkeydluffy
  */
-public class CategoryDAOImlp implements CategoryDAOService{
+public class CategoryDAOImlp implements CategoryDAO{
     
     private static CategoryDAOImlp categoryDAOImlp;
     public static CategoryDAOImlp getInstance(){
