@@ -6,6 +6,7 @@
 package controller.bean;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -52,10 +53,8 @@ public class ProjectBean {
 
     List<User> usersSource = new ArrayList<User>();
     List<User> usersTarget = new ArrayList<User>();
+    private User user = new User();
 
-    /**
-     * Creates a new instance of projectBean
-     */
     public ProjectBean() {
         if (project == null) {
             project = new Project();
@@ -149,6 +148,10 @@ public class ProjectBean {
                 .addMessage(null, message);
     }
 
+    public void saveUpdate(Project project) {
+        this.project = project;
+    }
+
     /**
      * Update the project
      *
@@ -156,11 +159,24 @@ public class ProjectBean {
      */
     public void updateProject(ActionEvent event) {
         String msg;
-        if (PROJECT_SERVICE.updateProject(this.project)) {
+//        if (PROJECT_SERVICE.updateProject(this.project)) {
+//            msg = "Project updated successfully!";
+//        } else {
+//            msg = "Update project failed !";
+//        }
+        int projectID = getProject().getProjectID();
+        String projectName = getProject().getProjectName();
+        String description = getProject().getDescription();
+        Date startDate = getProject().getStartDate();
+        java.sql.Date date = new java.sql.Date(startDate.getTime());
+        int duration = getProject().getDuration();
+        ProjectType type = this.projectType;
+        int active = getProject().getActive();
+        Project pro = new Project(projectID, projectName, description, date, duration, type, active);
+        if (PROJECT_SERVICE.updateProject(pro)) {
             msg = "Project updated successfully!";
-        } else {
-            msg = "Update project failed !";
         }
+        msg = "Update project failed !";
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
 
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -260,11 +276,11 @@ public class ProjectBean {
      */
     public void setProject(Project project) {
         this.project = project;
-        
+
         //
         usersSource = getUserNameNotJoined(project);
         usersTarget = PU_SERVICE.getUserByProject(project.getProjectID());
-        
+
         usersDualList = new DualListModel<User>(usersSource, usersTarget);
     }
 
@@ -335,4 +351,14 @@ public class ProjectBean {
         List<Project> projectList = PROJECT_SERVICE.getProjects();
         return projectList;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+
 }
