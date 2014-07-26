@@ -60,4 +60,13 @@ public class Category {
         this.isActive = isActive;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Category){
+            Category cat =(Category)obj;
+            return this.catID == cat.getCatID();
+        }
+        return false;
+    }
+    
 }
