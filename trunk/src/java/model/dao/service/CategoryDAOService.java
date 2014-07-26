@@ -7,7 +7,7 @@
 package model.dao.service;
 
 import java.util.List;
-import entity.Category;
+import model.entities.Category;
 
 /**
  *
