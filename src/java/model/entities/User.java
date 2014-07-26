@@ -183,7 +183,11 @@ public class User {
 
     @Override
     public boolean equals(Object obj) {
-        return true; //To change body of generated methods, choose Tools | Templates.
+        if(obj instanceof User){
+            User user = (User)obj;
+            return user.userID == this.userID;
+        }
+        return false;
     }
     
     
