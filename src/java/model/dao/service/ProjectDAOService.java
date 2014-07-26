@@ -6,7 +6,7 @@
 package model.dao.service;
 
 import java.util.List;
-import entity.Project;
+import model.entities.Project;
 
 /**
  *
