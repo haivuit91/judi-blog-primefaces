@@ -59,12 +59,12 @@
                                 <h:outputText value="#{projectBean.user.userName}" />
                             </p:column>
                             <p:column headerText="Status" width="35" style="font-size: small;"  >
-                                <p:commandButton update=":formInactive" rendered="#{projectList.active == 1?'true':'false'}"
-                                                 oncomplete="PF('dialogInactiveProject').show()"  icon="ui-icon-unlocked" title="Active" >
+                                <p:commandButton update=":formUnactive" rendered="#{projectList.active == 1?'true':'false'}"
+                                                 oncomplete="PF('Unactive').show()"  icon="ui-icon-unlocked" title="Active" >
                                     <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
                                 </p:commandButton>
                                 <p:commandButton update=":formActive" rendered="#{projectList.active == 0?'true':'false'}"
-                                                 icon="ui-icon-locked" oncomplete="PF('dialogActiveProject').show()" title="Inactive" >
+                                                 icon="ui-icon-locked" oncomplete="PF('Active').show()" title="Unactive" >
                                     <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
                                 </p:commandButton>
                             </p:column>
