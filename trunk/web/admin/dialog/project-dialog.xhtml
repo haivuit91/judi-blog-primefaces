@@ -121,30 +121,28 @@
             </p:dialog>
         </h:form>
         <h:form id="formActive">
-            <p:confirmDialog id="confirmDialog" message="Are you really want to active project:
-                             #{projectBean.project.projectName} ?" header="Active project" severity="alert"
-                             widgetVar="dialogActiveProject" showEffect="fade" hideEffect="explode">
+            <p:confirmDialog id="confirmDialog" message="Do you want active to project?" header="Active project" severity="alert"
+                             widgetVar="Active" showEffect="fade" hideEffect="explode">
                 <h:inputHidden value="#{projectBean.project.projectID}" />
                 <p:commandButton id="confirm" value="Yes" update=":formList, :growl" 
                                  actionListener="#{projectBean.activeProject(event)}"
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
-                                 oncomplete="PF('dialogActiveProject').hide()"/>                    
-                <p:commandButton id="cancel" value="Cancel" onclick="PF('dialogActiveProject').hide()"
+                                 oncomplete="PF('Active').hide()"/>                    
+                <p:commandButton id="cancel" value="Cancel" onclick="PF('Active').hide()"
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
             </p:confirmDialog>
         </h:form>
 
 
-        <h:form id="formInactive">
-            <p:confirmDialog id="confirmDialog" message="Are you really want to inactive project:
-                             #{projectBean.project.projectName} ?" header="Inactive project" severity="alert"
-                             widgetVar="dialogInactiveProject" showEffect="fade" hideEffect="explode">
+        <h:form id="formUnactive">
+            <p:confirmDialog id="confirmDialog" message="Do you want unactive to project?" header="Inactive project" severity="alert"
+                             widgetVar="Unactive" showEffect="fade" hideEffect="explode">
                 <h:inputHidden value="#{projectBean.project.projectID}" />
                 <p:commandButton id="confirm" value="Yes" update=":formList, :growl" 
                                  actionListener="#{projectBean.inactiveProject(event)}"
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
-                                 oncomplete="PF('dialogInactiveProject').hide()"/>                    
-                <p:commandButton id="cancel" value="Cancel" onclick="PF('dialogInactiveProject').hide()"
+                                 oncomplete="PF('Unactive').hide()"/>                    
+                <p:commandButton id="cancel" value="Cancel" onclick="PF('Unactive').hide()"
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
             </p:confirmDialog>
         </h:form>
