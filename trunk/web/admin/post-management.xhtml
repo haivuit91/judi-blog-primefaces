@@ -16,7 +16,9 @@
                         <p:growl id="msgs" showDetail="true" />
                         <p:dataTable var="post" value="#{postManagementBean.listPost}" paginator="true" rows="20">
                             <p:column headerText="Title" width="560">
-                                <p:outputLabel value="#{post.title}"/>
+                                <p:commandLink value="#{post.title}" oncomplete="PF('editPost').show()" update=":frmEditPost">
+                                    <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.seletedPost}"/>
+                                </p:commandLink>
                             </p:column>
                             <p:column headerText="User" width="120" style="text-align: center">
                                 <p:outputLabel value="#{post.user.userName}"/>
