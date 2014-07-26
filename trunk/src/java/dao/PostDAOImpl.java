@@ -9,17 +9,17 @@ import entity.Category;
 import entity.Post;
 import hibernate.HibernateUtil;
 import java.util.List;
-import model.dao.service.PostDAOService;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import service.PostDAO;
 
 /**
  *
  * @author monkeydluffy
  */
-public class PostDAOImpl implements PostDAOService {
+public class PostDAOImpl implements PostDAO {
 
     private static PostDAOImpl postDAOImpl;
 
