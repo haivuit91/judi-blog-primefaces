@@ -135,7 +135,7 @@
 
 
         <h:form id="formUnactive">
-            <p:confirmDialog id="confirmDialog" message="Do you want unactive to project?" header="Inactive project" severity="alert"
+            <p:confirmDialog id="confirmDialog" message="Do you want unactive to project?" header="Unactive project" severity="alert"
                              widgetVar="Unactive" showEffect="fade" hideEffect="explode">
                 <h:inputHidden value="#{projectBean.project.projectID}" />
                 <p:commandButton id="confirm" value="Yes" update=":formList, :growl" 
