@@ -104,9 +104,11 @@ public class UserDAOImpl implements UserDAO {
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
         try {
+            Role role = RoleDAOImpl.getInstance().getRoleByID(roleID);
             tx = session.beginTransaction();
             String sql = "FROM User WHERE role = :role";
             Query query = session.createQuery(sql);
+            query.setParameter("role", role);
             users = query.list();
             tx.commit();
         } catch (HibernateException e) {
