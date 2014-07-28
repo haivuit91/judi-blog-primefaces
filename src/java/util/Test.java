@@ -9,6 +9,7 @@ import dao.RoleDAOImpl;
 import dao.UserDAOImpl;
 import entity.Role;
 import entity.User;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -18,17 +19,24 @@ import java.util.List;
 public class Test {
 
     public static void main(String[] args) {
-        User user = UserDAOImpl.getInstance().getUserByID(1);
-        System.out.println(user.getUserName());
-        List<Role> roles = RoleDAOImpl.getInstance().getRoles();
-        System.out.println(roles.size());
-        Role r = RoleDAOImpl.getInstance().getRoleByID(3);
+        UserDAOImpl userDAO = UserDAOImpl.getInstance();
+        RoleDAOImpl roleDAO = RoleDAOImpl.getInstance();
+        Role r = roleDAO.getRoleByID(1);
+        System.out.println(r.getUsers().size());
+//        User user = new User(1, r, "haivv", util.Support.encryptMD5("haivv"), "Vũ Văn Hải", new Date(91, 5, 12), true, "129444223", 
+//                "Cẩm Thủy - Thanh Hóa", "haivv.itedu@gmail.com", "0905022342", null, null, true);
         
-        System.out.println(r.isActive());
-//        
-//        Role role = new Role("Mod", true);
-//        System.out.println(RoleDAOImpl.getInstance().createRole(role));
-        System.out.println(RoleDAOImpl.getInstance().deleteRole(r));
-        System.out.println(RoleDAOImpl.getInstance().getRoles().size());
+//        User user = userDAO.getUserByID(3);
+//        user.setImagePath("");
+//        System.out.println(userDAO.updateAvatar(user));
+        List<User> users = userDAO.getAllUsers();
+        for (User user1 : users) {
+            System.out.println(user1.getUserName());
+        }
+//        List<Role> roles = roleDAO.getRoles();
+//        for (Role role : roles) {
+//            System.out.println(role.getUsers().size());
+//        }
+        
     }
 }

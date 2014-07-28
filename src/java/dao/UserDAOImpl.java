@@ -14,6 +14,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import service.UserDAO;
+import util.Support;
 
 /**
  *
@@ -49,7 +50,7 @@ public class UserDAOImpl implements UserDAO {
                 tx.rollback();
             }
             e.printStackTrace();
-        } finally{
+        } finally {
             session.close();
         }
         return users;
@@ -69,7 +70,7 @@ public class UserDAOImpl implements UserDAO {
                 tx.rollback();
             }
             e.printStackTrace();
-        } finally{
+        } finally {
             session.close();
         }
         return user;
@@ -92,7 +93,7 @@ public class UserDAOImpl implements UserDAO {
                 tx.rollback();
             }
             e.printStackTrace();
-        } finally{
+        } finally {
             session.close();
         }
         return user;
@@ -100,13 +101,13 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public List<User> getUserByRole(int roleID) {
+        Role role = RoleDAOImpl.getInstance().getRoleByID(roleID);
         List<User> users = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
         try {
-            Role role = RoleDAOImpl.getInstance().getRoleByID(roleID);
             tx = session.beginTransaction();
-            String sql = "FROM User WHERE role = :role";
+            String sql = "SELECT FROM User as u WHERE role = :role";
             Query query = session.createQuery(sql);
             query.setParameter("role", role);
             users = query.list();
@@ -116,7 +117,7 @@ public class UserDAOImpl implements UserDAO {
                 tx.rollback();
             }
             e.printStackTrace();
-        } finally{
+        } finally {
             session.close();
         }
         return users;
@@ -124,62 +125,286 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public boolean checkLogin(String userName, String password) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "FROM User WHERE userName = :userName and pwd = :pwd";
+            Query query = session.createQuery(sql);
+            query.setParameter("userName", userName);
+            query.setParameter("pwd", Support.encryptMD5(password));
+            if (query.list().size() > 0) {
+                isCheck = true;
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean checkUser(String userName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "FROM User WHERE userName = :userName";
+            Query query = session.createQuery(sql);
+            query.setParameter("userName", userName);
+            if (query.list().size() > 0) {
+                isCheck = true;
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean checkEmail(String email) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "FROM User WHERE email = :email";
+            Query query = session.createQuery(sql);
+            query.setParameter("email", email);
+            if (query.list().size() > 0) {
+                isCheck = true;
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean createUser(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(user);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean updateProfile(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "UPDATE User set fullName = :fname, birthOfDay = :bd, gender = :gender, idCard = :idCard,"
+                    + "address = :address, email = :email, phoneNumber = :phone WHERE userID = :userID";
+            Query query = session.createQuery(sql);
+            query.setParameter("userID", user.getUserId());
+            query.setParameter("fname", user.getFullName());
+            query.setParameter("bd", user.getBirthOfDay());
+            query.setParameter("gender", user.isGender());
+            query.setParameter("idCard", user.getIdCard());
+            query.setParameter("address", user.getAddress());
+            query.setParameter("email", user.getEmail());
+            query.setParameter("phone", user.getPhoneNumber());
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean updateAvatar(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "UPDATE User set imagePath = :image WHERE userID = :userID";
+            Query query = session.createQuery(sql);
+            query.setParameter("userID", user.getUserId());
+            query.setParameter("image", user.getImagePath());
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean updatePassword(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "UPDATE User set pwd = :pwd WHERE userID = :userID";
+            Query query = session.createQuery(sql);
+            query.setParameter("userID", user.getUserId());
+            query.setParameter("pwd", user.getPwd());
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean updateUserByAdmin(User user) {
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(user);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
+    }
+
+    @Override
+    public boolean resetPass(User user) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public boolean resetPass(int userID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean removeUser(User user) {
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "UPDATE User set active = false WHERE userID = :userID";
+            Query query = session.createQuery(sql);
+            query.setParameter("userID", user.getUserId());
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
-    public boolean removeUser(int userID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean restoreUser(int userID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean restoreUser(User user) {
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "UPDATE User set active = true WHERE userID = :userID";
+            Query query = session.createQuery(sql);
+            query.setParameter("userID", user.getUserId());
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean deleteUser(int userID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.delete(userID);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
 }
