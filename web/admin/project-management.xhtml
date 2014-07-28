@@ -12,80 +12,83 @@
 
             <ui:define name="content">
                 <f:view>
-                    <p:growl id="growl" life="2000" showDetail="true"/>
-                    <h:form>
-                        <p:commandButton value="New Project" id="selectButton" update=":formCreate" oncomplete="PF('createProject').show()" icon="ui-icon-heart" title="Creater" styleClass="ui-priority-primary" >
-                            <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}"/>
-                        </p:commandButton> 
-                    </h:form>
                     <h:form id="formList">
-                        <p:dataTable value="#{projectBean.allProject}" var="projectList" rows="6" id="dataTables"  paginator="true"
-                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="5,10,15"
-                                     widgetVar="projectsTable" paginatorPosition="bottom" 
-                                     emptyMessage="No cars found with given criteria" filteredValue="#{projectBean.filteredProjects}">
-                            <f:facet name="header" id="search">
-                                <p:outputPanel>
-                                    <h:outputText value="Search all fields:" />
-                                    <p:inputText id="globalFilter" onkeyup="PF('projectsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
-                                </p:outputPanel>
-                            </f:facet>
-                            <p:column filterBy="#{projectList.projectID}">
-                                <f:facet name="header">Project ID</f:facet>
-                                <p:commandLink value="#{projectList.projectID}" action="#{projectBean.updateProject(projectList)}" />
-                            </p:column>
-                            <p:column filterBy="#{projectList.projectName}">
-                                <f:facet name="header">Project name</f:facet>
-                                <h:outputText value="#{projectList.projectName}" />
-                            </p:column>
-                            <p:column filterBy="#{projectList.startDate}">
-                                <f:facet name="header">Start Date</f:facet>
-                                <h:outputText value="#{projectList.startDate}" />
-                            </p:column>
-                            <p:column filterBy="#{projectList.duration}">
-                                <f:facet name="header">Duration</f:facet>
-                                <h:outputText value="#{projectList.duration}" />
-                            </p:column>
-                            <p:column filterBy="#{projectList.type.typeName}">
-                                <f:facet name="header">Project Type</f:facet>
-                                <h:outputText value="#{projectList.type.typeName}" />
-                            </p:column>
-                            <p:column filterBy="#{projectList.description}">
-                                <f:facet name="header">Description</f:facet>
-                                <h:outputText value="#{projectList.description}" />
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">User</f:facet>
-                                <h:outputText value="#{projectBean.user.userName}" />
-                            </p:column>
-                            <p:column headerText="Status" width="35" style="font-size: small;"  >
-                                <p:commandButton update=":formUnactive" rendered="#{projectList.active == 1?'true':'false'}"
-                                                 oncomplete="PF('Unactive').show()"  icon="ui-icon-unlocked" title="Active" >
-                                    <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
-                                </p:commandButton>
-                                <p:commandButton update=":formActive" rendered="#{projectList.active == 0?'true':'false'}"
-                                                 icon="ui-icon-locked" oncomplete="PF('Active').show()" title="Unactive" >
-                                    <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
-                                </p:commandButton>
-                            </p:column>
-                            <p:column>
-                                <f:facet name="header">Function</f:facet>
-                                <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-pencil" title="Update" styleClass="ui-priority-primary" >
-                                    <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}"/>
-                                </p:commandButton>  
-                                
-                                <p:commandButton update=":formDelete" oncomplete="PF('deleteProject').show()" icon="ui-icon-trash" title="Delete" styleClass="ui-priority-primary" >
-                                    <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}"/>
-                                </p:commandButton>
-                                
-                                
-                            </p:column>
-                        </p:dataTable>
+                        <p:growl id="growl" life="2000" showDetail="true"/>
+                        <h:panelGroup id="result2">
+                            <p:dataTable value="#{projectBean.projects}" var="projectList" rows="6" id="dataTables"  paginator="true"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         rowsPerPageTemplate="5,10,15"
+                                         widgetVar="projectsTable" paginatorPosition="bottom" 
+                                         emptyMessage="No cars found with given criteria" filteredValue="#{projectBean.filteredProjects}">
+                                <f:facet name="header">
+                                    <p:outputLabel value="Projects management" style="font-size: 30px"/>
+                                    <p:toolbar style="border: none; background: none">
+                                        <f:facet name="left">
+                                            <p:commandButton value="New Project" id="selectButton" update=":formCreate" oncomplete="PF('createProject').show()" icon="ui-icon-heart" title="Creater" styleClass="ui-priority-primary" >
+                                                <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}"/>
+                                            </p:commandButton> 
+                                        </f:facet>
+                                        <f:facet name="right">
+                                            <p:outputPanel>
+                                                <h:outputText value="Search all fields:" />
+                                                <p:inputText id="globalFilter" onkeyup="PF('projectsTable').filter()" style="width:150px" placeholder="Enter keyword"/>
+                                            </p:outputPanel>
+                                        </f:facet>
+                                    </p:toolbar>
+                                </f:facet>
+                                <p:column width="25">
+                                    <f:facet name="header">ID</f:facet>
+                                    <p:commandLink value="#{projectList.projectID}" action="#{projectBean.updateProject(projectList)}" />
+                                </p:column>
+                                <p:column filterBy="#{projectList.projectName}">
+                                    <f:facet name="header">Project name</f:facet>
+                                    <h:outputText value="#{projectList.projectName}" />
+                                </p:column>
+                                <p:column width="110" filterBy="#{projectList.startDate}">
+                                    <f:facet name="header">Start Date</f:facet>
+                                    <h:outputText value="#{projectList.startDate}" />
+                                </p:column>
+                                <p:column width="50">
+                                    <f:facet name="header">Duration</f:facet>
+                                    <h:outputText value="#{projectList.duration}" />
+                                </p:column>
+                                <p:column filterBy="#{projectList.type.typeName}">
+                                    <f:facet name="header">Project Type</f:facet>
+                                    <h:outputText value="#{projectList.type.typeName}" />
+                                </p:column>
+                                <p:column filterBy="#{projectList.description}" width="200">
+                                    <f:facet name="header">Description</f:facet>
+                                    <h:outputText value="#{projectList.description}" />
+                                </p:column>
+                                <p:column width="70">
+                                    <f:facet name="header">User</f:facet>
+                                    <h:outputText value="#{projectBean.user.userName}" />
+                                </p:column>
+                                <p:column headerText="Status" width="35" style="font-size: small;"  >
+                                    <p:commandButton update=":formUnactive" rendered="#{projectList.active == 1?'true':'false'}"
+                                                     oncomplete="PF('Unactive').show()"  icon="ui-icon-unlocked" title="Active" >
+                                        <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
+                                    </p:commandButton>
+                                    <p:commandButton update=":formActive" rendered="#{projectList.active == 0?'true':'false'}"
+                                                     icon="ui-icon-locked" oncomplete="PF('Active').show()" title="Unactive" >
+                                        <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
+                                    </p:commandButton>
+                                </p:column>
+                                <p:column width="100">
+                                    <f:facet name="header">Function</f:facet>
+                                    <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-pencil" title="Update" styleClass="ui-priority-primary" >
+                                        <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}"/>
+                                    </p:commandButton>  
+
+                                    <p:commandButton update=":formDelete" oncomplete="PF('deleteProject').show()" icon="ui-icon-trash" title="Delete" styleClass="ui-priority-primary" >
+                                        <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}"/>
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                        </h:panelGroup>
                     </h:form>
                 </f:view>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>
