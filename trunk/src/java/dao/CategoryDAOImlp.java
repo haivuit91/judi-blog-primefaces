@@ -3,98 +3,186 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package dao;
 
 import entity.Category;
 import hibernate.HibernateUtil;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import service.CategoryDAO;
 
 /**
  *
  * @author monkeydluffy
  */
-public class CategoryDAOImlp implements CategoryDAO{
-    
+public class CategoryDAOImlp implements CategoryDAO {
+
     private static CategoryDAOImlp categoryDAOImlp;
-    public static CategoryDAOImlp getInstance(){
-        if(categoryDAOImlp==null){
+
+    public static CategoryDAOImlp getInstance() {
+        if (categoryDAOImlp == null) {
             categoryDAOImlp = new CategoryDAOImlp();
         }
         return categoryDAOImlp;
     }
     private HibernateUtil util;
     private Session session = null;
+
     @Override
     public List<Category> getList() {
-        List<Category> listCategory =null;
+        List<Category> listCategory = null;
         session = util.getSessionFactory().openSession();
-        Transaction tx =null;
-        try{
-            
-        }catch(HibernateException e){
-            if(tx!=null){
+        Transaction tx = null;
+        try {
+
+        } catch (HibernateException e) {
+            if (tx != null) {
                 tx.rollback();
             }
             e.printStackTrace();
-        }finally{
+        } finally {
             session.close();
         }
         return listCategory;
     }
 
     @Override
-    public Category getCategoryByID(int CategoryID){
+    public Category getCategoryByID(int CategoryID) {
         Category categorys = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
-        try{
+        try {
             tx = session.beginTransaction();
             categorys = (Category) session.get(Category.class, CategoryID);
             tx.commit();
-        }catch(HibernateException e){
-            if(tx!=null){
+        } catch (HibernateException e) {
+            if (tx != null) {
                 tx.rollback();
             }
             e.printStackTrace();
-        }finally{
+        } finally {
             session.close();
         }
         return categorys;
     }
 
     @Override
-    public Category getCategoryByName(String categoryID) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Category getCategoryByName(String categoryName) throws Exception {
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            Criteria criteria = session.createCriteria(Category.class);
+            tx = session.beginTransaction();
+            criteria.add(Restrictions.eq("categoryName", categoryName));
+            return (Category) criteria.uniqueResult();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return null;
     }
 
     @Override
     public boolean createCategory(Category category) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(category);
+            tx.commit();
+            return true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return false;
     }
 
     @Override
     public boolean removeCategory(Category category) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.delete(category);
+            tx.commit();
+            return true;
+        } catch (HibernateException e) {
+            if(tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return false;
     }
 
     @Override
     public boolean updateCategoryByID(Category category) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(category);
+            tx.commit();
+            return true;
+        } catch (HibernateException e) {
+            if(tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return false;
     }
 
     @Override
     public boolean updateCategoryByName(Category category) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(category);
+            tx.commit();
+            return true;
+        } catch (HibernateException e) {
+            if(tx != null)
+                tx.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return false;
     }
 
     @Override
     public boolean activeCategory(Category category) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        session = HibernateUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+        try {
+            session.update(category);
+            transaction.commit();
+            return true;
+        } catch (HibernateException e) {
+            transaction.rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return false;
+
     }
-    
+
 }
