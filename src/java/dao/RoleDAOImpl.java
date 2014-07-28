@@ -91,6 +91,7 @@ public class RoleDAOImpl implements RoleDAO {
             Query query = session.createQuery(sql);
             query.setParameter("roleName", roleName);
             role = (Role) query.uniqueResult();
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

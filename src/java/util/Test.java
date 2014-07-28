@@ -21,8 +21,8 @@ public class Test {
     public static void main(String[] args) {
         UserDAOImpl userDAO = UserDAOImpl.getInstance();
         RoleDAOImpl roleDAO = RoleDAOImpl.getInstance();
-        Role r = roleDAO.getRoleByID(1);
-        System.out.println(r.getUsers().size());
+        Role r = roleDAO.getRolesByName("Member");
+        System.out.println(r.getUsers().get(1).getFullName());
 //        User user = new User(1, r, "haivv", util.Support.encryptMD5("haivv"), "Vũ Văn Hải", new Date(91, 5, 12), true, "129444223", 
 //                "Cẩm Thủy - Thanh Hóa", "haivv.itedu@gmail.com", "0905022342", null, null, true);
         
