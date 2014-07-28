@@ -2,8 +2,8 @@ package entity;
 // Generated Jul 25, 2014 9:34:05 AM by Hibernate Tools 3.6.0
 
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -26,7 +26,7 @@ public class Type  implements java.io.Serializable {
      private Integer typeId;
      private String typeName;
      private boolean active;
-     private Set projects = new HashSet(0);
+     private List<Project> projects = new ArrayList<Project>();
 
     public Type() {
     }
@@ -36,7 +36,7 @@ public class Type  implements java.io.Serializable {
         this.typeName = typeName;
         this.active = active;
     }
-    public Type(String typeName, boolean active, Set projects) {
+    public Type(String typeName, boolean active, List<Project> projects) {
        this.typeName = typeName;
        this.active = active;
        this.projects = projects;
@@ -75,11 +75,11 @@ public class Type  implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="type")
-    public Set getProjects() {
+    public List<Project> getProjects() {
         return this.projects;
     }
     
-    public void setProjects(Set projects) {
+    public void setProjects(List<Project> projects) {
         this.projects = projects;
     }
 

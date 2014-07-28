@@ -7,21 +7,21 @@
 package service;
 
 import entity.Project;
+import entity.ProjectUserDetails;
 import entity.User;
 import java.util.List;
 
-
 /**
  *
- * @author Tuanka
+ * @author cong0_000
  */
-public interface ProjectUserDetails {
-     /**
+public interface ProjectUserDAO {
+    /**
      * get All list project user
      *
      * @return ProjectUserDetails list
      */
-    public List<model.entities.ProjectUserDetails> getAllPUList();
+    public List<ProjectUserDetails> getAllPUList();
 
     /**
      * get ProjectUserDetails by id
@@ -29,38 +29,38 @@ public interface ProjectUserDetails {
      * @param puID
      * @return ProjectUserDetails
      */
-    public model.entities.ProjectUserDetails getPUByID(int puID);
+    public ProjectUserDetails getPUByID(int puID);
     /**
      * get ProjectUserDetails by id
      *
-     * @param projectID
+     * @param project
      * @return ProjectUserDetails
      */
-    public List<model.entities.ProjectUserDetails> getPUByProjectID(int projectID);
+    public List<ProjectUserDetails> getPUByProjectID(Project project);
 
     /**
      * get list project by user
      *
-     * @param userID id of User
+     * @param user id of User
      * @return Project list
      */
-    public List<Project> getProjectByUser(int userID);
+    public List<Project> getProjectByUser(User user);
 
     /**
      * get list project by user
      *
-     * @param projectID id of Project
+     * @param project id of Project
      * @return Project list
      */
-    public List<User> getUserByProject(int projectID);
+    public List<User> getUserByProject(Project project);
 
     /**
      * get list project by user
      *
-     * @param projectID id of Project
+     * @param project id of Project
      * @return Project list
      */
-    public List<User> getUserNotJoin(int projectID);
+    public List<User> getUserNotJoin(Project project);
 
     /**
      * check is exist of user in one project
@@ -79,7 +79,7 @@ public interface ProjectUserDetails {
      * @param pud Object ProjectUserDetails
      * @return true if create new successfully
      */
-    public boolean createPUD(model.entities.ProjectUserDetails pud);
+    public boolean createPUD(ProjectUserDetails pud);
 
     /**
      * update PUD
@@ -87,22 +87,22 @@ public interface ProjectUserDetails {
      * @param pud Object ProjectUserDetails
      * @return true if update successfully
      */
-    public boolean updatePUD(model.entities.ProjectUserDetails pud);
+    public boolean updatePUD(ProjectUserDetails pud);
 
     /**
      * Delete PUD
      *
-     * @param projectID id of Project
+     * @param project id of Project
      * @return true if delete successfully
      */
-    public boolean deleteUserJoinedProject(int projectID);
+    public boolean deleteUserJoinedProject(Project project);
     /**
      * Delete PUD
      *
-     * @param projectID id of Project
+     * @param project id of Project
      * @return true if delete successfully
      */
-    public boolean deletePUByProjectID(int projectID);
+    public boolean deletePUByProjectID(Project project);
     /**
      * Delete PUD
      * @param project is Object Project

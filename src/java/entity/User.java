@@ -1,9 +1,9 @@
 package entity;
 // Generated Jul 25, 2014 9:34:05 AM by Hibernate Tools 3.6.0
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -40,8 +40,8 @@ public class User implements java.io.Serializable {
     private String imagePath;
     private String idActive;
     private boolean active;
-    private Set posts = new HashSet(0);
-    private Set<ProjectUserDetails> projectUserDetailses = new HashSet<ProjectUserDetails>(0);
+    private List<Post> posts = new ArrayList<Post>();
+    private List<Project> projects = new ArrayList<Project>();
 
     public User() {
     }
@@ -56,7 +56,7 @@ public class User implements java.io.Serializable {
         this.active = active;
     }
 
-    public User(Role role, String userName, String pwd, String fullName, Date birthOfDay, boolean gender, String idCard, String address, String email, String phoneNumber, String imagePath, String idActive, boolean active, Set posts, Set<ProjectUserDetails> projectUserDetailses) {
+    public User(Role role, String userName, String pwd, String fullName, Date birthOfDay, boolean gender, String idCard, String address, String email, String phoneNumber, String imagePath, String idActive, boolean active, List<Post> posts, List<Project> projects) {
         this.role = role;
         this.userName = userName;
         this.pwd = pwd;
@@ -71,7 +71,7 @@ public class User implements java.io.Serializable {
         this.idActive = idActive;
         this.active = active;
         this.posts = posts;
-        this.projectUserDetailses = projectUserDetailses;
+        this.projects = projects;
     }
 
     public User(Integer userId, Role role, String userName, String pwd, String fullName, Date birthOfDay, boolean gender, String idCard, String address, String email, String phoneNumber, String imagePath, String idActive, boolean active) {
@@ -223,21 +223,21 @@ public class User implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    public Set getPosts() {
+    public List<Post> getPosts() {
         return this.posts;
     }
 
-    public void setPosts(Set posts) {
+    public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    public Set<ProjectUserDetails> getProjectUserDetailses() {
-        return this.projectUserDetailses;
+    public List<Project> getProjectUserDetailses() {
+        return this.projects;
     }
 
-    public void setProjectUserDetailses(Set<ProjectUserDetails> projectUserDetailses) {
-        this.projectUserDetailses = projectUserDetailses;
+    public void setProjectUserDetailses(List<Project> projects) {
+        this.projects = projects;
     }
 
     
