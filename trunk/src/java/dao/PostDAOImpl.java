@@ -9,10 +9,13 @@ import entity.Category;
 import entity.Post;
 import hibernate.HibernateUtil;
 import java.util.List;
+import javassist.compiler.JvstCodeGen;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import service.PostDAO;
 
 /**
@@ -56,105 +59,172 @@ public class PostDAOImpl implements PostDAO {
 
     @Override
     public List<Post> getListPostByCategories(int c) {
-        List<Post> listPosts= null;
-        session= util.getSessionFactory().openSession();
-        Transaction tx= null;
+        List<Post> listPosts = null;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
         try {
             Category cate = CategoryDAOImlp.getInstance().getCategoryByID(c);
-            tx= session.beginTransaction();
-            String sql = "FROM Post WHERE category = :category";            
+            tx = session.beginTransaction();
+            String sql = "FROM Post WHERE category = :category";
             Query query = session.createQuery(sql);
             query.setParameter("category", cate);
             listPosts = query.list();
             tx.commit();
         } catch (HibernateException e) {
-            if(tx!=null){
-                tx.rollback();                
+            if (tx != null) {
+                tx.rollback();
             }
             e.printStackTrace();
-        }finally{
-        session.close();
+        } finally {
+            session.close();
         }
         return listPosts;
     }
 
     @Override
-    public int getTotalPost() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean deletePost(int postID){
-        boolean isCheck =false;
+    public int getTotalPost() {
+       List results = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
-        try{
-            Post post  = PostDAOImpl.getInstance().getPostByID(postID);
-            tx = session.beginTransaction();
-            session.delete(post);
-            tx.commit();
-        }catch(HibernateException e){
-            if(tx!=null){
+        try {
+            tx =session.beginTransaction();
+            String hql = "FROM Post";
+            Query query = session.createQuery(hql);
+            results = query.list();
+            
+        } catch (HibernateException e) {
+            if (tx != null) {
                 tx.rollback();
             }
             e.printStackTrace();
-        }finally{
+        } finally {
+            session.close();
+        }
+        return results.size();
+    }
+
+    @Override
+    public boolean deletePost(int postID) {
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            Post post = PostDAOImpl.getInstance().getPostByID(postID);
+            tx = session.beginTransaction();
+            session.delete(post);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
             session.close();
         }
         return isCheck;
     }
 
     @Override
-    public boolean updatePost(Post post) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean updatePost(Post post) {
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(post);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
-    public boolean insertPost(Post post){
-        boolean isCheck= false;
+    public boolean insertPost(Post post) {
+        boolean isCheck = false;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
-        try{
+        try {
             tx = session.beginTransaction();
             session.save(post);
             tx.commit();
-            isCheck =true;
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
+    }
+
+    @Override
+    public boolean activePost(boolean isActive, int postID){
+     boolean isCheck = false;
+     session = util.getSessionFactory().openSession();
+     Transaction tx = null;
+     try{
+        tx = session.beginTransaction();
+        String hql =  "UPDATE Post set active = :isActive WHERE postId =:postID";
+        Query query = session.createQuery(hql);
+        query.setParameter("isActive", false);
+        query.setParameter("postID", postID);
+        tx.commit();
+        isCheck= true;
+     }catch(HibernateException e){
+         if(tx!= null){
+             tx.rollback();
+         }
+         e.printStackTrace();
+     }
+     return isCheck;
+    }
+
+    @Override
+    public List<Post> searchPost(String searchType, String searchKey) {
+        List<Post> listPost = null;
+        session = util.getSessionFactory().openSession();
+        Transaction tx= null;
+        try{
+            tx= session.beginTransaction();
+            Criteria criteria = session.createCriteria(Post.class);
+            criteria.add(Restrictions.like(searchType, searchKey));
+            listPost = criteria.list();
+            
         }catch(HibernateException e){
             if(tx!= null){
                 tx.rollback();
             }
-            e.printStackTrace();                    
+            e.printStackTrace();
         }finally{
             session.close();
         }
-        return isCheck;
+        return listPost;
     }
 
     @Override
-    public boolean activePost(boolean isActive, int postID) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Post> searchPost(String searchType, String searchKey) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public Post getPostByID(int postID){
+    public Post getPostByID(int postID) {
         Post post = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
-        try{
+        try {
             tx = session.beginTransaction();
             post = (Post) session.get(Post.class, postID);
             tx.commit();
-        }catch(HibernateException e){
-            if(tx != null){
+        } catch (HibernateException e) {
+            if (tx != null) {
                 tx.rollback();
             }
             e.printStackTrace();
-        }finally{
+        } finally {
 //            session.close();
         }
         return post;
