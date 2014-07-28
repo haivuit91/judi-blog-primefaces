@@ -8,11 +8,18 @@ package controller.bean;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+import javax.faces.context.FacesContext;
+import model.dao.ProjectDAO;
+import model.dao.ProjectUserDAO;
 import model.dao.UserDAO;
+import model.dao.service.ProjectDAOService;
+import model.dao.service.ProjectUserDAOService;
 import model.dao.service.UserDAOService;
 import model.entities.Project;
+import model.entities.ProjectUserDetails;
 import model.entities.User;
 import org.primefaces.model.DualListModel;
 
@@ -20,56 +27,46 @@ import org.primefaces.model.DualListModel;
  *
  * @author cong0_000
  */
-@ManagedBean (name = "projectUserBean")
+@ManagedBean(name = "projectUserBean")
 @RequestScoped
 public class UserProjectBean {
 
     private final UserDAOService USER_SERVICE = UserDAO.getInstance();
-    private DualListModel<String> users = new DualListModel<String>();
+    private final ProjectDAOService PROJECT_SERVICE = ProjectDAO.getInstance();
+    private final ProjectUserDAOService PU_SERVICE = ProjectUserDAO.getInstance();
     private Project project;
+    private List<User> userJoining;
+    private List<User> userNotJoin;
 
-    @PostConstruct
-    public void init() {
-        
+    public UserProjectBean() {
     }
 
-    private List<String> getUsersSource() {
-        List<User> userList = USER_SERVICE.getAllUser();
-        List<String> userSource = new ArrayList<String>();
-        for (User user : userList) {
-            if (user.getActive() == 1) {
-                userSource.add(user.getUserName());
-            }
-        }
-        return userSource;
-    }
-
-    public DualListModel<String> getUsers() {
-//        init();
-        List<String> usersSource = getUsersSource();
-        List<String> usersTarget = new ArrayList<String>();
-
-        users = new DualListModel<String>(usersSource, usersTarget);
-        return users;
-    }
-
-    public void setUsers(DualListModel<String> users) {
-
-        this.users = users;
-
-    }
-
-    /**
-     * @return the project
-     */
     public Project getProject() {
+        if (project == null) {
+            project = PROJECT_SERVICE.getProjectByID(1);
+        }
         return project;
     }
 
-    /**
-     * @param project the project to set
-     */
     public void setProject(Project project) {
         this.project = project;
     }
+
+    public List<User> getUserJoining() {
+        userJoining = PU_SERVICE.getUserByProject(getProject().getProjectID());
+        return userJoining;
+    }
+
+    public void setUserJoining(List<User> userJoining) {
+        this.userJoining = userJoining;
+    }
+
+    public List<User> getUserNotJoin() {
+        return userNotJoin;
+    }
+
+    public void setUserNotJoin(List<User> userNotJoin) {
+        this.userNotJoin = userNotJoin;
+    }
+
 }

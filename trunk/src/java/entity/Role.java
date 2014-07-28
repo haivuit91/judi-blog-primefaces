@@ -2,7 +2,8 @@ package entity;
 // Generated Jul 25, 2014 9:34:05 AM by Hibernate Tools 3.6.0
 
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -27,7 +28,7 @@ public class Role implements java.io.Serializable {
      private String roleName;
      private String imagePath;
      private boolean active;
-     private Set users = new HashSet(0);
+     private List<User> users = new ArrayList<User>();
 
     public Role() {
     }
@@ -37,7 +38,7 @@ public class Role implements java.io.Serializable {
         this.roleName = roleName;
         this.active = active;
     }
-    public Role(String roleName, String imagePath, boolean active, Set users) {
+    public Role(String roleName, String imagePath, boolean active, List<User> users) {
        this.roleName = roleName;
        this.imagePath = imagePath;
        this.active = active;
@@ -87,11 +88,11 @@ public class Role implements java.io.Serializable {
     }
 
 @OneToMany(fetch=FetchType.LAZY, mappedBy="role")
-    public Set getUsers() {
+    public List<User> getUsers() {
         return this.users;
     }
     
-    public void setUsers(Set users) {
+    public void setUsers(List<User> users) {
         this.users = users;
     }
 

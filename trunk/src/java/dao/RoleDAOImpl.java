@@ -6,6 +6,7 @@
 package dao;
 
 import entity.Role;
+import entity.User;
 import hibernate.HibernateUtil;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -42,6 +43,10 @@ public class RoleDAOImpl implements RoleDAO {
             String sql = "FROM Role";
             Query query = session.createQuery(sql);
             roles = query.list();
+            for (Role role : roles) {
+                role.setUsers(UserDAOImpl.getInstance().getUserByRole(role.getRoleId()));
+            }
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -62,6 +67,7 @@ public class RoleDAOImpl implements RoleDAO {
         try {
             tx = session.beginTransaction();
             role = (Role) session.get(Role.class, roleID);
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

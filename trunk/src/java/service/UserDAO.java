@@ -114,26 +114,26 @@ public interface UserDAO {
     /**
      * remove The User's active
      *
-     * @param userID
+     * @param user
      * @return true if reset password successful. false if failed!
      */
-    public boolean resetPass(int userID);
+    public boolean resetPass(User user);
     
     /**
      * remove The User's active
      *
-     * @param userID
+     * @param user
      * @return true if remove The user's status successful. false if failed!
      */
-    public boolean removeUser(int userID);
+    public boolean removeUser(User user);
 
     /**
      * restore The User's active
      *
-     * @param userID
+     * @param user
      * @return true if restore The user's status successful. false if failed!
      */
-    public boolean restoreUser(int userID);
+    public boolean restoreUser(User user);
 
     /**
      * Delete User
