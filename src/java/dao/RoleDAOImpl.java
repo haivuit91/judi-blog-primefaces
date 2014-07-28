@@ -6,7 +6,6 @@
 package dao;
 
 import entity.Role;
-import entity.User;
 import hibernate.HibernateUtil;
 import java.util.List;
 import org.hibernate.HibernateException;
@@ -81,7 +80,7 @@ public class RoleDAOImpl implements RoleDAO {
     }
 
     @Override
-    public Role getRolesByName(String roleName) {
+    public Role getRoleByName(String roleName) {
         Role role = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
