@@ -22,22 +22,112 @@
                 <p:commandButton value="No" onclick="PF('confirmActive').hide()" icon="ui-icon-close"/>
             </p:confirmDialog>
         </h:form>
-        <h:form id="frmNewPost">
-            <p:dialog widgetVar="newPost" header="New post" width="800"  modal="true" resizable="false">
-                <p:panelGrid columns="4">
-                    <h:outputText value="Title"/>
-                    <p:inputText value="#{postManagementBean.seletedPost.title}" size="58"/>
-                    <h:outputText value="Category"/>
-                    <p:selectOneMenu value="#{postManagementBean.seletedPost.category}"  style="width: 164px" panelStyle="width:164px">
-                        <f:selectItems var="category" itemValue="#{category}" itemLabel="#{category.catName}" value="#{postManagementBean.listCategory}"></f:selectItems>
-                    </p:selectOneMenu>
+        <h:form id="frmNewPost" enctype="multipart/form-data">
+            <p:dialog widgetVar="newPost" header="New post" modal="true" resizable="false">
+                <p:panelGrid>
+                    <p:row>
+                        <p:column >
+                            <h:outputText value="Title"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText value="#{postManagementBean.seletedPost.title}" size="57">
+                                <f:validateLength minimum="6" maximum="100"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Category"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu value="#{postManagementBean.seletedPost.category}" converter="CategoryConverter" style="width: 164px" panelStyle="width:164px">
+                                <f:selectItems var="category" itemValue="#{category}" itemLabel="#{category.catName}" value="#{postManagementBean.listCategory}"></f:selectItems>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Status"/>
+                        </p:column>
+                        <p:column colspan="3">
+                            <p:selectOneButton value="#{postManagementBean.seletedPost.isActive}">
+                                <f:selectItem itemLabel="Enable" itemValue="true"/>
+                                <f:selectItem itemLabel="Disable" itemValue="false"/>
+                            </p:selectOneButton>
+                            <h:outputText value="Image"/>
+                            <p:fileUpload value="#{postManagementBean.image}" mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4">
+                            <p:editor value="#{postManagementBean.seletedPost.content}" required="true"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4">
+                            <p:commandButton value="Save" actionListener="#{postManagementBean.newPost(event)}" ajax="false"  onclick="PF('newPost').hide()"/>
+                            <p:commandButton value="Close" onclick="PF('newPost').hide()"/>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
-                <p:panelGrid columns="1">
-                    <p:editor value="#{postManagementBean.seletedPost.content}"/>
-                </p:panelGrid>
-                <p:panelGrid columns="3">
-                    <p:commandButton value="Save" onclick="PF('newPost').hide()"/>
-                    <p:commandButton value="Close" onclick="PF('newPost').hide()"/>
+            </p:dialog>
+        </h:form>
+        <h:form id="frmEditPost" enctype="multipart/form-data">
+            <p:dialog widgetVar="editPost" header="Edit post" modal="true" resizable="false">
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                        <h:inputHidden value="#{postManagementBean.seletedPost.postID}"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column >
+                            <h:outputText value="Title"/>
+                        </p:column>
+                        <p:column>
+                            <p:inputText value="#{postManagementBean.seletedPost.title}" size="57">
+                                <f:validateLength minimum="6" maximum="100"/>
+                            </p:inputText>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="Category"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu value="#{postManagementBean.seletedPost.category}" converter="CategoryConverter" style="width: 164px" panelStyle="width:164px">
+                                <f:selectItems var="category" itemValue="#{category}" itemLabel="#{category.catName}" value="#{postManagementBean.listCategory}"></f:selectItems>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="Status"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneButton value="#{postManagementBean.seletedPost.isActive}">
+                                <f:selectItem itemLabel="Enable" itemValue="true"/>
+                                <f:selectItem itemLabel="Disable" itemValue="false"/>
+                            </p:selectOneButton>
+                            <h:outputText value="Image"/>
+                            <p:fileUpload value="#{postManagementBean.image}" mode="simple" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" style="width: 200px"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="User"/>
+                        </p:column>
+                        <p:column>
+                            <p:selectOneMenu value="#{postManagementBean.seletedPost.user}" converter="userConverter" style="width: 164px" panelStyle="width:164px">
+                                <f:selectItems var="user" value="#{postManagementBean.listUser}" itemValue="#{user}" itemLabel="#{user.userName}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4">
+                            <p:editor value="#{postManagementBean.seletedPost.content}" required="true"/>
+                        </p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="4">
+                            <p:commandButton value="Save" actionListener="#{postManagementBean.update(event)}" ajax="false"  onclick="PF('editPost').hide()"/>
+                            <p:commandButton value="Close" onclick="PF('newPost').hide()"/>
+                        </p:column>
+                    </p:row>
                 </p:panelGrid>
             </p:dialog>
         </h:form>
