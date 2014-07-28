@@ -18,7 +18,7 @@ public interface RoleDAO {
 
     public Role getRoleByID(int roleID);
 
-    public Role getRolesByName(String roleName);
+    public Role getRoleByName(String roleName);
 
     public boolean createRole(Role role);
 
