@@ -35,7 +35,7 @@ public class UserDAOImpl implements UserDAO {
     private Session session;
 
     @Override
-    public List<User> getAllUsers() {
+    public List<User> getUsers() {
         List<User> users = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;

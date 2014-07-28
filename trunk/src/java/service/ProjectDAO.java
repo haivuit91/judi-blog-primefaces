@@ -65,29 +65,22 @@ public interface ProjectDAO {
     /**
      * delete a project
      *
-     * @param projectID is id of Project
+     * @param project is a Project
      * @return true if successfully
      */
-    public boolean deleteProject(int projectID);
+    public boolean deleteProject(Project project);
     
     /**
      * Active project
      * @param project The type of project
      * @return true if active successfully
      */
-    public boolean activeProject(int project);
+    public boolean activeProject(Project project);
     
     /**
      * Inactive project
      * @param project The type of project
      * @return true if Inactive successfully
      */
-    public boolean inactiveProject(int project);
-     /**
-     * get User list by attributes and keyword
-     * @param key is attributes used to search
-     * @param value is keyword use for searching
-     * @return
-     */
-    public List<Project> findProject(String key, String value);
+    public boolean inactiveProject(Project project);
 }

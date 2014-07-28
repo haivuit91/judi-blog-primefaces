@@ -7,7 +7,13 @@
 package dao;
 
 import entity.Project;
+import entity.Type;
+import hibernate.HibernateUtil;
 import java.util.List;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import service.ProjectDAO;
 
 /**
@@ -16,54 +22,224 @@ import service.ProjectDAO;
  */
 public class ProjectDAOImpl implements ProjectDAO{
 
+    private static ProjectDAOImpl projectDAO;
+
+    public static ProjectDAOImpl getInstance() {
+        if (projectDAO == null) {
+            projectDAO = new ProjectDAOImpl();
+        }
+        return projectDAO;
+    }
+    
+    private HibernateUtil util;
+    private Session session;
+
     @Override
     public List<Project> getProjects() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Project> projects = null;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "FROM Project";
+            Query query = session.createQuery(sql);
+            projects = query.list();            
+            session = util.getSessionFactory().openSession();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return projects;
     }
 
     @Override
     public Project getProjectByID(int projectID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Project project = null;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            project = (Project) session.get(Project.class, projectID);
+            session = util.getSessionFactory().openSession();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return project;
     }
 
     @Override
     public List<Project> getProjectByName(String projectName) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Project> projects = null;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "FROM Project as p WHERE p.projectName = :projectName";
+            Query query = session.createQuery(sql);
+            query.setParameter("projectName", projectName);
+            projects = query.list();
+//            session = util.getSessionFactory().openSession();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return projects;
     }
 
     @Override
     public List<Project> getProjectByType(int typeID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<Project> projects = null;
+        Type type = ProjectTypeDAOImpl.getInstance().getTypeByID(typeID);
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "FROM Project as p WHERE p.type = :type";
+            Query query = session.createQuery(sql);
+            query.setParameter("type", type);
+            projects = query.list();
+//            session = util.getSessionFactory().openSession();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return projects;
     }
 
     @Override
     public boolean createProject(Project project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(project);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean updateProject(Project project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(project);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
-    public boolean deleteProject(int projectID) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean deleteProject(Project project) {
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.delete(project);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
-    public boolean activeProject(int project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean activeProject(Project project) {
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "UPDATE Role set active = true WHERE projectID = :projectID";
+            Query query = session.createQuery(sql);
+            query.setParameter("projectID", project.getProjectId());
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
-    public boolean inactiveProject(int project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public List<Project> findProject(String key, String value) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean inactiveProject(Project project) {
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "UPDATE Role set active = false WHERE projectID = :projectID";
+            Query query = session.createQuery(sql);
+            query.setParameter("projectID", project.getProjectId());
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
     
 }

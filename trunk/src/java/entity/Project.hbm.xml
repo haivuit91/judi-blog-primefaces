@@ -26,11 +26,10 @@
         <property name="active" type="boolean">
             <column name="active" not-null="true" />
         </property>
-        <set name="projectUserDetailses" table="project_user_details" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="projectID" not-null="true" />
-            </key>
+        <list name="projectUserDetailses" table="project_user_details" inverse="true" cascade="all" >
+            <key column="projectID" />
+            <list-index column="idx" />
             <one-to-many class="entity.ProjectUserDetails" />
-        </set>
+        </list>
     </class>
 </hibernate-mapping>

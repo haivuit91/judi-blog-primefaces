@@ -14,11 +14,10 @@
         <property name="active" type="boolean">
             <column name="active" not-null="true" />
         </property>
-        <set name="projects" table="project" inverse="true" lazy="true" fetch="select">
-            <key>
-                <column name="typeID" not-null="true" />
-            </key>
+        <list name="projects" table="project" inverse="true" cascade="all" >
+            <key column="typeID" />
+            <list-index column="idx" />
             <one-to-many class="entity.Project" />
-        </set>
+        </list>
     </class>
 </hibernate-mapping>

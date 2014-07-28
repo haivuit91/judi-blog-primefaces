@@ -19,7 +19,7 @@ public interface UserDAO {
      *
      * @return User List by the user's status
      */
-    public List<User> getAllUsers();
+    public List<User> getUsers();
 
     /**
      * Get UserList by userID

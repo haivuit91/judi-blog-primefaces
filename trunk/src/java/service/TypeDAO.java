@@ -11,10 +11,9 @@ import java.util.List;
 
 /**
  *
- * @author Tuanka
+ * @author cong0_000
  */
-public interface ProjectTypeDAO {
-    
+public interface TypeDAO {
     /**
      * get list Type of project
      *
@@ -43,31 +42,31 @@ public interface ProjectTypeDAO {
      * @param type The type of project
      * @return true if create successfully
      */
-    public boolean createProjectType(Type type);
+    public boolean createType(Type type);
     /**
      * Update type of project
      * @param type The type of project
      * @return true if update successfully
      */
-    public boolean updateProjectType(Type type);
+    public boolean updateType(Type type);
     /**
      * Delete type of project
      * @param typeID The typeID of project
      * @return true if delete successfully
      */
-    public boolean deleteProjectType(int typeID);
+    public boolean deleteType(int typeID);
     
     /**
      * Active type of project
      * @param type The type of project
      * @return true if active successfully
      */
-    public boolean activeProjectType(Type type);
+    public boolean activeType(Type type);
     
     /**
      * Inactive type of project
      * @param type The type of project
      * @return true if Inactive successfully
      */
-    public boolean inactiveProjectType(Type type);
+    public boolean inactiveType(Type type);
 }

@@ -1,9 +1,9 @@
 package entity;
 // Generated Jul 25, 2014 9:34:05 AM by Hibernate Tools 3.6.0
 
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +33,7 @@ public class Project implements java.io.Serializable {
     private Date startDate;
     private int duration;
     private boolean active;
-    private Set<ProjectUserDetails> projectUserDetailses = new HashSet<ProjectUserDetails>(0);
+    private List<User> users = new ArrayList<User>(0);
 
     public Project() {
     }
@@ -47,14 +47,26 @@ public class Project implements java.io.Serializable {
         this.active = active;
     }
 
-    public Project(Type type, String projectName, String description, Date startDate, int duration, boolean active, Set projectUserDetailses) {
+    public Project(Integer projectId, Type type, String projectName, String description, Date startDate, int duration, boolean active) {
+        this.projectId = projectId;
         this.type = type;
         this.projectName = projectName;
         this.description = description;
         this.startDate = startDate;
         this.duration = duration;
         this.active = active;
-        this.projectUserDetailses = projectUserDetailses;
+    }
+
+    
+    
+    public Project(Type type, String projectName, String description, Date startDate, int duration, boolean active, List<User> users) {
+        this.type = type;
+        this.projectName = projectName;
+        this.description = description;
+        this.startDate = startDate;
+        this.duration = duration;
+        this.active = active;
+        this.users = users;
     }
 
     @Id
@@ -126,12 +138,12 @@ public class Project implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", cascade = CascadeType.ALL)
-    public Set<ProjectUserDetails> getProjectUserDetailses() {
-        return this.projectUserDetailses;
+    public List<User> getProjectUserDetailses() {
+        return this.users;
     }
 
-    public void setProjectUserDetailses(Set<ProjectUserDetails> projectUserDetailses) {
-        this.projectUserDetailses = projectUserDetailses;
+    public void setProjectUserDetailses(List<User> users) {
+        this.users = users;
     }
 
 }

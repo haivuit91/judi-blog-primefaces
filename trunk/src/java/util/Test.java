@@ -5,9 +5,14 @@
  */
 package util;
 
+import dao.ProjectDAOImpl;
+import dao.ProjectTypeDAOImpl;
+import dao.ProjectUserDAOImpl;
 import dao.RoleDAOImpl;
 import dao.UserDAOImpl;
+import entity.Project;
 import entity.Role;
+import entity.Type;
 import entity.User;
 import java.util.Date;
 import java.util.List;
@@ -21,22 +26,12 @@ public class Test {
     public static void main(String[] args) {
         UserDAOImpl userDAO = UserDAOImpl.getInstance();
         RoleDAOImpl roleDAO = RoleDAOImpl.getInstance();
-        Role r = roleDAO.getRoleByID(2);
-        System.out.println(r.getUsers().get(1).getFullName());
-//        User user = new User(1, r, "haivv", util.Support.encryptMD5("haivv"), "Vũ Văn Hải", new Date(91, 5, 12), true, "129444223", 
-//                "Cẩm Thủy - Thanh Hóa", "haivv.itedu@gmail.com", "0905022342", null, null, true);
+        ProjectDAOImpl projectDAO = ProjectDAOImpl.getInstance();
+        ProjectUserDAOImpl puDAO = ProjectUserDAOImpl.getInstance();
         
-//        User user = userDAO.getUserByID(3);
-//        user.setImagePath("");
-//        System.out.println(userDAO.updateAvatar(user));
-        List<User> users = userDAO.getAllUsers();
-        for (User user1 : users) {
-            System.out.println(user1.getUserName());
-        }
-//        List<Role> roles = roleDAO.getRoles();
-//        for (Role role : roles) {
-//            System.out.println(role.getUsers().size());
-//        }
+        User user = userDAO.getUserByID(1);
+        List<Project> projects = puDAO.getProjectByUser(user);
+        System.out.println(projects.get(1).getProjectName());
         
     }
 }
