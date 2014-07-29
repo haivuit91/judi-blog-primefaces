@@ -23,13 +23,14 @@ import model.entities.User;
 public class LoginBean {
 
     private final UserDAO USER_SERVICE = UserDAOImpl.getInstance();
-    private User user;
+    private User user = new User();
 
     public String checkLogin() {
         String page = "/index.jsf?faces-redirect=true";
+        String userName = this.user.getUserName();
         String password = util.Support.encryptMD5(this.user.getPwd());
-        if (USER_SERVICE.checkLogin(this.user.getUserName(), password)) {
-            User u = USER_SERVICE.getUserByUserName(getUser().getUserName());
+        if (USER_SERVICE.checkLogin(userName, password)) {
+            User u = USER_SERVICE.getUserByUserName(userName);
             if (u.isActive()) {
                 this.addMessages("Login successfully!");
                 HttpSession session = util.Support.getSession();
@@ -37,14 +38,18 @@ public class LoginBean {
             } else {
                 page = "/module/success.jsf";
             }
+            System.out.println("OK");
         } else {
+            System.out.println(userName);
+            System.out.println(password);
+            System.out.println("Failed");
             this.addMessages("Username or password wrong !!!");
         }
         
         return page;
     }
 
-    public String logout(boolean isAdmin) {
+    public String logout() {
         HttpSession session = util.Support.getSession();
         session.invalidate();
         return "/index.jsf?faces-redirect=true";
@@ -60,9 +65,6 @@ public class LoginBean {
      * @return the user
      */
     public User getUser() {
-        if (user == null) {
-            user = new User();
-        }
         return user;
     }
 

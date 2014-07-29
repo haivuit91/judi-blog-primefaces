@@ -5,12 +5,9 @@
  */
 package model.dao;
 
-import model.entities.Project;
-import model.entities.ProjectUserDetails;
 import model.entities.Role;
 import model.entities.User;
 import hibernate.HibernateUtil;
-import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -141,7 +138,7 @@ public class UserDAOImpl implements UserDAO {
             String sql = "FROM User WHERE userName = :userName and pwd = :pwd";
             Query query = session.createQuery(sql);
             query.setParameter("userName", userName);
-            query.setParameter("pwd", Support.encryptMD5(password));
+            query.setParameter("pwd", password);
             if (query.list().size() > 0) {
                 isCheck = true;
             }
