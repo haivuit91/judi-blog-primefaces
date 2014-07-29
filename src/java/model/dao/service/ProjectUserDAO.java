@@ -46,15 +46,6 @@ public interface ProjectUserDAO {
      */
     public List<ProjectUserDetails> getPUByUser(User user);
 
-
-    /**
-     * get list project by user
-     *
-     * @param project id of Project
-     * @return Project list
-     */
-    public List<User> getUserNotJoin(Project project);
-
     /**
      * check is exist of user in one project
      *
@@ -62,8 +53,6 @@ public interface ProjectUserDAO {
      * @param user Object User
      * @return
      */
-    
-    public boolean checkJoinUser(User user, Project project);
     public boolean isExistUserInProject(Project project, User user);
 
     /**
@@ -82,13 +71,7 @@ public interface ProjectUserDAO {
      */
     public boolean updatePUD(ProjectUserDetails pud);
 
-    /**
-     * Delete PUD
-     *
-     * @param project id of Project
-     * @return true if delete successfully
-     */
-    public boolean deleteUserJoinedProject(Project project);
+
     /**
      * Delete PUD
      *
