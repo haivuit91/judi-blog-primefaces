@@ -6,8 +6,6 @@
 
 package bean.view;
 
-import entity.Project;
-import entity.Type;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -15,6 +13,8 @@ import model.dao.ProjectDAOImpl;
 import model.dao.ProjectTypeDAOImpl;
 import model.dao.service.ProjectDAO;
 import model.dao.service.TypeDAO;
+import model.entities.Project;
+import model.entities.Type;
 
 /**
  *
