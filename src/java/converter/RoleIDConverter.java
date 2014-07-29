@@ -4,9 +4,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import model.dao.RoleDAO;
-import model.dao.service.RoleDAOService;
-import model.entities.Role;
+import model.olddao.RoleDAO;
+import model.olddao.service.RoleDAOService;
+import model.oldentities.Role;
 
 @FacesConverter("roleConverter")
 public class RoleIDConverter implements Converter {

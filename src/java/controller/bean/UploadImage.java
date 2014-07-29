@@ -16,9 +16,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import model.dao.UserDAO;
-import model.dao.service.UserDAOService;
-import model.entities.User;
+import model.olddao.UserDAO;
+import model.olddao.service.UserDAOService;
+import model.oldentities.User;
 import org.primefaces.model.UploadedFile;
 
 /**

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated Jul 25, 2014 9:34:06 AM by Hibernate Tools 3.6.0 -->
+<hibernate-mapping>
+  <class catalog="db_judiwebsite" name="model.entities.ProjectUserDetails" table="project_user_details">
+    <id name="projectUserId" type="java.lang.Integer">
+      <column name="projectUserID"/>
+      <generator class="identity"/>
+    </id>
+    <many-to-one class="model.entities.Project" fetch="select" name="project">
+      <column name="projectID" not-null="true"/>
+    </many-to-one>
+    <many-to-one class="model.entities.User" fetch="select" name="user">
+      <column name="userID"/>
+    </many-to-one>
+    <property name="creator" type="boolean">
+      <column name="creator" not-null="true"/>
+    </property>
+  </class>
+</hibernate-mapping>

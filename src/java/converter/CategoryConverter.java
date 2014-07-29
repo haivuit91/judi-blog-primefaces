@@ -14,9 +14,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import model.dao.CategoryDAO;
-import model.dao.service.CategoryDAOService;
-import model.entities.Category;
+import model.olddao.CategoryDAO;
+import model.olddao.service.CategoryDAOService;
+import model.oldentities.Category;
 
 /**
  *

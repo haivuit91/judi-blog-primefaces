@@ -10,9 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import model.dao.UserDAO;
-import model.dao.service.UserDAOService;
-import model.entities.User;
+import model.olddao.UserDAO;
+import model.olddao.service.UserDAOService;
+import model.oldentities.User;
 
 /**
  *

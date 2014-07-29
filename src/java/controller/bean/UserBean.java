@@ -11,12 +11,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import model.dao.RoleDAO;
-import model.dao.UserDAO;
-import model.dao.service.RoleDAOService;
-import model.dao.service.UserDAOService;
-import model.entities.Role;
-import model.entities.User;
+import model.olddao.RoleDAO;
+import model.olddao.UserDAO;
+import model.olddao.service.RoleDAOService;
+import model.olddao.service.UserDAOService;
+import model.oldentities.Role;
+import model.oldentities.User;
 
 /**
  *
