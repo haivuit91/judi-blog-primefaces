@@ -7,6 +7,7 @@ package dao;
 
 import entity.Category;
 import hibernate.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -38,7 +39,12 @@ public class CategoryDAOImlp implements CategoryDAO {
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
         try {
-
+            listCategory = new ArrayList<>();
+            List temp = session.createCriteria(Category.class).list();
+            for (Object item : temp) {
+                Category category = (Category) item;
+                listCategory.add(category);
+            }
         } catch (HibernateException e) {
             if (tx != null) {
                 tx.rollback();
