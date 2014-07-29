@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package model.dao;
 
 import model.entities.Project;
 import model.entities.ProjectUserDetails;
@@ -48,7 +48,7 @@ public class UserDAOImpl implements UserDAO {
             Query query = session.createQuery(sql);
             users = query.list();
             for (User user : users) {
-                user.setProjectUserDetails(ProjectUserDAOImpl.getInstance().getProjectByUser(user));
+                user.setProjectUserDetails(ProjectUserDAOImpl.getInstance().getPUByUser(user));
             }
             session = util.getSessionFactory().openSession();
             tx.commit();

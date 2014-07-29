@@ -10,9 +10,9 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import model.olddao.UserDAO;
-import model.olddao.service.UserDAOService;
-import model.oldentities.User;
+import model.dao.UserDAOImpl;
+import model.dao.service.UserDAO;
+import model.entities.User;
 
 /**
  *
@@ -22,15 +22,15 @@ import model.oldentities.User;
 @SessionScoped
 public class LoginBean {
 
-    private final UserDAOService USER_SERVICE = UserDAO.getInstance();
+    private final UserDAO USER_SERVICE = UserDAOImpl.getInstance();
     private User user;
 
     public String checkLogin() {
         String page = "/index.jsf?faces-redirect=true";
-        String password = util.Support.encryptMD5(getUser().getPwd());
-        if (USER_SERVICE.checkLogin(getUser().getUserName(), password)) {
+        String password = util.Support.encryptMD5(this.user.getPwd());
+        if (USER_SERVICE.checkLogin(this.user.getUserName(), password)) {
             User u = USER_SERVICE.getUserByUserName(getUser().getUserName());
-            if (u.getActive() == 1) {
+            if (u.isActive()) {
                 this.addMessages("Login successfully!");
                 HttpSession session = util.Support.getSession();
                 session.setAttribute(util.Constants.CURRENT_USER, u);

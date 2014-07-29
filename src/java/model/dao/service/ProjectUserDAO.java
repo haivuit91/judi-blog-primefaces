@@ -36,7 +36,7 @@ public interface ProjectUserDAO {
      * @param project
      * @return ProjectUserDetails
      */
-    public List<ProjectUserDetails> getPUByProjectID(Project project);
+    public List<ProjectUserDetails> getPUByProject(Project project);
 
     /**
      * get list project by user
@@ -44,15 +44,8 @@ public interface ProjectUserDAO {
      * @param user id of User
      * @return Project list
      */
-    public List<ProjectUserDetails> getProjectByUser(User user);
+    public List<ProjectUserDetails> getPUByUser(User user);
 
-    /**
-     * get list project by user
-     *
-     * @param project id of Project
-     * @return Project list
-     */
-    public List<ProjectUserDetails> getUserByProject(Project project);
 
     /**
      * get list project by user
@@ -102,7 +95,7 @@ public interface ProjectUserDAO {
      * @param project id of Project
      * @return true if delete successfully
      */
-    public boolean deletePUByProjectID(Project project);
+    public boolean deletePUByProject(Project project);
     /**
      * Delete PUD
      * @param project is Object Project

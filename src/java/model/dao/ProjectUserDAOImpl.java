@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package dao;
+package model.dao;
 
 import model.entities.Project;
 import model.entities.ProjectUserDetails;
@@ -78,7 +78,7 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
     }
 
     @Override
-    public List<ProjectUserDetails> getPUByProjectID(Project project) {
+    public List<ProjectUserDetails> getPUByProject(Project project) {
         List<ProjectUserDetails> puList = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
@@ -101,7 +101,7 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
     }
 
     @Override
-    public List<ProjectUserDetails> getProjectByUser(User user) {
+    public List<ProjectUserDetails> getPUByUser(User user) {
         List<ProjectUserDetails> projects = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
@@ -121,29 +121,6 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
             session.close();
         }
         return projects;
-    }
-
-    @Override
-    public List<ProjectUserDetails> getUserByProject(Project project) {
-        List<ProjectUserDetails> users = null;
-        session = util.getSessionFactory().openSession();
-        Transaction tx = null;
-        try {
-            tx = session.beginTransaction();
-            String sql = "FROM ProjectUserDetails as p WHERE p.project = :project";
-            Query query = session.createQuery(sql);
-            query.setParameter("project", project);
-            users = query.list();
-            tx.commit();
-        } catch (HibernateException e) {
-            if (tx != null) {
-                tx.rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            session.close();
-        }
-        return users;
     }
 
     @Override
@@ -177,7 +154,7 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
     }
 
     @Override
-    public boolean deletePUByProjectID(Project project) {
+    public boolean deletePUByProject(Project project) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

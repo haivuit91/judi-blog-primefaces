@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package dao;
+package model.dao;
 
 import model.entities.Type;
 import hibernate.HibernateUtil;

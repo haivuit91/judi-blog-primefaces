@@ -15,10 +15,9 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import javax.faces.event.ActionEvent;
-import model.olddao.UserDAO;
-import model.olddao.service.UserDAOService;
-import model.oldentities.User;
+import model.dao.UserDAOImpl;
+import model.dao.service.UserDAO;
+import model.entities.User;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -29,7 +28,7 @@ import org.primefaces.model.UploadedFile;
 @RequestScoped
 public class UploadImage implements Serializable {
 
-    private final UserDAOService USER_SERVICE = UserDAO.getInstance();
+    private final UserDAO USER_SERVICE = UserDAOImpl.getInstance();
     private static final long serialVersionUID = 1L;
     private UploadedFile file;
 
@@ -56,7 +55,7 @@ public class UploadImage implements Serializable {
                 }
 
                 String imagePath = "images/avatar/" + util.Support.getCurrentUser().getUserName() + "." + fileNameExtension;
-                User user = USER_SERVICE.getUserByID(util.Support.getCurrentUser().getUserID());
+                User user = USER_SERVICE.getUserByID(util.Support.getCurrentUser().getUserId());
                 user.setImagePath(imagePath);
                 if (USER_SERVICE.updateAvatar(user)) {
                     String realPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/");

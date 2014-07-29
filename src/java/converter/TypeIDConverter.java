@@ -5,7 +5,7 @@
  */
 package converter;
 
-import dao.ProjectTypeDAOImpl;
+import model.dao.ProjectTypeDAOImpl;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;

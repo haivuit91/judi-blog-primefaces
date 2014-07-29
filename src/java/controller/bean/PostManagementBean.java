@@ -18,15 +18,15 @@ import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
-import model.olddao.CategoryDAO;
-import model.olddao.PostDAO;
-import model.olddao.UserDAO;
-import model.olddao.service.CategoryDAOService;
-import model.olddao.service.PostDAOService;
-import model.olddao.service.UserDAOService;
-import model.oldentities.Category;
-import model.oldentities.Post;
-import model.oldentities.User;
+import model.dao.CategoryDAOImlp;
+import model.dao.PostDAOImpl;
+import model.dao.UserDAOImpl;
+import model.dao.service.CategoryDAO;
+import model.dao.service.PostDAO;
+import model.dao.service.UserDAO;
+import model.entities.Category;
+import model.entities.Post;
+import model.entities.User;
 import org.primefaces.model.UploadedFile;
 import util.Support;
 
@@ -39,9 +39,9 @@ import util.Support;
 public class PostManagementBean {
 
     private final int CODE_SIZE = 8;
-    private final PostDAOService POST_SERVICE = PostDAO.getInstance();
-    private final CategoryDAOService CATEGORY_SERVICE = CategoryDAO.getInstance();
-    private final UserDAOService USER_SERVICE = UserDAO.getInstance();
+    private final PostDAO POST_SERVICE = PostDAOImpl.getInstance();
+    private final CategoryDAO CATEGORY_SERVICE = CategoryDAOImlp.getInstance();
+    private final UserDAO userService = UserDAOImpl.getInstance();
     private final FacesContext facesContext;
     private List<Post> listPost;
     private List<Category> listCategory;
@@ -60,7 +60,7 @@ public class PostManagementBean {
     public void delete(ActionEvent event) {
         FacesMessage mess;
         try {
-            if (POST_SERVICE.deletePost(selectedPost.getPostID())) {
+            if (POST_SERVICE.deletePost(selectedPost.getPostId())) {
                 mess = new FacesMessage("Success!");
             } else {
                 mess = new FacesMessage("fail!");
@@ -77,15 +77,15 @@ public class PostManagementBean {
         FacesMessage mes;
         String strMess;
         try {
-            selectedPost = POST_SERVICE.getPostByID(selectedPost.getPostID());
-            if (POST_SERVICE.activePost(!selectedPost.isIsActive(), selectedPost.getPostID())) {
-                if (selectedPost.isIsActive()) {
+            selectedPost = POST_SERVICE.getPostByID(selectedPost.getPostId());
+            if (POST_SERVICE.activePost(!selectedPost.isActive(), selectedPost.getPostId())) {
+                if (selectedPost.isActive()) {
                     strMess = "Disable success !";
                 } else {
                     strMess = "Enable success !";
                 }
             } else {
-                if (selectedPost.isIsActive()) {
+                if (selectedPost.isActive()) {
                     strMess = "Disable faile !";
                 } else {
                     strMess = "Enable faile !";
@@ -119,7 +119,7 @@ public class PostManagementBean {
     public void update(ActionEvent event){
          FacesMessage mes = null;
         try {
-            Post post = POST_SERVICE.getPostByID(selectedPost.getPostID());
+            Post post = POST_SERVICE.getPostByID(selectedPost.getPostId());
             post.setContent(selectedPost.getContent());
             post.setTitle(selectedPost.getTitle());
             post.setUser(selectedPost.getUser());
@@ -208,7 +208,7 @@ public class PostManagementBean {
     }
 
     public List<User> getListUser() {
-        return USER_SERVICE.getAllUser();
+        return userService.getUsers();
     }
 
     public void setListUser(List<User> listUser) {
