@@ -5,13 +5,13 @@
  */
 package converter;
 
+import dao.ProjectTypeDAOImpl;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import model.dao.ProjectTypeDAO;
-import model.dao.service.ProjectTypeDAOService;
-import model.entities.ProjectType;
+import model.dao.service.TypeDAO;
+import model.entities.Type;
 
 /**
  *
@@ -20,11 +20,11 @@ import model.entities.ProjectType;
 @FacesConverter("typeConverter")
 public class TypeIDConverter implements Converter {
 
-    private final ProjectTypeDAOService TYPE_SERVICE = ProjectTypeDAO.getInstance();
+    private final TypeDAO TYPE_SERVICE = ProjectTypeDAOImpl.getInstance();
 
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        ProjectType projectType = null;
+        Type projectType = null;
         if (value != null) {
             projectType = TYPE_SERVICE.getTypeByName(value);
             projectType.setTypeName(value);
@@ -35,8 +35,8 @@ public class TypeIDConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         String name = "";
-        if(value instanceof ProjectType){
-            ProjectType projectType = (ProjectType) value;
+        if(value instanceof Type){
+            Type projectType = (Type) value;
             name = projectType.getTypeName();
         }else if( value instanceof String){
             name = (String)value;

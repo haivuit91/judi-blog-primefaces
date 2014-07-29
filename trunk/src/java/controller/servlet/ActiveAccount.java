@@ -13,9 +13,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.dao.UserDAO;
-import model.dao.service.UserDAOService;
-import model.entities.User;
+import model.olddao.UserDAO;
+import model.olddao.service.UserDAOService;
+import model.oldentities.User;
 
 /**
  *

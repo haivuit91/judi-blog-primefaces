@@ -10,9 +10,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import model.dao.UserDAO;
-import model.dao.service.UserDAOService;
-import model.entities.User;
+import model.olddao.UserDAO;
+import model.olddao.service.UserDAOService;
+import model.oldentities.User;
 
 /**
  *

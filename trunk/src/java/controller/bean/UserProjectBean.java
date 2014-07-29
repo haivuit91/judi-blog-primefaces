@@ -12,15 +12,15 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
-import model.dao.ProjectDAO;
-import model.dao.ProjectUserDAO;
-import model.dao.UserDAO;
-import model.dao.service.ProjectDAOService;
-import model.dao.service.ProjectUserDAOService;
-import model.dao.service.UserDAOService;
-import model.entities.Project;
-import model.entities.ProjectUserDetails;
-import model.entities.User;
+import model.olddao.ProjectDAO;
+import model.olddao.ProjectUserDAO;
+import model.olddao.UserDAO;
+import model.olddao.service.ProjectDAOService;
+import model.olddao.service.ProjectUserDAOService;
+import model.olddao.service.UserDAOService;
+import model.oldentities.Project;
+import model.oldentities.ProjectUserDetails;
+import model.oldentities.User;
 import org.primefaces.model.DualListModel;
 
 /**

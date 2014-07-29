@@ -10,10 +10,10 @@ import dao.ProjectTypeDAOImpl;
 import dao.ProjectUserDAOImpl;
 import dao.RoleDAOImpl;
 import dao.UserDAOImpl;
-import entity.Project;
-import entity.Role;
-import entity.Type;
-import entity.User;
+import model.entities.Project;
+import model.entities.Role;
+import model.entities.Type;
+import model.entities.User;
 import java.util.Date;
 import java.util.List;
 
