@@ -5,9 +5,12 @@
  */
 package dao;
 
+import entity.Project;
+import entity.ProjectUserDetails;
 import entity.Role;
 import entity.User;
 import hibernate.HibernateUtil;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -44,6 +47,10 @@ public class UserDAOImpl implements UserDAO {
             String sql = "FROM User";
             Query query = session.createQuery(sql);
             users = query.list();
+            for (User user : users) {
+                user.setProjectUserDetails(ProjectUserDAOImpl.getInstance().getProjectByUser(user));
+            }
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

@@ -43,7 +43,10 @@ public class ProjectDAOImpl implements ProjectDAO{
             tx = session.beginTransaction();
             String sql = "FROM Project";
             Query query = session.createQuery(sql);
-            projects = query.list();            
+            projects = query.list();   
+            for (Project project : projects) {
+                project.setProjectUserDetailses(ProjectUserDAOImpl.getInstance().getPUByProjectID(project));
+            }
             session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {

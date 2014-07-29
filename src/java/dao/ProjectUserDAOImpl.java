@@ -101,13 +101,13 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
     }
 
     @Override
-    public List<Project> getProjectByUser(User user) {
-        List<Project> projects = null;
+    public List<ProjectUserDetails> getProjectByUser(User user) {
+        List<ProjectUserDetails> projects = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "SELECT p.project FROM ProjectUserDetails as p WHERE p.user = :user";
+            String sql = "FROM ProjectUserDetails as p WHERE p.user = :user";
             Query query = session.createQuery(sql);
             query.setParameter("user", user);
             projects = query.list();
@@ -124,8 +124,26 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
     }
 
     @Override
-    public List<User> getUserByProject(Project project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<ProjectUserDetails> getUserByProject(Project project) {
+        List<ProjectUserDetails> users = null;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "FROM ProjectUserDetails as p WHERE p.project = :project";
+            Query query = session.createQuery(sql);
+            query.setParameter("project", project);
+            users = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return users;
     }
 
     @Override

@@ -41,7 +41,7 @@ public class User implements java.io.Serializable {
     private String idActive;
     private boolean active;
     private List<Post> posts = new ArrayList<Post>();
-    private List<Project> projects = new ArrayList<Project>();
+    private List<ProjectUserDetails> projectUserDetails = new ArrayList<ProjectUserDetails>();
 
     public User() {
     }
@@ -56,7 +56,7 @@ public class User implements java.io.Serializable {
         this.active = active;
     }
 
-    public User(Role role, String userName, String pwd, String fullName, Date birthOfDay, boolean gender, String idCard, String address, String email, String phoneNumber, String imagePath, String idActive, boolean active, List<Post> posts, List<Project> projects) {
+    public User(Role role, String userName, String pwd, String fullName, Date birthOfDay, boolean gender, String idCard, String address, String email, String phoneNumber, String imagePath, String idActive, boolean active, List<Post> posts, List<ProjectUserDetails> projectUserDetails) {
         this.role = role;
         this.userName = userName;
         this.pwd = pwd;
@@ -71,7 +71,7 @@ public class User implements java.io.Serializable {
         this.idActive = idActive;
         this.active = active;
         this.posts = posts;
-        this.projects = projects;
+        this.projectUserDetails = projectUserDetails;
     }
 
     public User(Integer userId, Role role, String userName, String pwd, String fullName, Date birthOfDay, boolean gender, String idCard, String address, String email, String phoneNumber, String imagePath, String idActive, boolean active) {
@@ -232,14 +232,38 @@ public class User implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    public List<Project> getProjectUserDetailses() {
-        return this.projects;
+    public List<ProjectUserDetails> getProjectUserDetails() {
+        return this.projectUserDetails;
     }
 
-    public void setProjectUserDetailses(List<Project> projects) {
-        this.projects = projects;
+    public void setProjectUserDetails(List<ProjectUserDetails> projectUserDetails) {
+        this.projectUserDetails = projectUserDetails;
     }
 
-    
-    
+//    @Override
+//    public boolean equals(Object obj) {
+//        if (obj == null) {
+//            return false;
+//        }
+//        if (!this.getClass().equals(obj.getClass())) {
+//            return false;
+//        }
+//
+//        User obj2 = (User) obj;
+//        if ((this.userId == obj2.getUserId()) && (this.userName.equals(obj2.getUserName()))
+//                && this.fullName.equals(obj2.getFullName()) && this.pwd.equals(obj2.getPwd())
+//                && this.birthOfDay == obj2.birthOfDay ) {
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int tmp = 0;
+//        tmp = (userId + userName + fullName + pwd + birthOfDay + gender + idCard + address + email 
+//                + phoneNumber + imagePath + idActive + active + role).hashCode();
+//        return tmp;
+//    }
+
 }
