@@ -40,6 +40,7 @@ public class LoginBean {
         } else {
             this.addMessages("Username or password wrong !!!");
         }
+        
         return page;
     }
 
