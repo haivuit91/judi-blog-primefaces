@@ -83,8 +83,10 @@ public class Type  implements java.io.Serializable {
         this.projects = projects;
     }
 
-
-
+    @Override
+    public boolean equals(Object obj) {
+        return true;
+    }
 
 }
 

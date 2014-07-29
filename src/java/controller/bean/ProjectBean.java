@@ -47,7 +47,6 @@ public class ProjectBean {
     private List<Project> filteredProjects;
 
     private List<User> users;
-    private DualListModel<User> usersDualList = new DualListModel<User>(); //DualList of Pick list add user to project
 
     private List<User> usersJoining;
 
@@ -72,7 +71,9 @@ public class ProjectBean {
      */
     public List<Project> getProjectsByUser() {
         List<Project> projectByUser = new ArrayList<Project>();
-        List<ProjectUserDetails> puList = PU_SERVICE.getPUByUser(util.Support.getCurrentUser());
+        int userID = util.Support.getCurrentUser().getUserId();
+        User user11 = USER_SERVICE.getUserByID(userID);
+        List<ProjectUserDetails> puList = user11.getProjectUserDetails();
         for (ProjectUserDetails projectUserDetails : puList) {
             projectByUser.add(projectUserDetails.getProject());
         }
@@ -95,7 +96,7 @@ public class ProjectBean {
         for (ProjectUserDetails projectUserDetails : puList) {
             usersJoined.add(projectUserDetails.getUser());
         }
-        
+
         List<String> usersNameJoined = new ArrayList<>();
         for (User user2 : usersJoined) {
             usersNameJoined.add(user2.getUserName());
@@ -143,7 +144,7 @@ public class ProjectBean {
                 Project pro = projectList.get(projectList.size() - 1);
                 ProjectUserDetails pud = new ProjectUserDetails(pro, user2, true);
                 if (PU_SERVICE.createPUD(pud)) {
-                    msg += "Project created successfully by: " + user.getFullName() + "\n";
+                    msg += "Project created successfully by: " + user2.getFullName() + "\n";
                 } else {
                     msg += "Create creater for project failed. \n";
                 }
@@ -157,35 +158,27 @@ public class ProjectBean {
                 .addMessage(null, message);
     }
 
-    public void saveUpdate(Project project) {
-        this.project = project;
-    }
-
     /**
      * Update the project
      *
      * @param event
      */
     public void updateProject(ActionEvent event) {
-        String msg = "";
-//        if (PROJECT_SERVICE.updateProject(this.project)) {
-//            msg = "Project updated successfully!";
-//        } else {
-//            msg = "Update project failed !";
-//        }
-        int projectID = getProject().getProjectId();
-        String projectName = getProject().getProjectName();
-        String description = getProject().getDescription();
-        Date startDate = getProject().getStartDate();
-        int duration = getProject().getDuration();
-        Type type = this.projectType;
+        String msg;
+        int projectID = this.project.getProjectId();
+        String projectName = this.project.getProjectName();
+        String description = this.project.getDescription();
+        Date startDate = this.project.getStartDate();
+        int duration = this.project.getDuration();
+        Type type = this.project.getType();
         boolean active = getProject().isActive();
         List<ProjectUserDetails> puList = getProject().getProjectUserDetailses();
         Project pro = new Project(projectID, type, projectName, description, startDate, duration, active, puList);
         if (PROJECT_SERVICE.updateProject(pro)) {
-            msg += "Project updated successfully!";
+            msg = "Project updated successfully!";
+        } else {
+            msg = "Update project failed !";
         }
-        msg = "Update project failed !";
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
 
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -199,8 +192,9 @@ public class ProjectBean {
     public void deleteProject(ActionEvent event) {
         String msg;
         int projectID = this.project.getProjectId();
-        if (PU_SERVICE.deletePUByProject(this.project)) {
-            if (PROJECT_SERVICE.deleteProject(this.project)) {
+        Project p = PROJECT_SERVICE.getProjectByID(projectID);
+        if (PU_SERVICE.deletePUByProject(p)) {
+            if (PROJECT_SERVICE.deleteProject(p)) {
                 msg = "Project deleted successfully!";
             } else {
                 msg = "Delete project failed !";
@@ -285,16 +279,6 @@ public class ProjectBean {
      */
     public void setProject(Project project) {
         this.project = project;
-
-        //
-        usersSource = getUserNameNotJoined(project);
-        List<ProjectUserDetails> puList = project.getProjectUserDetailses();
-        for (ProjectUserDetails projectUserDetails : puList) {
-            usersTarget.add(projectUserDetails.getUser());
-        }
-        
-
-        usersDualList = new DualListModel<User>(usersSource, usersTarget);
     }
 
     /**
@@ -333,20 +317,6 @@ public class ProjectBean {
     }
 
     /**
-     * @return the usersDualList
-     */
-    public DualListModel<User> getUsersDualList() {
-        return usersDualList;
-    }
-
-    /**
-     * @param usersDualList the usersDualList to set
-     */
-    public void setUsersDualList(DualListModel<User> usersDualList) {
-        this.usersDualList = usersDualList;
-    }
-
-    /**
      * @return the usersJoining
      */
     public List<User> getUsersJoining() {
@@ -372,6 +342,5 @@ public class ProjectBean {
     public void setUser(User user) {
         this.user = user;
     }
-    
 
 }

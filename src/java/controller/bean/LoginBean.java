@@ -38,11 +38,7 @@ public class LoginBean {
             } else {
                 page = "/module/success.jsf";
             }
-            System.out.println("OK");
         } else {
-            System.out.println(userName);
-            System.out.println(password);
-            System.out.println("Failed");
             this.addMessages("Username or password wrong !!!");
         }
         

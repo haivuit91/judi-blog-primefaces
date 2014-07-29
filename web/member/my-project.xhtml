@@ -19,7 +19,7 @@
                     </h:form>
                     <h:form id="formProjectList">
 
-                        <p:dataTable id="projects" var="project" value="#{projectBean.projects}" widgetVar="dtProjects" 
+                        <p:dataTable id="projects" var="project" value="#{projectBean.projectsByUser}" widgetVar="dtProjects" 
                                      filteredValue="#{projectBean.filteredProjects}"
                                      emptyMessage="No project found with given criteria" 
                                      paginator="true" rows="10" paginatorPosition="bottom" 
@@ -83,12 +83,12 @@
                                     <h:outputText value=" " />
                                 </ui:repeat>
                             </p:column>
-                            <p:column headerText="Status" width="35" style="font-size: small;"  >
-                                <p:commandButton update=":formInactive" rendered="#{project.active?'true':'false'}"
+                            <p:column headerText="Status" width="35" style="font-size: small;" >
+                                <p:commandButton update=":formInactive" rendered="#{project.active}"
                                                  icon="ui-icon-unlocked" oncomplete="PF('dialogInactiveProject').show()"  title="Active" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                                 </p:commandButton>
-                                <p:commandButton update=":formActive" rendered="#{project.active?'true':'false'}"
+                                <p:commandButton update=":formActive" rendered="#{!project.active}"
                                                  icon="ui-icon-locked" oncomplete="PF('dialogActiveProject').show()" title="Inactive" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                                 </p:commandButton>
@@ -275,10 +275,6 @@
                     <h:form id="formUserJoining">
                         <p:dialog header="Edit user joining project" widgetVar="dialogUserJoining" showEffect="fold" 
                                   hideEffect="fold" modal="true" resizable="true">
-<!--                            <p:orderList value="#{projectBean.allProject}" var="userJoining" controlsLocation="none"
-                                         itemLabel="#{userJoining.userName}" itemValue="#{userJoining}" >
-                                <f:facet name="caption">User Joined</f:facet>
-                            </p:orderList>-->
                             <p:commandButton value="Submit" style="margin-top:5px" />
 
                         </p:dialog>
@@ -306,8 +302,8 @@
                                 <p:outputLabel value="#{projectBean.project.type.typeName}"  />
 
                                 <p:outputLabel value="Users Joined:"  />
-                                <ui:repeat value="#{projectBean.project.userList}" var="user">
-                                    <p:outputLabel value="#{user.userName} "  />
+                                <ui:repeat value="#{projectBean.project.projectUserDetailses}" var="pu">
+                                    <p:outputLabel value="#{pu.user.userName} "  />
                                 </ui:repeat>
 
                                 <f:facet name="footer">
