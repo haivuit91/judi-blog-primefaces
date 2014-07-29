@@ -57,7 +57,7 @@
             <p:confirmDialog message="Do you want delete project? " header="Delete Project" severity="alert"
                              widgetVar="deleteProject"
                              showEffect="fade" hideEffect="explode">
-                <h:inputHidden value="#{projectBean.project.projectID}" />
+                <h:inputHidden value="#{projectBean.project.projectId}" />
                 <p:commandButton id="confirm" value="Yes" update=":formList" actionListener="#{projectBean.deleteProject(event)}" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
                                  oncomplete="PF('deleteProject').hide()" />
                 <p:commandButton id="cancel" value="No" onclick="PF('deleteProject').hide()" styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button" />
@@ -69,8 +69,8 @@
                       hideEffect="explode" modal="true" resizable="false">
                 <h:panelGrid id="display" columns="3" cellpadding="5" style="margin: 0 auto; " >
                     <h:outputLabel value="Project ID:"  />
-                    <p:outputLabel value="#{projectBean.project.projectID}"  />                    
-                    <h:inputHidden value="#{projectBean.project.projectID}" />
+                    <p:outputLabel value="#{projectBean.project.projectId}"  />                    
+                    <h:inputHidden value="#{projectBean.project.projectId}" />
 
                     <h:outputLabel for="projectName" value="Project Name:"  />
                     <p:inplace>
@@ -123,7 +123,7 @@
         <h:form id="formActive">
             <p:confirmDialog id="confirmDialog" message="Do you want active to project?" header="Active project" severity="alert"
                              widgetVar="Active" showEffect="fade" hideEffect="explode">
-                <h:inputHidden value="#{projectBean.project.projectID}" />
+                <h:inputHidden value="#{projectBean.project.projectId}" />
                 <p:commandButton id="confirm" value="Yes" update=":formList" 
                                  actionListener="#{projectBean.activeProject(event)}"
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
@@ -136,7 +136,7 @@
         <h:form id="formUnactive">
             <p:confirmDialog id="confirmDialog" message="Do you want unactive to project?" header="Unactive project" severity="alert"
                              widgetVar="Unactive" showEffect="fade" hideEffect="explode">
-                <h:inputHidden value="#{projectBean.project.projectID}" />
+                <h:inputHidden value="#{projectBean.project.projectId}" />
                 <p:commandButton id="confirm" value="Yes" update=":formList" 
                                  actionListener="#{projectBean.inactiveProject(event)}"
                                  styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 

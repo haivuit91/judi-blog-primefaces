@@ -13,37 +13,69 @@
                       hideEffect="explode" modal="true" resizable="true">
                 <p:panelGrid id="displayHBN" columns="3" columnClasses="5" style="margin: 0 auto;">
                     <p:outputLabel for="projectName" value="Project Name:"/>
-                    <p:inputText id="projectName" value="#{projectHibernate.project.projectName}" required="true">
+                    <p:inputText id="projectName" value="#{projectBean.project.projectName}" required="true">
                         <f:validateLength minimum="6" maximum="100"/>
                     </p:inputText>
                     <p:message for="projectName"  />
 
                     <p:outputLabel for="startDate" value="Start Date:" />
-                    <p:calendar id="startDate" value="#{projectHibernate.project.startDate}" required="true" pattern="dd-MM-yy" effect="true">
+                    <p:calendar id="startDate" value="#{projectBean.project.startDate}" required="true" pattern="dd-MM-yy" effect="true">
                         <f:convertDateTime pattern="dd-MM-yy" />
                     </p:calendar>
                     <p:message for="startDate"  />
 
                     <p:outputLabel for="descriptiton" value="Description: "  />
-                    <p:inputTextarea id="descriptiton" value="#{projectHibernate.project.description}"
+                    <p:inputTextarea id="descriptiton" value="#{projectBean.project.description}"
                                      required="true" cols="42" rows="4" >
                         <f:validateLength minimum="10" />
                     </p:inputTextarea>
                     <p:message for="descriptiton"  />
 
                     <p:outputLabel for="duration" value="Duration(Day): "  />
-                    <p:spinner id="duration" min="1" max="1000" value="#{projectHibernate.project.duration}"   />
+                    <p:spinner id="duration" min="1" max="1000" value="#{projectBean.project.duration}"   />
                     <p:message for="duration"  />
 
                     <p:outputLabel for="projectType" value="Project Type: "  />
-                    <h:selectOneMenu id="projectType" value="#{projectHibernate.project.type}" converter="typeConverter">
-                        <f:selectItems value="#{projectHibernate.types}" var="type"
+                    <h:selectOneMenu id="projectType" value="#{projectBean.project.type}" converter="typeConverter">
+                        <f:selectItems value="#{projectBean.types}" var="type"
                                        itemValue="#{type}" itemLabel="#{type.typeName}" />
                     </h:selectOneMenu>
                     <p:message for="projectType"  />
+
+                    <f:facet name="footer">
+                        <p:separator />
+                        <p:commandButton id="confirm" value="Apply" update=":formList" oncomplete="PF('createPJUSHBN').hide()"
+                                         icon="ui-icon-circle-check" title="Create" actionListener="#{projectBean.createProject(event)}" />
+                        <p:commandButton id="cancel" value="Cancel" onclick="PF('createPJUSHBN').hide()" icon="ui-icon-circle-close" title="Create" />
+                    </f:facet>
                 </p:panelGrid>
             </p:dialog>
 
+            <h:form id="formAT">
+                <p:confirmDialog id="confirmDialog" message="Do you want active to project?" header="Active project" severity="alert"
+                                 widgetVar="ActiveHBN" showEffect="fade" hideEffect="explode">
+                    <h:inputHidden value="#{projectBean.project.projectId}" />
+                    <p:commandButton id="confirm" value="Yes" update=":formList" 
+                                     actionListener="#{projectBean.activeProject(event)}"
+                                     styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+                                     oncomplete="PF('ActiveHBN').hide()"/>                    
+                    <p:commandButton id="cancel" value="Cancel" onclick="PF('ActiveHBN').hide()"
+                                     styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                </p:confirmDialog>
+            </h:form>
+
+            <h:form id="formUAT">
+                <p:confirmDialog id="confirmDialog" message="Do you want unactive to project?" header="Unactive project" severity="alert"
+                                 widgetVar="UnactiveHBN" showEffect="fade" hideEffect="explode">
+                    <h:inputHidden value="#{projectBean.project.projectId}" />
+                    <p:commandButton id="confirm" value="Yes" update=":formList" 
+                                     actionListener="#{projectBean.inactiveProject(event)}"
+                                     styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
+                                     oncomplete="PF('UnactiveHBN').hide()"/>                    
+                    <p:commandButton id="cancel" value="Cancel" onclick="PF('UnactiveHBN').hide()"
+                                     styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                </p:confirmDialog>
+            </h:form>
         </h:form>
 
     </h:body>

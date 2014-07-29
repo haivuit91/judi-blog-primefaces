@@ -15,17 +15,17 @@
                     <h:form id="formList">
                         <p:growl id="msgs" life="2000" showDetail="true"/>
                         <h:panelGroup id="result2">
-                            <p:dataTable value="#{projectHibernate.projects}" var="projectList" rows="6" id="dataTables"  paginator="true"
+                            <p:dataTable value="#{projectBean.projects}" var="projectList" rows="6" id="dataTables"  paginator="true"
                                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                          rowsPerPageTemplate="5,10,15"
                                          widgetVar="projectsTable" paginatorPosition="bottom" 
-                                         emptyMessage="No cars found with given criteria" filteredValue="#{projectHibernate.filteredProjects}">
+                                         emptyMessage="No cars found with given criteria" filteredValue="#{projectBean.filteredProjects}">
                                 <f:facet name="header">
                                     <p:outputLabel value="Projects management using hibernate" style="font-size: 30px"/>
                                     <p:toolbar style="border: none; background: none">
                                         <f:facet name="left">
                                             <p:commandButton value="New Project" id="selectButton" update=":formCreate" oncomplete="PF('createProject').show()" icon="ui-icon-heart" title="Creater" styleClass="ui-priority-primary" >
-                                                <f:setPropertyActionListener value="#{project}" target="#{projectHibernate.project}"/>
+                                                <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}"/>
                                             </p:commandButton> 
                                         </f:facet>
                                         <f:facet name="right">
@@ -60,7 +60,12 @@
                                     <f:facet name="header">Description</f:facet>
                                     <h:outputText value="#{projectList.description}" />
                                 </p:column>
-                               <p:column headerText="Status" width="35" style="font-size: small;"  >
+                                <p:column headerText="Users" style="font-size: small" width="100" >
+                                    <ui:repeat value="#{projectList.projectUserDetailses}" var="userHBN">
+                                        <h:outputText value="#{userHBN.user.userName}" />
+                                    </ui:repeat>
+                                </p:column>
+                                <p:column headerText="Status" width="35" style="font-size: small;"  >
                                     <p:commandButton update=":formUnactive" rendered="#{projectList.active == true?'true':'false'}"
                                                      oncomplete="PF('Unactive').show()"  icon="ui-icon-unlocked" title="Active" >
                                         <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
@@ -73,11 +78,11 @@
                                 <p:column width="100">
                                     <f:facet name="header">Function</f:facet>
                                     <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-pencil" title="Update" styleClass="ui-priority-primary" >
-                                        <f:setPropertyActionListener value="#{projectList}" target="#{projectHibernate.project}"/>
+                                        <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}"/>
                                     </p:commandButton>  
 
                                     <p:commandButton update=":formDelete" oncomplete="PF('deleteProject').show()" icon="ui-icon-trash" title="Delete" styleClass="ui-priority-primary" >
-                                        <f:setPropertyActionListener value="#{projectList}" target="#{projectHibernate.project}"/>
+                                        <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}"/>
                                     </p:commandButton>
                                 </p:column>
                             </p:dataTable>
