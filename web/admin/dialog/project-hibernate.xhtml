@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Project Using Hibernate</title>
+    </h:head>
+    <h:body>
+        <h:form id="formCreateHibernate">
+            <p:dialog header="Create Project Using HBN" widgetVar="createPJUSHBN" showEffect="explode"
+                      hideEffect="explode" modal="true" resizable="true">
+                <p:panelGrid id="displayHBN" columns="3" columnClasses="5" style="margin: 0 auto;">
+                    <p:outputLabel for="projectName" value="Project Name:"/>
+                    <p:inputText id="projectName" value="#{projectHibernate.project.projectName}" required="true">
+                        <f:validateLength minimum="6" maximum="100"/>
+                    </p:inputText>
+                    <p:message for="projectName"  />
+
+                    <p:outputLabel for="startDate" value="Start Date:" />
+                    <p:calendar id="startDate" value="#{projectHibernate.project.startDate}" required="true" pattern="dd-MM-yy" effect="true">
+                        <f:convertDateTime pattern="dd-MM-yy" />
+                    </p:calendar>
+                    <p:message for="startDate"  />
+
+                    <p:outputLabel for="descriptiton" value="Description: "  />
+                    <p:inputTextarea id="descriptiton" value="#{projectHibernate.project.description}"
+                                     required="true" cols="42" rows="4" >
+                        <f:validateLength minimum="10" />
+                    </p:inputTextarea>
+                    <p:message for="descriptiton"  />
+
+                    <p:outputLabel for="duration" value="Duration(Day): "  />
+                    <p:spinner id="duration" min="1" max="1000" value="#{projectHibernate.project.duration}"   />
+                    <p:message for="duration"  />
+
+                    <p:outputLabel for="projectType" value="Project Type: "  />
+                    <h:selectOneMenu id="projectType" value="#{projectHibernate.project.type}" converter="typeConverter">
+                        <f:selectItems value="#{projectHibernate.types}" var="type"
+                                       itemValue="#{type}" itemLabel="#{type.typeName}" />
+                    </h:selectOneMenu>
+                    <p:message for="projectType"  />
+                </p:panelGrid>
+            </p:dialog>
+
+        </h:form>
+
+    </h:body>
+</html>
+
