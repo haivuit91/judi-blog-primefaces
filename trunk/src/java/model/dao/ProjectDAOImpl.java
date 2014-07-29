@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package model.dao;
 
 import model.entities.Project;
@@ -20,7 +19,7 @@ import model.dao.service.ProjectDAO;
  *
  * @author Tuanka
  */
-public class ProjectDAOImpl implements ProjectDAO{
+public class ProjectDAOImpl implements ProjectDAO {
 
     private static ProjectDAOImpl projectDAO;
 
@@ -30,7 +29,7 @@ public class ProjectDAOImpl implements ProjectDAO{
         }
         return projectDAO;
     }
-    
+
     private HibernateUtil util;
     private Session session;
 
@@ -43,7 +42,7 @@ public class ProjectDAOImpl implements ProjectDAO{
             tx = session.beginTransaction();
             String sql = "FROM Project";
             Query query = session.createQuery(sql);
-            projects = query.list();   
+            projects = query.list();
             for (Project project : projects) {
                 project.setProjectUserDetailses(ProjectUserDAOImpl.getInstance().getPUByProject(project));
             }
@@ -179,7 +178,9 @@ public class ProjectDAOImpl implements ProjectDAO{
     @Override
     public boolean deleteProject(Project project) {
         boolean isCheck = false;
-        session = util.getSessionFactory().openSession();
+        if (!session.isOpen()) {
+            session = util.getSessionFactory().openSession();
+        }
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
@@ -244,5 +245,5 @@ public class ProjectDAOImpl implements ProjectDAO{
         }
         return isCheck;
     }
-    
+
 }

@@ -124,18 +124,31 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
     }
 
     @Override
-    public List<User> getUserNotJoin(Project project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean checkJoinUser(User user, Project project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public boolean isExistUserInProject(Project project, User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "FROM ProjectUserDetails as p WHERE p.user = :user and p.project = :project";
+            Query query = session.createQuery(sql);
+            query.setParameter("user", user);
+            query.setParameter("project", project);
+            if (query.list().size() > 0) {
+                isCheck = true;
+            }
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
@@ -185,18 +198,54 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
     }
 
     @Override
-    public boolean deleteUserJoinedProject(Project project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public boolean deletePUByProject(Project project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "DELETE FROM ProjectUserDetails as p WHERE p.project = :project";
+            Query query = session.createQuery(sql);
+            query.setParameter("project", project);
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean removeUserLeaProject(User user, Project project) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "DELETE FROM ProjectUserDetails as p WHERE p.user = :user and p.project = :project";
+            Query query = session.createQuery(sql);
+            query.setParameter("user", user);
+            query.setParameter("project", project);
+            query.executeUpdate();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
 }
