@@ -56,11 +56,10 @@ public class UserBean {
         } else {
             imagePath = "images/avartar/avatar_female.jpg";
         }
-        Role r = Role_SERVICE.getRoleByID(4);
+        Role r = Role_SERVICE.getRoleByID(2);
 
         String idActive = util.Support.encryptMD5(userName + new Date().toString());
-
-        User user11 = new User(1, r, userName, pwd, fullName, birthOfDay, gender, idCard, address, email, phone, imagePath, idActive, true);
+        User user11 = new User(1, r, userName, pwd, fullName, birthOfDay, gender, idCard, address, email, phone, imagePath, idActive, false);
         if (!USER_SERVICE.checkUser(userName)) {
             if (!USER_SERVICE.checkEmail(email)) {
                 if (USER_SERVICE.createUser(user11)) {
