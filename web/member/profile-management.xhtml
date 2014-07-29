@@ -8,33 +8,47 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="content">
         <p:growl id="messageProfile" showDetail="true" />
-        <h:form id="formProfileList" style="margin-left: 200px  ">      
-            <p:panelGrid  columns="2" >
-                <p:outputLabel value="Username:" style="font-weight: bold"/>
-                <p:outputLabel value="#{sessionScope.currentUser.userName}" style="font-size:20px "/>
-                <p:outputLabel value="Full name:" style="font-weight: bold"/>
-                <p:outputLabel value="#{sessionScope.currentUser.fullName}" style="font-size:20px "/>
-                <p:outputLabel value="gender " style="font-weight: bold" />
-                
-                <p:outputLabel value="#{sessionScope.currentUser.gender > 0 ? 'Female': 'Male' }" style="font-size:20px "/>
-                <p:outputLabel value="Email" style="font-weight: bold" />
-                <p:outputLabel value="#{sessionScope.currentUser.email}" style="font-size:20px "/>
-
-                <p:outputLabel value="address" style="font-weight: bold" />
-                <p:outputLabel value="#{sessionScope.currentUser.address}" style="font-size:20px "/>
-                
-                <p:outputLabel value="phone" style="font-weight: bold" />
-                <p:outputLabel value="#{sessionScope.currentUser.phone}" style="font-size:20px "/>
-
-                <p:outputLabel value="BirthDate: " style="font-weight: bold"/>
-                <p:outputLabel value="#{sessionScope.currentUser.birthday}" style="font-size: 20px">  
-                <f:convertDateTime dateStyle="default" pattern="dd/MM/yyyy"  type="date"/> 
+        <h:form id="formProfileList" style="margin-left: 10px;padding-left:0px;padding-top:10px;background-color: darkslategray;border-radius: 10px  ">     
+            <p style="padding: 10px;color: yellowgreen;font-size: 4em;font-weight: bold;text-transform: uppercase;text-align: center">
+                user profile
+            </p>
+            <p style="padding: 10px;background: #045491;color: wheat">
+                <p:outputLabel value="Username:"  />
+                <p:outputLabel value="#{sessionScope.currentUser.userName}" style="font-size:14px;font-weight: bold;margin-left: 3%;"/><br/>
+            </p> 
+            <p style="padding: 10px;background: #ccffcc">
+                <p:outputLabel value="Full name:" />
+                <p:outputLabel value="#{sessionScope.currentUser.fullName}" style="font-size:14px;font-weight: bold;margin-left: 3% " /><br/>
+            </p>
+            <p style="padding: 10px;background: #045491;color: wheat">
+                <p:outputLabel value="gender: "  />
+                <p:outputLabel value="#{sessionScope.currentUser.gender > 0 ? 'Female': 'Male' }" style="font-size:14px;font-weight: bold;margin-left: 3% "/><br/>
+            </p>
+            <p style="padding: 10px;background: #ccffcc">
+                <p:outputLabel value="Email:" />
+                <p:outputLabel value="#{sessionScope.currentUser.email}" style="font-size:14px;font-weight: bold;margin-left: 3% "/><br/>
+            </p>
+            <p style="padding: 10px;background: #045491;color: wheat">
+                <p:outputLabel value="Address:"  />
+                <p:outputLabel value="#{sessionScope.currentUser.address}" style="font-size:14px;font-weight: bold;margin-left: 3%  "/><br/>
+            </p>
+            <p style="padding: 10px;background: #ccffcc">
+                <p:outputLabel value="Phone:"  />
+                <p:outputLabel value="#{sessionScope.currentUser.phone}" style="font-size:14px;font-weight: bold;margin-left: 3% "/><br/>
+            </p>
+            <p style="padding: 10px;background: #045491;color: wheat">
+                <p:outputLabel value="BirthDate: "/>
+                <p:outputLabel value="#{sessionScope.currentUser.birthday}" style="font-size:14px;font-weight: bold;margin-left: 3% ">  <br/>
+                    <f:convertDateTime dateStyle="default" pattern="dd/MM/yyyy"  type="date"/> <br/>
                 </p:outputLabel>
-            </p:panelGrid>
-            <p:commandButton update=":editUser" oncomplete="PF('editDialog').show()" value="Edit" icon="ui-icon-pencil" >
-                <f:setPropertyActionListener value="#{alluser}" target="#{userBean.user}" />
-            </p:commandButton>
-            <p:commandButton action="#" value="Cancel"/>    
+            </p>
+            <p style="padding: 10px;background: #ccffcc">
+                <p:commandButton update=":editUser" oncomplete="PF('editDialog').show()" value="Edit" icon="ui-icon-pencil" >
+                    <f:setPropertyActionListener value="#{alluser}" target="#{userBean.user}" />
+                </p:commandButton>
+                <p:commandButton action="#" value="Cancel"/>    
+            </p>
+
 
         </h:form>
         <h:form id="editUser">
@@ -55,8 +69,8 @@
                         </p:inplace>
 
                         <p:outputLabel for="birthday" value="BirthDate: "/>
-                        <p:calendar id="birthday" value="#{sessionScope.currentUser.birthday}" required="true" pattern="dd/MM/yyyy" >
-                            <f:convertDateTime pattern="dd/MM/yyyy" />
+                        <p:calendar id="birthday" value="#{sessionScope.currentUser.birthday}" effect="fold" pattern="dd/MM/yyyy" >
+                            <f:convertDateTime  pattern="dd/MM/yyyy" />
                         </p:calendar>
 
                         <p:outputLabel for="email" value="Email:" />
@@ -71,8 +85,7 @@
 
                         <p:outputLabel for="gender" value="Gender:" />
                         <p:inplace>
-                            <p:selectOneMenu id="gender" value="#{sessionScope.currentUser.gender} ">
-                                
+                            <p:selectOneMenu id="gender" value="#{sessionScope.currentUser.gender> 0 ? 'Female': 'Male'} ">
                                 <f:selectItem itemLabel="Female" itemValue="1" />
                                 <f:selectItem itemLabel="Male" itemValue="0" />
                             </p:selectOneMenu>
