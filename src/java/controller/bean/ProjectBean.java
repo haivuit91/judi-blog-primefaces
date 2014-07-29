@@ -40,7 +40,7 @@ public class ProjectBean {
     private final ProjectUserDAO PU_SERVICE = ProjectUserDAOImpl.getInstance();
     private final UserDAO USER_SERVICE = UserDAOImpl.getInstance();
 
-    private Project project;
+    private Project project = new Project();
     private Type projectType;
     private List<Type> types;
     private List<Project> projects;
@@ -71,7 +71,7 @@ public class ProjectBean {
      * @return project list of user
      */
     public List<Project> getProjectsByUser() {
-        List<Project> projectByUser = new ArrayList<>();
+        List<Project> projectByUser = new ArrayList<Project>();
         List<ProjectUserDetails> puList = PU_SERVICE.getPUByUser(util.Support.getCurrentUser());
         for (ProjectUserDetails projectUserDetails : puList) {
             projectByUser.add(projectUserDetails.getProject());
