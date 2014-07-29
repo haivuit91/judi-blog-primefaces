@@ -415,4 +415,28 @@ public class UserDAOImpl implements UserDAO {
         return isCheck;
     }
 
+    @Override
+    public boolean makeAdmin(User user) {
+        boolean isCheck = false;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "UPDATE User set roleID = 1 WHERE userID = :userID";
+            Query query = session.createQuery(sql);
+            query.setParameter("userID", user.getUserId());
+            query.executeUpdate();
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return isCheck;
+    }
+
 }
