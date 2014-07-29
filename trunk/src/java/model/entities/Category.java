@@ -85,9 +85,15 @@ public class Category  implements java.io.Serializable {
         this.posts = posts;
     }
 
-
-
-
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Category){
+            Category category =(Category)obj;
+            return category.getCategoryId() == this.getCategoryId();
+        }
+        return false;
+    }
+    
 }
 
 
