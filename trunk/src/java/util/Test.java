@@ -5,17 +5,14 @@
  */
 package util;
 
-import dao.ProjectDAOImpl;
-import dao.ProjectTypeDAOImpl;
-import dao.ProjectUserDAOImpl;
-import dao.RoleDAOImpl;
-import dao.UserDAOImpl;
+
 import model.entities.Project;
-import model.entities.Role;
-import model.entities.Type;
 import model.entities.User;
-import java.util.Date;
 import java.util.List;
+import model.dao.ProjectDAOImpl;
+import model.dao.ProjectUserDAOImpl;
+import model.dao.RoleDAOImpl;
+import model.dao.UserDAOImpl;
 
 /**
  *
@@ -35,13 +32,9 @@ public class Test {
 //        Project p = projectDAO.getProjectByID(1);
 //        List<User> users = puDAO.getUserByProject(p);
 //        System.out.println(users.get(0).getUserName());
-        List<User> users = userDAO.getUsers();
-        for (User user : users) {
-            System.out.println(user.getProjectUserDetails().size());
-        }
-        List<Project> projects = projectDAO.getProjects();
-        for (Project project : projects) {
-            System.out.println(project.getProjectUserDetailses().size());
-        }
+        
+        String userName = "admin";
+        String pwd = "admin";
+        System.out.println(userDAO.checkLogin(userName, pwd));
     }
 }

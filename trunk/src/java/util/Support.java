@@ -29,7 +29,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import model.oldentities.User;
+import model.entities.User;
 import org.apache.commons.fileupload.FileItemStream;
 
 /**

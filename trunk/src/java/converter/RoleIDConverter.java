@@ -4,14 +4,14 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import model.olddao.RoleDAO;
-import model.olddao.service.RoleDAOService;
-import model.oldentities.Role;
+import model.dao.RoleDAOImpl;
+import model.dao.service.RoleDAO;
+import model.entities.Role;
 
 @FacesConverter("roleConverter")
 public class RoleIDConverter implements Converter {
 
-    private final RoleDAOService ROLE_SERVICE = RoleDAO.getInstance();
+    private final RoleDAO ROLE_SERVICE = RoleDAOImpl.getInstance();
 
     /**
      * Creates a new instance of RoleIDConverter
@@ -23,7 +23,7 @@ public class RoleIDConverter implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         Role roleName = null;
         if (value != null) {
-            roleName = ROLE_SERVICE.getRolesByName(value);
+            roleName = ROLE_SERVICE.getRoleByName(value);
             roleName.setRoleName(value);
         }
         return roleName;

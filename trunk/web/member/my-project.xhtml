@@ -37,10 +37,10 @@
                                     <p:inputText id="globalFilter" onkeyup="PF('dtProjects').filter()" style="width:150px" placeholder="Enter keyword"/>
                                 </p:outputPanel>
                             </f:facet>
-            <!--            <p:column headerText="ID" filterBy="#{project.projectID}" filterMatchMode="contains" filterStyle="width: 20px;" >
-                                <h:outputText value="#{project.projectID}" />
+            <!--            <p:column headerText="ID" filterBy="#{project.projectId}" filterMatchMode="contains" filterStyle="width: 20px;" >
+                                <h:outputText value="#{project.projectId}" />
                             </p:column>-->
-                            <h:inputHidden value="#{project.projectID}" />
+                            <h:inputHidden value="#{project.projectId}" />
                             <p:column headerText="Project Name" filterBy="#{project.projectName}" filterMatchMode="contains" 
                                       filterStyle="width: 130px;" toggleable="false" style="font-size: small" >
                                 <h:outputText value="#{project.projectName}" />
@@ -76,10 +76,10 @@
                             <p:column headerText="Users Joined" style="font-size: small" width="100" >
                                 <p:commandButton update=":formUserJoining" icon="ui-icon-refresh" title="Edit users" 
                                                  style="float:right" oncomplete="PF('dialogUserJoining').show()" >
-                                    <f:setPropertyActionListener value="#{project}" target="#{projectUserBean.project}" />                        
+                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />                        
                                 </p:commandButton>
-                                <ui:repeat value="#{project.userList}" var="user">
-                                    <h:outputText value="#{user.userName}" />
+                                <ui:repeat value="#{project.projectUserDetailses}" var="pu">
+                                    <h:outputText value="#{pu.user.userName}" />
                                     <h:outputText value=" " />
                                 </ui:repeat>
                             </p:column>
@@ -174,8 +174,8 @@
                                   hideEffect="explode" modal="true" resizable="true">
                             <h:panelGrid id="display" columns="3" cellpadding="5" style="margin: 0 auto; " >
                                 <p:outputLabel value="Project ID:"  />
-                                <p:outputLabel value="#{projectBean.project.projectID}"  />                    
-                                <h:inputHidden value="#{projectBean.project.projectID}" />
+                                <p:outputLabel value="#{projectBean.project.projectId}"  />                    
+                                <h:inputHidden value="#{projectBean.project.projectId}" />
 
                                 <p:outputLabel for="projectName" value="Project Name:"  />
                                 <p:inplace>
@@ -233,7 +233,7 @@
                         <p:confirmDialog id="confirmDialog" message="are you really want to delete project:
                                          #{projectBean.project.projectName} ?" header="Delete project" severity="alert"
                                          widgetVar="dialogDeleteProject" showEffect="fade" hideEffect="explode">
-                            <h:inputHidden value="#{projectBean.project.projectID}" />
+                            <h:inputHidden value="#{projectBean.project.projectId}" />
                             <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
                                              actionListener="#{projectBean.deleteProject(event)}"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
@@ -247,7 +247,7 @@
                         <p:confirmDialog id="confirmDialog" message="Are you really want to active project:
                                          #{projectBean.project.projectName} ?" header="Active project" severity="alert"
                                          widgetVar="dialogActiveProject" showEffect="fade" hideEffect="explode">
-                            <h:inputHidden value="#{projectBean.project.projectID}" />
+                            <h:inputHidden value="#{projectBean.project.projectId}" />
                             <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
                                              actionListener="#{projectBean.activeProject(event)}"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
@@ -262,7 +262,7 @@
                         <p:confirmDialog id="confirmDialog" message="Are you really want to inactive project:
                                          #{projectBean.project.projectName} ?" header="Inactive project" severity="alert"
                                          widgetVar="dialogInactiveProject" showEffect="fade" hideEffect="explode">
-                            <h:inputHidden value="#{projectBean.project.projectID}" />
+                            <h:inputHidden value="#{projectBean.project.projectId}" />
                             <p:commandButton id="confirm" value="Yes" update=":formProjectList, :messageProject" 
                                              actionListener="#{projectBean.inactiveProject(event)}"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" 
@@ -275,10 +275,10 @@
                     <h:form id="formUserJoining">
                         <p:dialog header="Edit user joining project" widgetVar="dialogUserJoining" showEffect="fold" 
                                   hideEffect="fold" modal="true" resizable="true">
-                            <p:orderList value="#{projectUserBean.userJoining}" var="userJoining" controlsLocation="none"
+<!--                            <p:orderList value="#{projectBean.allProject}" var="userJoining" controlsLocation="none"
                                          itemLabel="#{userJoining.userName}" itemValue="#{userJoining}" >
                                 <f:facet name="caption">User Joined</f:facet>
-                            </p:orderList>
+                            </p:orderList>-->
                             <p:commandButton value="Submit" style="margin-top:5px" />
 
                         </p:dialog>
@@ -288,7 +288,7 @@
                                   hideEffect="explode" modal="true" resizable="true">
                             <h:panelGrid id="display" columns="2" cellpadding="5" style="margin: 0 auto; " >
                                 <p:outputLabel value="Project ID:"  />
-                                <p:outputLabel value="#{projectBean.project.projectID}"  />                    
+                                <p:outputLabel value="#{projectBean.project.projectId}"  />                    
 
                                 <p:outputLabel value="Project Name:"  />
                                 <p:outputLabel value="#{projectBean.project.projectName}"  />

@@ -5,6 +5,10 @@
  */
 package controller.bean;
 
+import model.dao.ProjectDAOImpl;
+import model.dao.ProjectTypeDAOImpl;
+import model.dao.ProjectUserDAOImpl;
+import model.dao.UserDAOImpl;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,18 +17,14 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import model.olddao.ProjectDAO;
-import model.olddao.ProjectTypeDAO;
-import model.olddao.ProjectUserDAO;
-import model.olddao.UserDAO;
-import model.olddao.service.ProjectDAOService;
-import model.olddao.service.ProjectTypeDAOService;
-import model.olddao.service.ProjectUserDAOService;
-import model.olddao.service.UserDAOService;
-import model.oldentities.Project;
-import model.oldentities.ProjectType;
-import model.oldentities.ProjectUserDetails;
-import model.oldentities.User;
+import model.dao.service.ProjectDAO;
+import model.dao.service.ProjectUserDAO;
+import model.dao.service.TypeDAO;
+import model.dao.service.UserDAO;
+import model.entities.Project;
+import model.entities.ProjectUserDetails;
+import model.entities.Type;
+import model.entities.User;
 import org.primefaces.model.DualListModel;
 
 /**
@@ -35,14 +35,14 @@ import org.primefaces.model.DualListModel;
 @RequestScoped
 public class ProjectBean {
 
-    private final ProjectDAOService PROJECT_SERVICE = ProjectDAO.getInstance();
-    private final ProjectTypeDAOService TYPE_SERVICE = ProjectTypeDAO.getInstance();
-    private final ProjectUserDAOService PU_SERVICE = ProjectUserDAO.getInstance();
-    private final UserDAOService USER_SERVICE = UserDAO.getInstance();
+    private final ProjectDAO PROJECT_SERVICE = ProjectDAOImpl.getInstance();
+    private final TypeDAO TYPE_SERVICE = ProjectTypeDAOImpl.getInstance();
+    private final ProjectUserDAO PU_SERVICE = ProjectUserDAOImpl.getInstance();
+    private final UserDAO USER_SERVICE = UserDAOImpl.getInstance();
 
     private Project project;
-    private ProjectType projectType;
-    private List<ProjectType> types;
+    private Type projectType;
+    private List<Type> types;
     private List<Project> projects;
     private List<Project> filteredProjects;
 
@@ -71,8 +71,12 @@ public class ProjectBean {
      * @return project list of user
      */
     public List<Project> getProjectsByUser() {
-        List<Project> projectsByUser = PU_SERVICE.getProjectByUser(util.Support.getCurrentUser().getUserID());
-        return projectsByUser;
+        List<Project> projectByUser = new ArrayList<>();
+        List<ProjectUserDetails> puList = PU_SERVICE.getPUByUser(util.Support.getCurrentUser());
+        for (ProjectUserDetails projectUserDetails : puList) {
+            projectByUser.add(projectUserDetails.getProject());
+        }
+        return projectByUser;
     }
 
     /**
@@ -81,15 +85,20 @@ public class ProjectBean {
      * @return users not joining to project p yet.
      */
     public List<User> getUserNameNotJoined(Project p) {
-        List<User> userLists = USER_SERVICE.getAllUser();
+        List<User> userLists = USER_SERVICE.getUsers();
         List<String> usersName = new ArrayList<>();
-        for (User user : userLists) {
-            usersName.add(user.getUserName());
+        for (User user1 : userLists) {
+            usersName.add(user1.getUserName());
         }
-        List<User> usersJoined = PU_SERVICE.getUserByProject(p.getProjectID());
+        List<User> usersJoined = new ArrayList<>();
+        List<ProjectUserDetails> puList = p.getProjectUserDetailses();
+        for (ProjectUserDetails projectUserDetails : puList) {
+            usersJoined.add(projectUserDetails.getUser());
+        }
+        
         List<String> usersNameJoined = new ArrayList<>();
-        for (User user : usersJoined) {
-            usersNameJoined.add(user.getUserName());
+        for (User user2 : usersJoined) {
+            usersNameJoined.add(user2.getUserName());
         }
         usersName.removeAll(usersNameJoined);
         List<User> userList = new ArrayList<>();
@@ -107,14 +116,14 @@ public class ProjectBean {
      * @return
      */
     public String getCreater(Project p) {
-        List<ProjectUserDetails> puList = PU_SERVICE.getPUByProjectID(p.getProjectID());
-        String creater = "";
+        List<ProjectUserDetails> puList = PU_SERVICE.getPUByProject(p);
+        String creator = "";
         for (ProjectUserDetails projectUserDetails : puList) {
-            if (projectUserDetails.getCreater() == 1) {
-                creater = projectUserDetails.getUser().getUserName();
+            if (projectUserDetails.isCreator()) {
+                creator = projectUserDetails.getUser().getUserName();
             }
         }
-        return creater;
+        return creator;
     }
 
     /**
@@ -125,14 +134,14 @@ public class ProjectBean {
     public void createProject(ActionEvent event) {
         String msg = "";
         if (PROJECT_SERVICE.createProject(this.project)) {
-            User user = util.Support.getCurrentUser();
-            if (user == null) {
+            User user2 = util.Support.getCurrentUser();
+            if (user2 == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "Invalid Login!", "Please try again!"));
             } else {
                 List<Project> projectList = PROJECT_SERVICE.getProjectByName(this.project.getProjectName());
                 Project pro = projectList.get(projectList.size() - 1);
-                ProjectUserDetails pud = new ProjectUserDetails(1, user, pro, 1);
+                ProjectUserDetails pud = new ProjectUserDetails(pro, user2, true);
                 if (PU_SERVICE.createPUD(pud)) {
                     msg += "Project created successfully by: " + user.getFullName() + "\n";
                 } else {
@@ -158,23 +167,23 @@ public class ProjectBean {
      * @param event
      */
     public void updateProject(ActionEvent event) {
-        String msg;
+        String msg = "";
 //        if (PROJECT_SERVICE.updateProject(this.project)) {
 //            msg = "Project updated successfully!";
 //        } else {
 //            msg = "Update project failed !";
 //        }
-        int projectID = getProject().getProjectID();
+        int projectID = getProject().getProjectId();
         String projectName = getProject().getProjectName();
         String description = getProject().getDescription();
         Date startDate = getProject().getStartDate();
-        java.sql.Date date = new java.sql.Date(startDate.getTime());
         int duration = getProject().getDuration();
-        ProjectType type = this.projectType;
-        int active = getProject().getActive();
-        Project pro = new Project(projectID, projectName, description, date, duration, type, active);
+        Type type = this.projectType;
+        boolean active = getProject().isActive();
+        List<ProjectUserDetails> puList = getProject().getProjectUserDetailses();
+        Project pro = new Project(projectID, type, projectName, description, startDate, duration, active, puList);
         if (PROJECT_SERVICE.updateProject(pro)) {
-            msg = "Project updated successfully!";
+            msg += "Project updated successfully!";
         }
         msg = "Update project failed !";
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
@@ -189,9 +198,9 @@ public class ProjectBean {
      */
     public void deleteProject(ActionEvent event) {
         String msg;
-        int projectID = this.project.getProjectID();
-        if (PU_SERVICE.deletePUByProjectID(projectID)) {
-            if (PROJECT_SERVICE.deleteProject(projectID)) {
+        int projectID = this.project.getProjectId();
+        if (PU_SERVICE.deletePUByProject(this.project)) {
+            if (PROJECT_SERVICE.deleteProject(this.project)) {
                 msg = "Project deleted successfully!";
             } else {
                 msg = "Delete project failed !";
@@ -210,7 +219,7 @@ public class ProjectBean {
      */
     public void activeProject(ActionEvent event) {
         String msg;
-        if (PROJECT_SERVICE.activeProject(this.project.getProjectID())) {
+        if (PROJECT_SERVICE.activeProject(this.project)) {
             msg = "Project actived succesfully !";
         } else {
             msg = "Project actived failed !";
@@ -226,7 +235,7 @@ public class ProjectBean {
      */
     public void inactiveProject(ActionEvent event) {
         String msg;
-        if (PROJECT_SERVICE.inactiveProject(this.project.getProjectID())) {
+        if (PROJECT_SERVICE.inactiveProject(this.project)) {
             msg = "Project inactived succesfully !";
         } else {
             msg = "Project inactived failed !";
@@ -238,21 +247,21 @@ public class ProjectBean {
     /**
      * @return the projectType
      */
-    public ProjectType getProjectType() {
+    public Type getType() {
         return projectType;
     }
 
     /**
      * @param projectType the projectType to set
      */
-    public void setProjectType(ProjectType projectType) {
+    public void setType(Type projectType) {
         this.projectType = projectType;
     }
 
     /**
      * @return the types
      */
-    public List<ProjectType> getTypes() {
+    public List<Type> getTypes() {
         types = TYPE_SERVICE.getTypes();
         return types;
     }
@@ -260,7 +269,7 @@ public class ProjectBean {
     /**
      * @param types the types to set
      */
-    public void setTypes(List<ProjectType> types) {
+    public void setTypes(List<Type> types) {
         this.types = types;
     }
 
@@ -279,7 +288,11 @@ public class ProjectBean {
 
         //
         usersSource = getUserNameNotJoined(project);
-        usersTarget = PU_SERVICE.getUserByProject(project.getProjectID());
+        List<ProjectUserDetails> puList = project.getProjectUserDetailses();
+        for (ProjectUserDetails projectUserDetails : puList) {
+            usersTarget.add(projectUserDetails.getUser());
+        }
+        
 
         usersDualList = new DualListModel<User>(usersSource, usersTarget);
     }

@@ -10,9 +10,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import model.olddao.UserDAO;
-import model.olddao.service.UserDAOService;
-import model.oldentities.User;
+import model.dao.UserDAOImpl;
+import model.dao.service.UserDAO;
+import model.entities.User;
 
 /**
  *
@@ -21,7 +21,7 @@ import model.oldentities.User;
 @FacesConverter("userConverter")
 public class UserConverter implements Converter{
 
-    private final UserDAOService USER_SERVICE = UserDAO.getInstance();
+    private final UserDAO USER_SERVICE = UserDAOImpl.getInstance();
     
     @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {

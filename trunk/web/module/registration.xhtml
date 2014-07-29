@@ -41,7 +41,7 @@
                     <p:message for="fullName" />
 
                     <p:outputLabel for="birthday" value="Birth Of Date: " />
-                    <p:calendar id="birthday" value="#{userBean.user.birthday}" required="true" pattern="dd/MM/yyyy" 
+                    <p:calendar id="birthday" value="#{userBean.user.birthOfDay}" required="true" pattern="dd/MM/yyyy" 
                                 size="10" maxdate="#{utilBean.date}" navigator="true" >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </p:calendar>
@@ -78,7 +78,7 @@
                     <p:outputLabel for="phone" value="Phone Number: " />
                     <p:inputText id="phone" label="phone" size="20"
                                  validatorMessage="Invalid phone format"
-                                 value="#{userBean.user.phone}">
+                                 value="#{userBean.user.phoneNumber}">
                         <f:validateRegex
                             pattern="^[0][0-9]{9,10}$" />
                     </p:inputText>

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package dao;
+package model.dao;
 
 import model.entities.Project;
 import model.entities.Type;
@@ -45,7 +45,7 @@ public class ProjectDAOImpl implements ProjectDAO{
             Query query = session.createQuery(sql);
             projects = query.list();   
             for (Project project : projects) {
-                project.setProjectUserDetailses(ProjectUserDAOImpl.getInstance().getPUByProjectID(project));
+                project.setProjectUserDetailses(ProjectUserDAOImpl.getInstance().getPUByProject(project));
             }
             session = util.getSessionFactory().openSession();
             tx.commit();

@@ -19,8 +19,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.oldentities.User;
-
+import model.entities.User;
 /**
  *
  * @author cong0_000
@@ -110,7 +109,7 @@ public class AdminFilter implements Filter {
             HttpServletResponse res = (HttpServletResponse) response;
             HttpSession session = req.getSession();
             User user = (User) session.getAttribute(util.Constants.CURRENT_USER);
-            if (user != null && user.getRole().getRoleID() == 1) {
+            if (user != null && user.getRole().getRoleId() == 1) {
                 chain.doFilter(request, response);
                 return;
             }

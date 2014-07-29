@@ -11,12 +11,12 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
-import model.olddao.RoleDAO;
-import model.olddao.UserDAO;
-import model.olddao.service.RoleDAOService;
-import model.olddao.service.UserDAOService;
-import model.oldentities.Role;
-import model.oldentities.User;
+import model.dao.RoleDAOImpl;
+import model.dao.UserDAOImpl;
+import model.dao.service.RoleDAO;
+import model.dao.service.UserDAO;
+import model.entities.Role;
+import model.entities.User;
 
 /**
  *
@@ -26,8 +26,8 @@ import model.oldentities.User;
 @RequestScoped
 public class UserBean {
 
-    private final UserDAOService USER_SERVICE = UserDAO.getInstance();
-    private final RoleDAOService Role_SERVICE = RoleDAO.getInstance();
+    private final UserDAO USER_SERVICE = UserDAOImpl.getInstance();
+    private final RoleDAO Role_SERVICE = RoleDAOImpl.getInstance();
     private User user;
 
     /**
@@ -43,15 +43,15 @@ public class UserBean {
         String userName = user.getUserName();
         String pwd = util.Support.encryptMD5(user.getPwd());
         String fullName = user.getFullName();
-        Date birthOfDay = user.getBirthday();
-        int gender = user.getGender();
+        Date birthOfDay = user.getBirthOfDay();
+        boolean gender = user.isGender();
         String idCard = user.getIdCard();
         String address = user.getAddress();
         String email = user.getEmail();
-        String phone = user.getPhone();
+        String phone = user.getPhoneNumber();
 
         String imagePath;
-        if (user.getGender() == 1) {
+        if (user.isGender()) {
             imagePath = "images/avartar/avatar_male.jpg";
         } else {
             imagePath = "images/avartar/avatar_female.jpg";
@@ -60,7 +60,7 @@ public class UserBean {
 
         String idActive = util.Support.encryptMD5(userName + new Date().toString());
 
-        User user11 = new User(11, userName, pwd, fullName, birthOfDay, gender, idCard, address, email, phone, imagePath, r, idActive, 0);
+        User user11 = new User(1, r, userName, pwd, fullName, birthOfDay, gender, idCard, address, email, phone, imagePath, idActive, true);
         if (!USER_SERVICE.checkUser(userName)) {
             if (!USER_SERVICE.checkEmail(email)) {
                 if (USER_SERVICE.createUser(user11)) {

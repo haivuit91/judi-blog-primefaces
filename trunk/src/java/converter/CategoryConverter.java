@@ -14,9 +14,9 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
-import model.olddao.CategoryDAO;
-import model.olddao.service.CategoryDAOService;
-import model.oldentities.Category;
+import model.dao.CategoryDAOImlp;
+import model.dao.service.CategoryDAO;
+import model.entities.Category;
 
 /**
  *
@@ -26,7 +26,7 @@ import model.oldentities.Category;
 @RequestScoped
 @FacesConverter("CategoryConverter")
 public class CategoryConverter implements Converter{
-     private final CategoryDAOService  CATEGORY_SERVICE= CategoryDAO.getInstance();
+     private final CategoryDAO  CATEGORY_SERVICE= CategoryDAOImlp.getInstance();
     /**
      * Creates a new instance of CategoryConverter
      */
@@ -49,7 +49,7 @@ public class CategoryConverter implements Converter{
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         Category category = (Category) value;
-        return category.getCatID()+ "";
+        return category.getCategoryId()+ "";
     }
     
 }

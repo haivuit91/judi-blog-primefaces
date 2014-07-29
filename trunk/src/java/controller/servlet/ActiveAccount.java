@@ -6,16 +6,15 @@
 package controller.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import model.olddao.UserDAO;
-import model.olddao.service.UserDAOService;
-import model.oldentities.User;
+import model.dao.UserDAOImpl;
+import model.dao.service.UserDAO;
+import model.entities.User;
 
 /**
  *
@@ -24,7 +23,7 @@ import model.oldentities.User;
 @WebServlet(name = "ActiveAccount", urlPatterns = {"/active"})
 public class ActiveAccount extends HttpServlet {
 
-    private final UserDAOService USER_SERVICE = UserDAO.getInstance();
+    private final UserDAO USER_SERVICE = UserDAOImpl.getInstance();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,12 +39,12 @@ public class ActiveAccount extends HttpServlet {
         int dem = 0;
         String idActive = request.getParameter("id");
 //        response.getWriter().print(idActive);
-        List<User> userList = USER_SERVICE.getAllUser();
+        List<User> userList = USER_SERVICE.getUsers();
         if (idActive != null) {
             for (User user : userList) {
-                if (user.getActive() == 0) {
+                if (!user.isActive()) {
                     if (user.getIdActive().equals(idActive)) {
-                        if (USER_SERVICE.restoreUser(user.getUserID())) {
+                        if (USER_SERVICE.restoreUser(user)) {
                             dem++;
                         }
                     }

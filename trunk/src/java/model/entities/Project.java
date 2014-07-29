@@ -47,7 +47,7 @@ public class Project implements java.io.Serializable {
         this.active = active;
     }
 
-    public Project(Integer projectId, Type type, String projectName, String description, Date startDate, int duration, boolean active) {
+    public Project(Integer projectId, Type type, String projectName, String description, Date startDate, int duration, boolean active, List<ProjectUserDetails> projectUserDetails) {
         this.projectId = projectId;
         this.type = type;
         this.projectName = projectName;
@@ -55,6 +55,7 @@ public class Project implements java.io.Serializable {
         this.startDate = startDate;
         this.duration = duration;
         this.active = active;
+        this.projectUserDetails = projectUserDetails;
     }
 
     

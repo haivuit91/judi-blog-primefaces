@@ -16,14 +16,14 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Part;
-import model.olddao.CategoryDAO;
-import model.olddao.PostDAO;
-import model.olddao.UserDAO;
-import model.olddao.service.CategoryDAOService;
-import model.olddao.service.PostDAOService;
-import model.olddao.service.UserDAOService;
-import model.oldentities.Category;
-import model.oldentities.Post;
+import model.dao.CategoryDAOImlp;
+import model.dao.PostDAOImpl;
+import model.dao.UserDAOImpl;
+import model.dao.service.CategoryDAO;
+import model.dao.service.PostDAO;
+import model.dao.service.UserDAO;
+import model.entities.Category;
+import model.entities.Post;
 import util.Support;
 
 /**
@@ -34,9 +34,9 @@ import util.Support;
 @RequestScoped
 public class PostBean {
 
-    private final PostDAOService POST_SERVICE = PostDAO.getInstance();
-    private final CategoryDAOService CATEGORY_SERVICE = CategoryDAO.getInstance();
-    private final UserDAOService userService = UserDAO.getInstance();
+    private final PostDAO POST_SERVICE = PostDAOImpl.getInstance();
+    private final CategoryDAO CATEGORY_SERVICE = CategoryDAOImlp.getInstance();
+    private final UserDAO userService = UserDAOImpl.getInstance();
     private final FacesContext facesContext;
     private Post post;
    // private Category category;
@@ -64,7 +64,7 @@ public class PostBean {
             post.setUser(Support.getCurrentUser());
             post.setImagePath(saveImage());
             post.setPostDate(Support.getCurrentDate());
-            post.setIsActive(true);
+            post.setActive(true);
 
 //                System.out.println(post.getTitle());
 //                System.out.println(post.getCategory().getCatID());
@@ -132,7 +132,7 @@ public class PostBean {
     }
      public void deleteUser(ActionEvent event) throws Exception {
         String msg;
-        if (POST_SERVICE.deletePost(this.post.getPostID())) {
+        if (POST_SERVICE.deletePost(this.post.getPostId())) {
             msg = "Deleted user successfully!";
         } else {
             msg = "Delete user failed!";
