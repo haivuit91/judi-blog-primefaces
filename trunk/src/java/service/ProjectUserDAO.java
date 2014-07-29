@@ -44,7 +44,7 @@ public interface ProjectUserDAO {
      * @param user id of User
      * @return Project list
      */
-    public List<Project> getProjectByUser(User user);
+    public List<ProjectUserDetails> getProjectByUser(User user);
 
     /**
      * get list project by user
@@ -52,7 +52,7 @@ public interface ProjectUserDAO {
      * @param project id of Project
      * @return Project list
      */
-    public List<User> getUserByProject(Project project);
+    public List<ProjectUserDetails> getUserByProject(Project project);
 
     /**
      * get list project by user

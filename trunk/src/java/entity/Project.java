@@ -33,7 +33,7 @@ public class Project implements java.io.Serializable {
     private Date startDate;
     private int duration;
     private boolean active;
-    private List<User> users = new ArrayList<User>(0);
+    private List<ProjectUserDetails> projectUserDetails = new ArrayList<ProjectUserDetails>();
 
     public Project() {
     }
@@ -59,14 +59,14 @@ public class Project implements java.io.Serializable {
 
     
     
-    public Project(Type type, String projectName, String description, Date startDate, int duration, boolean active, List<User> users) {
+    public Project(Type type, String projectName, String description, Date startDate, int duration, boolean active, List<ProjectUserDetails> projectUserDetails) {
         this.type = type;
         this.projectName = projectName;
         this.description = description;
         this.startDate = startDate;
         this.duration = duration;
         this.active = active;
-        this.users = users;
+        this.projectUserDetails = projectUserDetails;
     }
 
     @Id
@@ -138,12 +138,12 @@ public class Project implements java.io.Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "project", cascade = CascadeType.ALL)
-    public List<User> getProjectUserDetailses() {
-        return this.users;
+    public List<ProjectUserDetails> getProjectUserDetailses() {
+        return this.projectUserDetails;
     }
 
-    public void setProjectUserDetailses(List<User> users) {
-        this.users = users;
+    public void setProjectUserDetailses(List<ProjectUserDetails> projectUserDetails) {
+        this.projectUserDetails = projectUserDetails;
     }
 
 }
