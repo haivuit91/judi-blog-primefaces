@@ -140,12 +140,48 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
 
     @Override
     public boolean createPUD(ProjectUserDetails pud) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.save(pud);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override
     public boolean updatePUD(ProjectUserDetails pud) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolean isCheck = false;
+
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            session.update(pud);
+            tx.commit();
+            isCheck = true;
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+            isCheck = false;
+        } finally {
+            session.close();
+        }
+        return isCheck;
     }
 
     @Override

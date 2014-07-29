@@ -204,7 +204,7 @@ public class ProjectDAOImpl implements ProjectDAO{
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE Role set active = true WHERE projectID = :projectID";
+            String sql = "UPDATE Project as p set p.active = true WHERE p.projectId = :projectID";
             Query query = session.createQuery(sql);
             query.setParameter("projectID", project.getProjectId());
             query.executeUpdate();
@@ -228,7 +228,7 @@ public class ProjectDAOImpl implements ProjectDAO{
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE Role set active = false WHERE projectID = :projectID";
+            String sql = "UPDATE Project as p set p.active = false WHERE p.projectId = :projectID";
             Query query = session.createQuery(sql);
             query.setParameter("projectID", project.getProjectId());
             query.executeUpdate();

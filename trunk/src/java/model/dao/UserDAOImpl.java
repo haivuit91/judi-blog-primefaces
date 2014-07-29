@@ -68,6 +68,8 @@ public class UserDAOImpl implements UserDAO {
         try {
             tx = session.beginTransaction();
             user = (User) session.get(User.class, userID);
+            user.setProjectUserDetails(ProjectUserDAOImpl.getInstance().getPUByUser(user));
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -91,6 +93,8 @@ public class UserDAOImpl implements UserDAO {
             Query query = session.createQuery(sql);
             query.setParameter("userName", userName);
             user = (User) query.uniqueResult();
+            user.setProjectUserDetails(ProjectUserDAOImpl.getInstance().getPUByUser(user));
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
