@@ -5,7 +5,9 @@
  */
 package controller.bean;
 
+import java.awt.Event;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,6 +26,7 @@ import model.dao.service.PostDAO;
 import model.dao.service.UserDAO;
 import model.entities.Category;
 import model.entities.Post;
+import model.entities.User;
 import util.Support;
 
 /**
@@ -57,21 +60,20 @@ public class PostBean {
         this.facesContext = FacesContext.getCurrentInstance();
     }
 
-    public String insertPost() throws Exception {
+    public String insertPost() {
         boolean isSuccess = false;
         try {
-
+//            categorys = CATEGORY_SERVICE.getCategoryByID(1);
             post.setUser(Support.getCurrentUser());
             post.setImagePath(saveImage());
             post.setPostDate(Support.getCurrentDate());
             post.setActive(true);
 
-//                System.out.println(post.getTitle());
-//                System.out.println(post.getCategory().getCatID());
-//                System.out.println(post.getContent());
-//                System.out.println(post.getImagePath());
+            isSuccess = true;
+              
             if (POST_SERVICE.insertPost(post)) {
                 return "/Judi-PrimeFaces/index.jsf";
+//                System.out.println("thanh cong");
             } else {
                 return "/Judi-PrimeFaces/member/user-post.jsf";
             }
@@ -133,9 +135,9 @@ public class PostBean {
      public void deleteUser(ActionEvent event) throws Exception {
         String msg;
         if (POST_SERVICE.deletePost(this.post.getPostId())) {
-            msg = "Deleted user successfully!";
+            msg = "Deleted  successfully!";
         } else {
-            msg = "Delete user failed!";
+            msg = "Delete  failed!";
         }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -157,10 +159,46 @@ public class PostBean {
 //        return null;
 //    }
 
-    public String editPost(Post post) {
-        this.post = post;
-        this.action = "Save";
-        return "/Judi-PrimeFaces/member/createpost.jsf";
+    public String editPost(ActionEvent event) throws Exception{
+        
+             
+        try {
+            Post p = POST_SERVICE.getPostByID(post.getPostId());
+            p.setContent(post.getContent());
+            p.setTitle(post.getTitle());
+            p.setImagePath(post.getImagePath());
+            p.setPostDate(post.getPostDate());
+            p.setActive(true);
+            p.setUser(post.getUser());
+            p.setCategory(post.getCategory());
+            
+            if(POST_SERVICE.updatePost(p))
+                 return "/Judi-PrimeFaces/index.jsf";
+            else
+                  return "/Judi-PrimeFaces/member/user-post.jsf";
+        } catch (Exception e) {
+           
+        }
+        
+//        int postID = getPost().getPostID();
+//        String title = getPost().getTitle();
+//        String content = getPost().getContent();
+//        String img =getPost().getImagePath();
+//        Date startDate = getPost().getPostDate();
+//        java.sql.Date date = new java.sql.Date(startDate.getTime());
+//        User us= getPost().getUser();
+//        Category cate = this.categorys;
+//       
+//        
+//        Post post = new Post(postID, title, content, img, startDate, us, cate, true);
+//        if (POST_SERVICE.updatePost(post)) {
+//            System.out.println("thanh");
+//        } 
+//        System.out.println("that bai");
+//        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+
+//        FacesContext.getCurrentInstance().addMessage(null, message);
+        return null;
     }
 
     /**
