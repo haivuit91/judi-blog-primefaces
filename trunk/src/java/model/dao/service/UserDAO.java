@@ -145,7 +145,8 @@ public interface UserDAO {
 
     /**
      *
-     * @param userID
+     * @param user
      * @return true if make administrator successful
      */
+    public boolean makeAdmin(User user);
 }
