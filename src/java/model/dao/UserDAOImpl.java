@@ -115,7 +115,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "SELECT FROM User as u WHERE role = :role";
+            String sql = "FROM User as u WHERE u.role = :role";
             Query query = session.createQuery(sql);
             query.setParameter("role", role);
             users = query.list();
