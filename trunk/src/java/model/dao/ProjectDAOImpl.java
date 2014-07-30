@@ -178,9 +178,7 @@ public class ProjectDAOImpl implements ProjectDAO {
     @Override
     public boolean deleteProject(Project project) {
         boolean isCheck = false;
-        if (!session.isOpen()) {
-            session = util.getSessionFactory().openSession();
-        }
+        session = util.getSessionFactory().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
