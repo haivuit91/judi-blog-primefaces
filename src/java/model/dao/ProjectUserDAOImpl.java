@@ -208,8 +208,9 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
             String sql = "DELETE FROM ProjectUserDetails as p WHERE p.project = :project";
             Query query = session.createQuery(sql);
             query.setParameter("project", project);
-            query.executeUpdate();
+            int result = query.executeUpdate();
             tx.commit();
+            System.out.println(result);
             isCheck = true;
         } catch (HibernateException e) {
             if (tx != null) {
