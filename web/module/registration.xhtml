@@ -78,7 +78,9 @@
                     <p:outputLabel for="phone" value="Phone Number: " />
                     <p:inputText id="phone" label="phone" size="20"
                                  validatorMessage="Invalid phone format"
-                                 value="#{userBean.user.phoneNumber}">
+                                 value="#{userBean.user.phoneNumber}"
+                                 onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"
+                                 >
                         <f:validateRegex
                             pattern="^[0][0-9]{9,10}$" />
                     </p:inputText>
