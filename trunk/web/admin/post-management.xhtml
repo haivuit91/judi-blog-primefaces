@@ -11,20 +11,20 @@
         <ui:composition template="./common.xhtml">
 
             <ui:define name="content">
-                <h:form id="formList">
+              <h:form id="formList">
                     <p:commandButton value="New post" oncomplete="PF('newPost').show()" icon="ui-icon-plus"/>
                     <p:growl id="msgs" showDetail="true" />
                     <p:dataTable var="post" value="#{postManagementBean.listPost}" paginator="true" rows="20">
                         <p:column headerText="Title" width="560">
                             <p:commandLink value="#{post.title}" oncomplete="PF('editPost').show()" update=":frmEditPost">
-                                <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.seletedPost}"/>
+                                <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.selectedPost}"/>
                             </p:commandLink>
                         </p:column>
                         <p:column headerText="User" width="120" style="text-align: center">
                             <p:outputLabel value="#{post.user.userName}"/>
                         </p:column>
                         <p:column headerText="Category" width="120">
-                            <p:outputLabel value="#{post.category.catName}" />
+                            <p:outputLabel value="#{post.category.categoryName}" />
                         </p:column>
                         <p:column headerText="Date" width="120" style="text-align: center">
                             <p:outputLabel value="#{post.postDate}"/>
@@ -32,18 +32,16 @@
                         <p:column headerText="Action" width="120" style="text-align: center">
                             <p:splitButton value="More" icon="ui-icon-carat-2-n-s">
                                 <p:menuitem value="Delete" oncomplete="PF('confirm').show()" update=":frmConfirm" icon="ui-icon-trash">
-                                    <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.seletedPost}"/>
+                                    <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.selectedPost}"/>
                                 </p:menuitem>
-                                <p:menuitem value="#{post.isActive ? 'Disable':'Enable'}" update=":frmConfirActive" oncomplete="PF('confirmActive').show()" icon="#{post.isActive ? 'ui-icon-locked':'ui-icon-unlocked'}">
-                                    <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.seletedPost}"/>
+                                <p:menuitem value="#{post.active ? 'Disable':'Enable'}" update=":frmConfirActive" oncomplete="PF('confirmActive').show()" icon="#{post.active ? 'ui-icon-locked':'ui-icon-unlocked'}">
+                                    <f:setPropertyActionListener value="#{post}" target="#{postManagementBean.selectedPost}"/>
                                 </p:menuitem>
                             </p:splitButton>
                         </p:column>
                     </p:dataTable>
                 </h:form>
             </ui:define>
-
         </ui:composition>
-
     </body>
 </html>
