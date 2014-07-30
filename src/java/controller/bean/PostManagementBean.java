@@ -78,14 +78,16 @@ public class PostManagementBean {
         String strMess;
         try {
             selectedPost = POST_SERVICE.getPostByID(selectedPost.getPostId());
-            if (POST_SERVICE.activePost(!selectedPost.isActive(), selectedPost.getPostId())) {
-                if (selectedPost.isActive()) {
+            selectedPost.setActive(!selectedPost.isActive());
+            System.out.println("usser:" + selectedPost.getUser().getUserId());
+            if (POST_SERVICE.updatePost(selectedPost)) {
+                if (!selectedPost.isActive()) {
                     strMess = "Disable success !";
                 } else {
                     strMess = "Enable success !";
                 }
             } else {
-                if (selectedPost.isActive()) {
+                if (!selectedPost.isActive()) {
                     strMess = "Disable faile !";
                 } else {
                     strMess = "Enable faile !";
@@ -175,14 +177,6 @@ public class PostManagementBean {
         return false;
     }
 
-    public List<Category> getListCategory() {
-        return CATEGORY_SERVICE.getList();
-    }
-
-    public void setListCategory(List<Category> listCategory) {
-        this.listCategory = listCategory;
-    }
-
     public List<Post> getListPost() throws Exception {
         return POST_SERVICE.getListPost();
     }
@@ -191,12 +185,28 @@ public class PostManagementBean {
         this.listPost = listPost;
     }
 
-    public Post getSeletedPost() {
+    public List<Category> getListCategory() {
+        return CATEGORY_SERVICE.getList();
+    }
+
+    public void setListCategory(List<Category> listCategory) {
+        this.listCategory = listCategory;
+    }
+
+    public List<User> getListUser() {
+        return userService.getUsers();
+    }
+
+    public void setListUser(List<User> listUser) {
+        this.listUser = listUser;
+    }
+
+    public Post getSelectedPost() {
         return selectedPost;
     }
 
-    public void setSeletedPost(Post seletedPost) {
-        this.selectedPost = seletedPost;
+    public void setSelectedPost(Post selectedPost) {
+        this.selectedPost = selectedPost;
     }
 
     public UploadedFile getImage() {
@@ -207,12 +217,6 @@ public class PostManagementBean {
         this.image = image;
     }
 
-    public List<User> getListUser() {
-        return userService.getUsers();
-    }
-
-    public void setListUser(List<User> listUser) {
-        this.listUser = listUser;
-    }
+   
     
 }

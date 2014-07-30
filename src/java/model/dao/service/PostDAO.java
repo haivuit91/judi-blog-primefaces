@@ -34,13 +34,14 @@ public interface PostDAO {
      * @throws Exception 
      */
     int getTotalPost() throws Exception;
+    boolean deletePost(int postId) throws Exception;
     /**
      * delete post by postID
-     * @param postID 
+     * @param post 
      * @return true if delete success
      * @throws Exception 
      */
-    boolean deletePost(int postID) throws Exception;
+    boolean deletePost(Post post) throws Exception;
     /**
      * update post
      * @param post object Post 
