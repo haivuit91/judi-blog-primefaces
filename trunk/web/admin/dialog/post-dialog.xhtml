@@ -10,14 +10,14 @@
     <h:body>
         <h:form id="frmConfirm">
             <p:confirmDialog widgetVar="confirm" header="Warning" message="Are you sure ?">
-                <h:inputHidden value="#{postManagementBean.seletedPost.postID}"/>
+                <h:inputHidden value="#{postManagementBean.selectedPost.postId}"/>
                 <p:commandButton value="Yes" ajax="false" actionListener="#{postManagementBean.delete(event)}" onclick="PF('confirm').hide()" icon="ui-icon-check"/>
                 <p:commandButton value="No" onclick="PF('confirm').hide()" icon="ui-icon-close"/>
             </p:confirmDialog>
         </h:form>
         <h:form id="frmConfirActive">
-            <p:confirmDialog widgetVar="confirmActive" header="Warning" message="Do you want #{postManagementBean.seletedPost.isActive ? 'Disable':'Enable'} ?">
-                <h:inputHidden value="#{postManagementBean.seletedPost.postID}"/>
+            <p:confirmDialog widgetVar="confirmActive" header="Warning" message="Do you want #{postManagementBean.selectedPost.active ? 'Disable':'Enable'} ?">
+                <h:inputHidden value="#{postManagementBean.selectedPost.postId}"/>
                 <p:commandButton value="Yes" ajax="false" actionListener="#{postManagementBean.active(event)}" onclick="PF('confirmActive').hide()" icon="ui-icon-check"/>
                 <p:commandButton value="No" onclick="PF('confirmActive').hide()" icon="ui-icon-close"/>
             </p:confirmDialog>
@@ -30,7 +30,7 @@
                             <h:outputText value="Title"/>
                         </p:column>
                         <p:column>
-                            <p:inputText value="#{postManagementBean.seletedPost.title}" size="57">
+                            <p:inputText value="#{postManagementBean.selectedPost.title}" size="57">
                                 <f:validateLength minimum="6" maximum="100"/>
                             </p:inputText>
                         </p:column>
@@ -38,8 +38,8 @@
                             <h:outputText value="Category"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu value="#{postManagementBean.seletedPost.category}" converter="CategoryConverter" style="width: 164px" panelStyle="width:164px">
-                                <f:selectItems var="category" itemValue="#{category}" itemLabel="#{category.catName}" value="#{postManagementBean.listCategory}"></f:selectItems>
+                            <p:selectOneMenu value="#{postManagementBean.selectedPost.category}" converter="CategoryConverter" style="width: 164px" panelStyle="width:164px">
+                                <f:selectItems var="category" itemValue="#{category}" itemLabel="#{category.categoryName}" value="#{postManagementBean.listCategory}"></f:selectItems>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -48,7 +48,7 @@
                             <h:outputText value="Status"/>
                         </p:column>
                         <p:column colspan="3">
-                            <p:selectOneButton value="#{postManagementBean.seletedPost.isActive}">
+                            <p:selectOneButton value="#{postManagementBean.selectedPost.active}">
                                 <f:selectItem itemLabel="Enable" itemValue="true"/>
                                 <f:selectItem itemLabel="Disable" itemValue="false"/>
                             </p:selectOneButton>
@@ -58,7 +58,7 @@
                     </p:row>
                     <p:row>
                         <p:column colspan="4">
-                            <p:editor value="#{postManagementBean.seletedPost.content}" required="true"/>
+                            <p:editor value="#{postManagementBean.selectedPost.content}" required="true"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -75,7 +75,7 @@
                 <p:panelGrid>
                     <p:row>
                         <p:column>
-                        <h:inputHidden value="#{postManagementBean.seletedPost.postID}"/>
+                            <h:inputHidden value="#{postManagementBean.selectedPost.postId}"/>
                         </p:column>
                     </p:row>
                     <p:row>
@@ -83,7 +83,7 @@
                             <h:outputText value="Title"/>
                         </p:column>
                         <p:column>
-                            <p:inputText value="#{postManagementBean.seletedPost.title}" size="57">
+                            <p:inputText value="#{postManagementBean.selectedPost.title}" size="57">
                                 <f:validateLength minimum="6" maximum="100"/>
                             </p:inputText>
                         </p:column>
@@ -91,8 +91,8 @@
                             <h:outputText value="Category"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu value="#{postManagementBean.seletedPost.category}" converter="CategoryConverter" style="width: 164px" panelStyle="width:164px">
-                                <f:selectItems var="category" itemValue="#{category}" itemLabel="#{category.catName}" value="#{postManagementBean.listCategory}"></f:selectItems>
+                            <p:selectOneMenu value="#{postManagementBean.selectedPost.category}" converter="CategoryConverter" style="width: 164px" panelStyle="width:164px">
+                                <f:selectItems var="category" itemValue="#{category}" itemLabel="#{category.categoryName}" value="#{postManagementBean.listCategory}"></f:selectItems>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
@@ -101,7 +101,7 @@
                             <h:outputText value="Status"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneButton value="#{postManagementBean.seletedPost.isActive}">
+                            <p:selectOneButton value="#{postManagementBean.selectedPost.active}">
                                 <f:selectItem itemLabel="Enable" itemValue="true"/>
                                 <f:selectItem itemLabel="Disable" itemValue="false"/>
                             </p:selectOneButton>
@@ -112,14 +112,14 @@
                             <h:outputText value="User"/>
                         </p:column>
                         <p:column>
-                            <p:selectOneMenu value="#{postManagementBean.seletedPost.user}" converter="userConverter" style="width: 164px" panelStyle="width:164px">
+                            <p:selectOneMenu value="#{postManagementBean.selectedPost.user}" converter="userConverter" style="width: 164px" panelStyle="width:164px">
                                 <f:selectItems var="user" value="#{postManagementBean.listUser}" itemValue="#{user}" itemLabel="#{user.userName}"/>
                             </p:selectOneMenu>
                         </p:column>
                     </p:row>
                     <p:row>
                         <p:column colspan="4">
-                            <p:editor value="#{postManagementBean.seletedPost.content}" required="true"/>
+                            <p:editor value="#{postManagementBean.selectedPost.content}" required="true"/>
                         </p:column>
                     </p:row>
                     <p:row>
