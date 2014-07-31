@@ -12,7 +12,7 @@ import model.entities.Role;
 
 @ManagedBean
 @RequestScoped
-@FacesConverter("roleIDConverter")
+@FacesConverter("roleConverter")
 public class RoleIDConverter implements Converter {
 
     private final RoleDAO ROLE_SERVICE = RoleDAOImpl.getInstance();

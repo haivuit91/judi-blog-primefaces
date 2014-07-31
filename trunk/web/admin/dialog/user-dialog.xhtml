@@ -88,11 +88,11 @@
                     <p:outputLabel for="phone" value="Phone:" />
                     <p:inputText size="30" id="phone" value="#{userManager.user.phoneNumber}" onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
 
-<!--                    <p:outputLabel for="roleId" value="Role:" />                    
-                    <p:selectOneMenu id="roleId" value="#{userManager.user.role}" converter="#{roleIDConverter}" >
+                    <p:outputLabel for="roleId" value="Role:" />                    
+                    <p:selectOneMenu id="roleId" value="#{userManager.user.role}" converter="roleConverter" >
                         <f:selectItems value="#{userManager.roles}" var="role"
                                        itemValue="#{role}" itemLabel="#{role.roleName}" />
-                    </p:selectOneMenu>-->
+                    </p:selectOneMenu>
                 </p:panelGrid>
             </p:outputPanel>
             <p:commandButton id="confirm" value="Add" update=":formList" actionListener="#{userManager.addUser(event)}"
@@ -164,12 +164,13 @@
                         <p:inputText size="30" id="phone" value="#{userManager.user.phoneNumber}" onkeyup="$(this).val($(this).val().replace(/[^0-9]/g, ''));"/>
                     </p:inplace>
 
-                    <!--                    <p:outputLabel for="roleId" value="Role:" />
-                                        <p:inplace>
-                                            <p:selectOneMenu id="roleId" value="#{userManager.user.role}" converter="converterRole" >
-                                                <f:selectItems value="#{userManager.roles}" var="role" itemValue="#{role}" itemLabel="#{role.roleName}"/>
-                                            </p:selectOneMenu>
-                                        </p:inplace>-->
+                    <p:outputLabel for="roleId" value="Role:" />
+                    <p:inplace>
+                        <p:selectOneMenu id="roleId" value="#{userManager.user.role}" converter="roleConverter" >
+                            <f:selectItems value="#{userManager.roles}" var="role" itemValue="#{role}" 
+                                           itemLabel="#{role.roleName}"/>
+                        </p:selectOneMenu>
+                    </p:inplace>
                 </p:panelGrid>
             </p:outputPanel>
             <p:commandButton id="confirm" value="Save" update=":formList" actionListener="#{userManager.editUser(event)}"
