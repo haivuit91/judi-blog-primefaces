@@ -42,15 +42,14 @@ public class PostBean {
     private final UserDAO userService = UserDAOImpl.getInstance();
     private final FacesContext facesContext;
     private Post post;
-   // private Category category;
+    // private Category category;
     private Part image;
     private String action = "Publish";
-    
+
     private List<Post> filteredPost;
     private List<Category> category;
     private Category categorys;
     private List<Post> posts;
-    
 
     /**
      * Creates a new instance of PostBean
@@ -60,28 +59,53 @@ public class PostBean {
         this.facesContext = FacesContext.getCurrentInstance();
     }
 
-    public String insertPost() {
-        boolean isSuccess = false;
+    public void newPost(ActionEvent event) {
+        FacesMessage mes = null;
         try {
-//            categorys = CATEGORY_SERVICE.getCategoryByID(1);
             post.setUser(Support.getCurrentUser());
-            post.setImagePath(saveImage());
             post.setPostDate(Support.getCurrentDate());
-            post.setActive(true);
-
-            isSuccess = true;
-              
+            post.setImagePath(saveImage());
             if (POST_SERVICE.insertPost(post)) {
-                return "/Judi-PrimeFaces/index.jsf";
-//                System.out.println("thanh cong");
+                mes = new FacesMessage("Message", "Success !");
             } else {
-                return "/Judi-PrimeFaces/member/user-post.jsf";
+                mes = new FacesMessage("Message", "Faile !");
             }
-
-        } catch (Exception ex) {
-            Logger.getLogger(PostManagementBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            Logger.getLogger(PostBean.class
+                    .getName()).log(Level.SEVERE, null, e);
         }
-        return null;
+        facesContext.addMessage("result", mes);
+    }
+
+    public void update(ActionEvent event) {
+
+        String mes  = null;
+        try {
+            User user = util.Support.getCurrentUser();
+            Category cat = this.post.getCategory();
+            String title = this.post.getTitle();
+            String content = this.post.getContent();
+            String imagePath = this.post.getImagePath();
+            Date date = new Date();
+            Post p = new Post(cat, user, title, content, imagePath, date, true);
+            p.setPostId(this.post.getPostId());
+            if (POST_SERVICE.updatePost(p)) {
+                mes = "OK";
+            } else {
+                mes = "Failed";
+            }
+        } catch (Exception e) {
+            System.out.println("err:" + e.getMessage());
+            Logger.getLogger(PostBean.class
+                    .getName()).log(Level.SEVERE, null, e);
+        }
+        this.addMessages(mes);
+    }
+
+    public void addMessages(String msg) {
+        FacesMessage fm = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+        FacesContext.getCurrentInstance()
+                .addMessage(null, fm);
     }
 
     public List<Category> getList() {
@@ -132,7 +156,8 @@ public class PostBean {
         }
         return null;
     }
-     public void deleteUser(ActionEvent event) throws Exception {
+
+    public void deleteUser(ActionEvent event) throws Exception {
         String msg;
         if (POST_SERVICE.deletePost(this.post.getPostId())) {
             msg = "Deleted  successfully!";
@@ -158,10 +183,8 @@ public class PostBean {
 //        }
 //        return null;
 //    }
+    public String editPost(ActionEvent event) throws Exception {
 
-    public String editPost(ActionEvent event) throws Exception{
-        
-             
         try {
             Post p = POST_SERVICE.getPostByID(post.getPostId());
             p.setContent(post.getContent());
@@ -171,15 +194,16 @@ public class PostBean {
             p.setActive(true);
             p.setUser(post.getUser());
             p.setCategory(post.getCategory());
-            
-            if(POST_SERVICE.updatePost(p))
-                 return "/Judi-PrimeFaces/index.jsf";
-            else
-                  return "/Judi-PrimeFaces/member/user-post.jsf";
+
+            if (POST_SERVICE.updatePost(p)) {
+                return "/Judi-PrimeFaces/index.jsf";
+            } else {
+                return "/Judi-PrimeFaces/member/user-post.jsf";
+            }
         } catch (Exception e) {
-           
+
         }
-        
+
 //        int postID = getPost().getPostID();
 //        String title = getPost().getTitle();
 //        String content = getPost().getContent();
@@ -196,7 +220,6 @@ public class PostBean {
 //        } 
 //        System.out.println("that bai");
 //        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
-
 //        FacesContext.getCurrentInstance().addMessage(null, message);
         return null;
     }
@@ -214,23 +237,24 @@ public class PostBean {
     public void setCategorys(Category categorys) {
         this.categorys = categorys;
     }
+
     public class EditorView {
-     
-    private String text;
- 
-    public String getText() {
-        return text;
+
+        private String text;
+
+        public String getText() {
+            return text;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
     }
- 
-    public void setText(String text) {
-        this.text = text;
-    }
-}
 
     public List<Category> getListCategory() {
         return CATEGORY_SERVICE.getList();
     }
-     
+
     /**
      * @return the post
      */
@@ -258,8 +282,6 @@ public class PostBean {
     public void setImage(Part image) {
         this.image = image;
     }
-
-   
 
     /**
      * @return the category
