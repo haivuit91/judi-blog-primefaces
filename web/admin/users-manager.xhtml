@@ -92,8 +92,14 @@
 
                             <p:column headerText="Status" style="width:50px; text-align: center"
                                       footerText="status" filterMatchMode="equals">
-                                <p:commandButton type="button" title="Inactive" icon="ui-icon-locked" rendered="#{!listUser.active ? 'true':'false'}"/>
-                                <p:commandButton type="button" title="Active" icon="ui-icon-unlocked" rendered="#{listUser.active ? 'true':'false'}"/>
+                                <p:commandButton title="Inactive" update=":userRestore" oncomplete="PF('restoreDialog').show()" icon="ui-icon-locked"
+                                                 rendered="#{!listUser.active ? 'true':'false'}">
+                                    <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
+                                </p:commandButton>
+                                <p:commandButton title="Active" update=":userBan" oncomplete="PF('banDialog').show()" icon="ui-icon-unlocked"
+                                                 rendered="#{listUser.active ? 'true':'false'}">
+                                    <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
+                                </p:commandButton>
                             </p:column>
 
                             <p:column style="width:78px">
