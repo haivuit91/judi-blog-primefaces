@@ -38,7 +38,7 @@
                                 </f:facet>
                                 <p:column width="25">
                                     <f:facet name="header">ID</f:facet>
-                                    <p:commandLink value="#{projectList.projectID}" action="#{projectBean.updateProject(projectList)}" />
+                                    <p:commandLink value="#{projectList.projectId}" action="#{projectBean.updateProject(projectList)}" />
                                 </p:column>
                                 <p:column filterBy="#{projectList.projectName}">
                                     <f:facet name="header">Project name</f:facet>
@@ -59,13 +59,18 @@
                                 <p:column filterBy="#{projectList.description}" width="200">
                                     <f:facet name="header">Description</f:facet>
                                     <h:outputText value="#{projectList.description}" />
+                                </p:column >
+                                <p:column headerText="Users Create" style="font-size: small" width="100">
+                                    <ui:repeat value="#{projectList.projectUserDetailses}" var="userHibernate">
+                                        <h:outputText value="#{userHibernate.user.userName}" />
+                                    </ui:repeat>
                                 </p:column>
                                 <p:column headerText="Status" width="35" style="font-size: small;"  >
-                                    <p:commandButton update=":formUnactive" rendered="#{projectList.active == 1?'true':'false'}"
+                                    <p:commandButton update=":formUnactive" rendered="#{projectList.active == true?'true':'false'}"
                                                      oncomplete="PF('Unactive').show()"  icon="ui-icon-unlocked" title="Active" >
                                         <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
                                     </p:commandButton>
-                                    <p:commandButton update=":formActive" rendered="#{projectList.active == 0?'true':'false'}"
+                                    <p:commandButton update=":formActive" rendered="#{projectList.active == false?'true':'false'}"
                                                      icon="ui-icon-locked" oncomplete="PF('Active').show()" title="Unactive" >
                                         <f:setPropertyActionListener value="#{projectList}" target="#{projectBean.project}" />
                                     </p:commandButton>
