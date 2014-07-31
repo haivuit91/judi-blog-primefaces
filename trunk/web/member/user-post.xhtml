@@ -32,7 +32,7 @@
 
                                 <p:column  style="width:25px">  
                                     <f:facet name="header">ID</f:facet>  
-                                    <h:outputText value="#{listPost.postID}"  />  
+                                    <h:outputText value="#{listPost.postId}"  />  
                                 </p:column>
 
                                 <p:column sortBy="#{listPost.title}" filterBy="#{listPost.title}" style="width:110px">  
@@ -45,9 +45,10 @@
                                     <h:outputText value="#{listPost.postDate}" />  
                                 </p:column>
 
-                                <p:column sortBy="#{listPost.category.catName}" filterBy="#{listPost.category.catName}" style="width:110px">  
+                                <p:column sortBy="#{listPost.category.categoryName}" filterBy="#{listPost.category.categoryName}" style="width:110px">  
                                     <f:facet name="header">Category</f:facet>  
-                                    <h:outputText value="#{listPost.category.catName}" />  
+                                    <p:outputLabel value="#{listPost.category.categoryName}" />
+                                  
                                 </p:column>
 
                                 <p:column style="width:100px">
@@ -56,11 +57,12 @@
                                         <p:menuitem update=":postDelete" oncomplete="PF('deleteDialog').show()" value="Delete" icon="ui-icon-trash" >
                                         <f:setPropertyActionListener value="#{listPost}" target="#{postBean.post}" />
                                      </p:menuitem>
+                                         <p:menuitem update=":editPost" oncomplete="PF('editDialog').show()" value="Edit" icon="ui-icon-edit" >
+                                        <f:setPropertyActionListener value="#{listPost}" target="#{postBean.post}" />
+                                     </p:menuitem>
                                     </p:splitButton>                                  
                                 </p:column>
-                                
-                                    
-
+                               
                             </p:dataTable>
                         </h:panelGroup>
                     </h:form>
@@ -69,7 +71,7 @@
                             <p:outputPanel id="postViews" style="text-align:center;">
                                 <p:panelGrid  columns="2" rendered="#{not empty postBean.post}" columnClasses="label,value">
                                     <h:outputText value="ID:" />
-                                    <h:outputText value="#{postBean.post.postID}" />
+                                    <h:outputText value="#{postBean.post.postId}" />
 
                                     <h:outputText value="Title:" />
                                     <h:outputText value="#{postBean.post.title}" />
@@ -79,10 +81,10 @@
 
 
                                     <h:outputText value="Category:" />
-                                    <h:outputText value="#{postBean.post.category.catName}" />
+                                    <p:outputLabel value="#{postBean.post.category.categoryName}" />
                                 </p:panelGrid>
                             </p:outputPanel>
-                            <p:commandButton id="confirm" value="Reset pass" update=":formListPost" actionListener="#{postBean.resetPass(event)}"
+                            <p:commandButton id="confirm" value="Reset pass" update=":formListPost" actionListener="#"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('viewDialog').hide()"/>                    
                             <p:commandButton id="cancel" value="Cancel" onclick="PF('viewDialog').hide()"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
@@ -100,7 +102,7 @@
                                     <p:outputLabel for="catID" value="Category:" />
                                     <p:selectOneMenu id="catID" value="#{postBean.post.category}" converter="CategoryConverter" >
                                         <f:selectItems value="#{postBean.category}" var="cat"
-                                                       itemValue="#{cat}" itemLabel="#{cat.catName}" />
+                                                       itemValue="#{cat}" itemLabel="#{cat.categoryName}" />
                                     </p:selectOneMenu>
                                     <p:outputLabel for="editor" value="Content:" />
                                     <p:editor id="editor" widgetVar="editorWidget" value="#{postBean.post.content}" width="450" />
@@ -108,21 +110,47 @@
 
                                 </p:panelGrid>
                             </p:outputPanel>
-                            <p:commandButton style="float: right " id="confirm" value="Add" update=":formListPost" actionListener="#{postBean.insertPost(event)}"
+                            <p:commandButton style="float: right " id="confirm" value="Add" update=":formListPost" actionListener="#{postBean.newPost(event)}"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('addDialog').hide()"/>                    
                             <p:commandButton style="float: right " id="cancel" value="Cancel" onclick="PF('addDialog').hide()"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
                         </p:dialog>
                     </h:form>
                     <h:form id="postDelete">
-                        <p:confirmDialog  id="confirmDialog" message="are you really want to delete #{postBean.post.postID}?"
+                        <p:confirmDialog  id="confirmDialog" message="are you really want to delete #{postBean.post.postId}?"
                                          header="Delete post" severity="alert" widgetVar="deleteDialog" showEffect="fade" hideEffect="explode">
-                            <h:inputHidden value="#{postBean.post.postID}"/>
+                            <h:inputHidden value="#{postBean.post.postId}"/>
                             <p:commandButton id="confirm" value="Yes" update=":formListPost" actionListener="#{postBean.deleteUser(event)}"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('deleteDialog').hide()"/>                    
                             <p:commandButton id="cancel" value="Cancel" onclick="PF('deleteDialog').hide()"
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
                         </p:confirmDialog>
+                    </h:form>
+                    
+                     <h:form id="editPost">
+                        <p:dialog width="600px" height="400px" header="Edit Post" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                            <p:outputPanel id="editPost" style="text-align:center;">
+                                <p:panelGrid style="text-align: left" columns="2" rendered="#{not empty postBean.post}" columnClasses="label,value">
+                                    <p:outputLabel for="title" value="Title:" />
+                                    <p:inputText id="title" value="#{postBean.post.title}"  required="true">
+
+                                    </p:inputText>
+
+                                    <p:outputLabel for="catID" value="Category:" />
+                                    <p:selectOneMenu id="catID" value="#{postBean.post.category}" converter="CategoryConverter" >
+                                        <f:selectItems value="#{postBean.category}" var="cat"
+                                                       itemValue="#{cat}" itemLabel="#{cat.categoryName}" />
+                                    </p:selectOneMenu>
+                                    <p:outputLabel for="editor" value="Content:" />
+                                    <p:editor id="editor" widgetVar="editorWidget" value="#{postBean.post.content}" width="450" />
+                                    <h:inputHidden value="#{postBean.post.postId}" />
+                                </p:panelGrid>
+                            </p:outputPanel>
+                            <p:commandButton style="float: right " id="confirm" value="Edit" update=":formListPost" actionListener="#{postBean.update(event)}"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('editDialog').hide()"/>                    
+                            <p:commandButton style="float: right " id="cancel" value="Cancel" onclick="PF('editDialog').hide()"
+                                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+                        </p:dialog>
                     </h:form>
                 </f:view>
             </ui:define>
