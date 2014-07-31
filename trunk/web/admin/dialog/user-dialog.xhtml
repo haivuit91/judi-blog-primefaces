@@ -106,12 +106,6 @@
         <p:dialog header="Edit user" widgetVar="editDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
             <p:outputPanel id="editUser" style="text-align:center;">
                 <p:panelGrid style="text-align: left" columns="2" rendered="#{not empty userManager.user}" columnClasses="label,value">
-                    <p:outputLabel for="userId" value="ID:" />
-                    <p:inplace>
-                        <p:inputText size="30" id="userId" value="#{userManager.user.userId}" disabled="true"/>
-                        <h:inputHidden value="#{userManager.user.userId}" />
-                    </p:inplace>
-
                     <p:outputLabel for="userName" value="Username:" />
                     <p:inplace>
                         <p:inputText size="30" id="userName" value="#{userManager.user.userName}" required="true">
@@ -173,6 +167,10 @@
                     </p:inplace>
                 </p:panelGrid>
             </p:outputPanel>
+            <h:inputHidden value="#{userManager.user.userId}" />
+            <h:inputHidden value="#{userManager.user.pwd}"/>
+            <h:inputHidden value="#{userManager.user.imagePath}"/>
+            <h:inputHidden value="#{userManager.user.active}"/>
             <p:commandButton id="confirm" value="Save" update=":formList" actionListener="#{userManager.editUser(event)}"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-disk" oncomplete="PF('editDialog').hide()"/>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('editDialog').hide()"

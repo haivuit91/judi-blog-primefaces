@@ -108,11 +108,12 @@
                                     <p:menuitem update=":editUser" oncomplete="PF('editDialog').show()" value="Edit" icon="ui-icon-pencil" >
                                         <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
                                     </p:menuitem>
-                                    <p:menuitem update=":userDelete" oncomplete="PF('deleteDialog').show()" value="Delete" icon="ui-icon-trash" >
+                                    <p:menuitem update=":userDelete" oncomplete="PF('deleteDialog').show()" value="Delete" icon="ui-icon-trash" 
+                                                rendered="#{listUser.userName != sessionScope.currentUser.userName ? 'true':'false'}">
                                         <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
                                     </p:menuitem>
                                     <p:menuitem update=":userBan" oncomplete="PF('banDialog').show()" value="Ban" icon="ui-icon-cancel" 
-                                                rendered="#{listUser.active ? 'true':'false'}">
+                                                rendered="#{listUser.active and listUser.userName != sessionScope.currentUser.userName ? 'true':'false'}">
                                         <f:setPropertyActionListener value="#{listUser}" target="#{userManager.user}" />
                                     </p:menuitem>
                                     <p:menuitem update=":userRestore" oncomplete="PF('restoreDialog').show()" value="Restore" icon="ui-icon-arrowreturnthick-1-w" 
