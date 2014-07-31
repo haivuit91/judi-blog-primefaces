@@ -69,58 +69,38 @@ public class UserManagerBean implements Serializable {
 
     public void addUser(ActionEvent event) {
         String msg = "";
-
-//        System.out.println("Username: " + this.user.getUserName());
-//        System.out.println("Full name: " + this.user.getFullName());
-//        System.out.println("Birthday: " + this.user.getBirthOfDay());
-//        System.out.println("Gender: " + this.user.isGender());
-//        System.out.println("Email: " + this.user.getEmail());
-//        System.out.println("Address: " + this.user.getAddress());
-//        System.out.println("Phone: " + this.user.getPhoneNumber());
-//        System.out.println("ID Card: " + this.user.getIdCard());
-//        System.out.println("Role: " + this.user.getRole().getRoleId());
-//        Role roleID = ROLE_SERVICE.getRoleByID(2);
-//        String pwd = util.Support.encryptMD5("123456");
-//        User addUser = new User(1, roleID, this.user.getUserName(), this.user.getPwd(), this.user.getFullName(), this.user.getBirthOfDay(),
-//                this.user.isGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(), this.user.getPhoneNumber(),
-//                null, "1", true);
-        session = hu.getSessionFactory().openSession();
-        session.beginTransaction();
-        try {
-            session.save(user);
-            session.getTransaction().commit();
-            msg = "Add user successfully!";
-        } catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-            msg = "Add user failed!";
-        } finally {
-            session.close();
+        String pwd = util.Support.encryptMD5("123456");
+        String imagePath;
+        if (user.isGender()) {
+            imagePath = "images/avartar/avatar_male.jpg";
+        } else {
+            imagePath = "images/avartar/avatar_female.jpg";
         }
-
-//        if (USER_SERVICE.createUser(addUser)) {
-//            msg = "Add user successfully!";
-//        } else {
-//            msg = "Add user failed!";
-//        }
+        User addUser = new User(1, this.user.getRole(), this.user.getUserName(), pwd, this.user.getFullName(), this.user.getBirthOfDay(),
+                this.user.isGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(), this.user.getPhoneNumber(),
+                imagePath, null, true);
+        if (!USER_SERVICE.checkUser(this.user.getUserName())) {
+            if (!USER_SERVICE.checkEmail(this.user.getEmail())) {
+                if (USER_SERVICE.createUser(addUser)) {
+                    msg = "Add user successfully!";
+                } else {
+                    msg = "Add user failed!";
+                }
+            } else {
+                msg = "Email is existed!";
+            }
+        } else {
+            msg = "Username is existed!";
+        }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     public void editUser(ActionEvent event) {
         String msg = "";
-//        System.out.println("User id: " + this.user.getUserId());
-//        System.out.println("Username: " + this.user.getUserName());
-//        System.out.println("Full name: " + this.user.getFullName());
-//        System.out.println("Birthday: " + this.user.getBirthday());
-//        System.out.println("Gender: " + this.user.isGender());
-//        System.out.println("Email: " + this.user.getEmail());
-//        System.out.println("Address: " + this.user.getAddress());
-//        System.out.println("Phone: " + this.user.getPhone());
-//        System.out.println("ID Card: " + this.user.getIdCard());
-//        System.out.println("Role: " + this.user.getRole().getRoleId());
-        Role roleID = ROLE_SERVICE.getRoleByID(this.user.getRole().getRoleId());
-        User editUser = new User(user.getUserId(), user.getRole(), msg, msg, msg, null, true, msg, msg, msg, msg, msg, msg, true);
+        User editUser = new User(this.user.getUserId(), this.user.getRole(), this.user.getUserName(), this.user.getPwd(), this.user.getFullName(),
+                this.user.getBirthOfDay(), this.user.isGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(),
+                this.user.getPhoneNumber(), this.user.getImagePath(), null, this.user.isActive());
         if (USER_SERVICE.updateProfile(editUser)) {
             msg = "Edit user successfully!";
         } else {
@@ -155,13 +135,6 @@ public class UserManagerBean implements Serializable {
      */
     public void deleteUser(ActionEvent event) {
         String msg;
-//        if (USER_SERVICE.deleteUser(this.user.getUserId())) {
-//            msg = "Deleted user successfully!";
-//        } else {
-//            msg = "Delete user failed!";
-//        }
-//        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
-//        FacesContext.getCurrentInstance().addMessage(null, message);
         session = hu.getSessionFactory().openSession();
         session.beginTransaction();
         try {
