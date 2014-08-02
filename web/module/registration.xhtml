@@ -49,8 +49,8 @@
 
                     <p:outputLabel for="gender" value="Gender: " />
                     <p:selectOneMenu id="gender" value="#{userBean.user.gender}" >
-                        <f:selectItem itemLabel="Male" itemValue="1" />
-                        <f:selectItem itemLabel="Female" itemValue="0" />
+                        <f:selectItem itemLabel="Male" itemValue="true" />
+                        <f:selectItem itemLabel="Female" itemValue="false" />
                     </p:selectOneMenu>
                     <p:message for="gender" />
 

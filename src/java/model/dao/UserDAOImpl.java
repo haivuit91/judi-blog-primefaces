@@ -14,7 +14,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import model.dao.service.UserDAO;
-import util.Support;
 
 /**
  *
@@ -44,8 +43,9 @@ public class UserDAOImpl implements UserDAO {
             String sql = "FROM User";
             Query query = session.createQuery(sql);
             users = query.list();
+            session.close();
             for (User user : users) {
-                user.setProjectUserDetails(ProjectUserDAOImpl.getInstance().getPUByUser(user));
+                user.setProjects(ProjectUserDAOImpl.getInstance().getProjectsByUser(user));
             }
             session = util.getSessionFactory().openSession();
             tx.commit();
@@ -68,7 +68,8 @@ public class UserDAOImpl implements UserDAO {
         try {
             tx = session.beginTransaction();
             user = (User) session.get(User.class, userID);
-            user.setProjectUserDetails(ProjectUserDAOImpl.getInstance().getPUByUser(user));
+            session.close();
+            user.setProjects(ProjectUserDAOImpl.getInstance().getProjectsByUser(user));
             session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
@@ -93,7 +94,8 @@ public class UserDAOImpl implements UserDAO {
             Query query = session.createQuery(sql);
             query.setParameter("userName", userName);
             user = (User) query.uniqueResult();
-            user.setProjectUserDetails(ProjectUserDAOImpl.getInstance().getPUByUser(user));
+            session.close();
+            user.setProjects(ProjectUserDAOImpl.getInstance().getProjectsByUser(user));
             session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
@@ -119,6 +121,11 @@ public class UserDAOImpl implements UserDAO {
             Query query = session.createQuery(sql);
             query.setParameter("role", role);
             users = query.list();
+            session.close();
+            for (User user : users) {
+                user.setProjects(ProjectUserDAOImpl.getInstance().getProjectsByUser(user));
+            }
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -139,7 +146,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "FROM User WHERE userName = :userName and pwd = :pwd";
+            String sql = "FROM User u WHERE u.userName = :userName and u.pwd = :pwd";
             Query query = session.createQuery(sql);
             query.setParameter("userName", userName);
             query.setParameter("pwd", password);
@@ -167,10 +174,10 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "FROM User WHERE userName = :userName";
+            String sql = "FROM User as u WHERE u.userName = :userName";
             Query query = session.createQuery(sql);
             query.setParameter("userName", userName);
-            if (query.list().size() > 0) {
+            if (query.list() != null && query.list().size() > 0) {
                 isCheck = true;
             }
             tx.commit();
@@ -194,7 +201,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "FROM User WHERE email = :email";
+            String sql = "FROM User as u WHERE e.email = :email";
             Query query = session.createQuery(sql);
             query.setParameter("email", email);
             if (query.list().size() > 0) {
@@ -243,8 +250,8 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User set fullName = :fname, birthOfDay = :bd, gender = :gender, idCard = :idCard,"
-                    + "address = :address, email = :email, phoneNumber = :phone WHERE userID = :userID";
+            String sql = "UPDATE User as u set u.fullName = :fname, u.birthOfDay = :bd, u.gender = :gender, u.idCard = :idCard,"
+                    + "u.address = :address, u.email = :email, u.phoneNumber = :phone WHERE u.userID = :userID";
             Query query = session.createQuery(sql);
             query.setParameter("userID", user.getUserId());
             query.setParameter("fname", user.getFullName());
@@ -275,7 +282,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User set imagePath = :image WHERE userID = :userID";
+            String sql = "UPDATE User as u set u.imagePath = :image WHERE u.userID = :userID";
             Query query = session.createQuery(sql);
             query.setParameter("userID", user.getUserId());
             query.setParameter("image", user.getImagePath());
@@ -300,7 +307,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User set pwd = :pwd WHERE userID = :userID";
+            String sql = "UPDATE User as u set u.pwd = :pwd WHERE u.userID = :userID";
             Query query = session.createQuery(sql);
             query.setParameter("userID", user.getUserId());
             query.setParameter("pwd", user.getPwd());
@@ -353,7 +360,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User set active = false WHERE userID = :userID";
+            String sql = "UPDATE User as u set u.active = false WHERE u.userID = :userID";
             Query query = session.createQuery(sql);
             query.setParameter("userID", user.getUserId());
             query.executeUpdate();
@@ -377,7 +384,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User set active = true WHERE userID = :userID";
+            String sql = "UPDATE User as u set u.active = true WHERE u.userID = :userID";
             Query query = session.createQuery(sql);
             query.setParameter("userID", user.getUserId());
             query.executeUpdate();

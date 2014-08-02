@@ -101,13 +101,13 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
     }
 
     @Override
-    public List<ProjectUserDetails> getPUByUser(User user) {
-        List<ProjectUserDetails> projects = null;
+    public List<Project> getMyProject(User user) {
+        List<Project> projects = null;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "FROM ProjectUserDetails as p WHERE p.user = :user";
+            String sql = "SELECT p.project FROM ProjectUserDetails as p WHERE p.user = :user and p.creator = true";
             Query query = session.createQuery(sql);
             query.setParameter("user", user);
             projects = query.list();
@@ -123,6 +123,52 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
         return projects;
     }
 
+    @Override
+    public List<Project> getProjectsByUser(User user){
+        List<Project> projects = null;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "SELECT p.project FROM ProjectUserDetails as p WHERE p.user = :user";
+            Query query = session.createQuery(sql);
+            query.setParameter("user", user);
+            projects = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return projects;
+    }
+    
+    @Override
+    public List<User> getUsersByProject(Project project){
+        List<User> users = null;
+        session = util.getSessionFactory().openSession();
+        Transaction tx = null;
+        try {
+            tx = session.beginTransaction();
+            String sql = "SELECT p.user FROM ProjectUserDetails as p WHERE p.project = :project";
+            Query query = session.createQuery(sql);
+            query.setParameter("project", project);
+            users = query.list();
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) {
+                tx.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+        return users;
+    }
+    
     @Override
     public boolean isExistUserInProject(Project project, User user) {
         boolean isCheck = false;

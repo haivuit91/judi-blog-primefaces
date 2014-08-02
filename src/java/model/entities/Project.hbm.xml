@@ -2,33 +2,38 @@
 <!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <!-- Generated Jul 25, 2014 9:34:06 AM by Hibernate Tools 3.6.0 -->
 <hibernate-mapping>
-  <class catalog="db_judiwebsite" name="model.entities.Project" table="project">
-    <id name="projectId" type="java.lang.Integer">
-      <column name="projectID"/>
-      <generator class="identity"/>
-    </id>
-    <many-to-one class="model.entities.Type" fetch="select" name="type">
-      <column name="typeID" not-null="true"/>
-    </many-to-one>
-    <property name="projectName" type="string">
-      <column length="105" name="projectName" not-null="true"/>
-    </property>
-    <property name="description" type="string">
-      <column length="205" name="description" not-null="true"/>
-    </property>
-    <property name="startDate" type="date">
-      <column length="10" name="startDate" not-null="true"/>
-    </property>
-    <property name="duration" type="int">
-      <column name="duration" not-null="true"/>
-    </property>
-    <property name="active" type="boolean">
-      <column name="active" not-null="true"/>
-    </property>
-    <list cascade="all" inverse="true" name="projectUserDetailses" table="project_user_details">
-      <key column="projectID"/>
-      <list-index column="idx"/>
-      <one-to-many class="model.entities.ProjectUserDetails"/>
-    </list>
-  </class>
+    <class catalog="db_judiwebsite" name="model.entities.Project" table="project">
+        <id name="projectId" type="java.lang.Integer">
+            <column name="projectID"/>
+            <generator class="identity"/>
+        </id>
+        <many-to-one class="model.entities.Type" fetch="select" name="type" lazy="false">
+            <column name="typeID" not-null="true"/>
+        </many-to-one>
+        <property name="projectName" type="string">
+            <column length="105" name="projectName" not-null="true"/>
+        </property>
+        <property name="description" type="string">
+            <column length="205" name="description" not-null="true"/>
+        </property>
+        <property name="startDate" type="date">
+            <column length="10" name="startDate" not-null="true"/>
+        </property>
+        <property name="duration" type="int">
+            <column name="duration" not-null="true"/>
+        </property>
+        <property name="active" type="boolean">
+            <column name="active" not-null="true"/>
+        </property>
+        <list inverse="true" name="users" table="project_user_details"
+          lazy="false" fetch="select">
+            <key>
+                <column name="projectID" not-null="true" />
+            </key>
+            <list-index column="idx" />
+            <many-to-many class="model.entities.User">
+                <column name="userID" not-null="true"></column>
+            </many-to-many>
+        </list>
+    </class>
 </hibernate-mapping>

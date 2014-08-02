@@ -7,10 +7,10 @@
       <column name="projectUserID"/>
       <generator class="identity"/>
     </id>
-    <many-to-one class="model.entities.Project" fetch="select" name="project">
+    <many-to-one class="model.entities.Project" fetch="select" name="project" lazy="false">
       <column name="projectID" not-null="true"/>
     </many-to-one>
-    <many-to-one class="model.entities.User" fetch="select" name="user">
+    <many-to-one class="model.entities.User" fetch="select" name="user" lazy="false">
       <column name="userID"/>
     </many-to-one>
     <property name="creator" type="boolean">

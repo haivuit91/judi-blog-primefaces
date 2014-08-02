@@ -18,7 +18,7 @@ import model.entities.Type;
  * @author cong0_000
  */
 @FacesConverter("typeConverter")
-public class TypeIDConverter implements Converter {
+public class TypeConverter implements Converter {
 
     private final TypeDAO TYPE_SERVICE = ProjectTypeDAOImpl.getInstance();
 
@@ -26,22 +26,15 @@ public class TypeIDConverter implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         Type projectType = null;
         if (value != null) {
-            projectType = TYPE_SERVICE.getTypeByName(value);
-            projectType.setTypeName(value);
+            projectType = TYPE_SERVICE.getTypeByID(Integer.valueOf(value));
         }
         return projectType;
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        String name = "";
-        if(value instanceof Type){
-            Type projectType = (Type) value;
-            name = projectType.getTypeName();
-        }else if( value instanceof String){
-            name = (String)value;
-        }
-        return name;
+        Type t = (Type)value;
+        return t.getTypeId() +"";
     }
 
 }
