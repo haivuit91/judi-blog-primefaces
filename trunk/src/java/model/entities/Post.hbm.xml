@@ -7,10 +7,10 @@
       <column name="postID"/>
       <generator class="identity"/>
     </id>
-    <many-to-one class="model.entities.Category" fetch="select" name="category">
+    <many-to-one class="model.entities.Category" fetch="select" name="category" lazy="false">
       <column name="categoryID" not-null="true"/>
     </many-to-one>
-    <many-to-one class="model.entities.User" fetch="select" name="user">
+    <many-to-one class="model.entities.User" fetch="select" name="user" lazy="false">
       <column name="userID" not-null="true"/>
     </many-to-one>
     <property name="title" type="string">

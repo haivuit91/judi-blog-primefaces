@@ -43,8 +43,9 @@ public class ProjectDAOImpl implements ProjectDAO {
             String sql = "FROM Project";
             Query query = session.createQuery(sql);
             projects = query.list();
+            session.close();
             for (Project project : projects) {
-                project.setProjectUserDetailses(ProjectUserDAOImpl.getInstance().getPUByProject(project));
+                project.setUsers(ProjectUserDAOImpl.getInstance().getUsersByProject(project));
             }
             session = util.getSessionFactory().openSession();
             tx.commit();
@@ -67,6 +68,8 @@ public class ProjectDAOImpl implements ProjectDAO {
         try {
             tx = session.beginTransaction();
             project = (Project) session.get(Project.class, projectID);
+            session.close();
+            project.setUsers(ProjectUserDAOImpl.getInstance().getUsersByProject(project));
             session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
@@ -91,7 +94,11 @@ public class ProjectDAOImpl implements ProjectDAO {
             Query query = session.createQuery(sql);
             query.setParameter("projectName", projectName);
             projects = query.list();
-//            session = util.getSessionFactory().openSession();
+            session.close();
+            for (Project project : projects) {
+                project.setUsers(ProjectUserDAOImpl.getInstance().getUsersByProject(project));
+            }
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -116,7 +123,11 @@ public class ProjectDAOImpl implements ProjectDAO {
             Query query = session.createQuery(sql);
             query.setParameter("type", type);
             projects = query.list();
-//            session = util.getSessionFactory().openSession();
+            session.close();
+            for (Project project : projects) {
+                project.setUsers(ProjectUserDAOImpl.getInstance().getUsersByProject(project));
+            }
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

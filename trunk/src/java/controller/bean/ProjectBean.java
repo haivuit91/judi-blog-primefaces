@@ -25,7 +25,6 @@ import model.entities.Project;
 import model.entities.ProjectUserDetails;
 import model.entities.Type;
 import model.entities.User;
-import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -43,7 +42,7 @@ public class ProjectBean {
     private Project project = new Project();
     private Type projectType;
     private List<Type> types;
-    private List<Project> projects;
+    private List<Project> projects = null;
     private List<Project> filteredProjects;
 
     private List<User> users;
@@ -70,14 +69,12 @@ public class ProjectBean {
      * @return project list of user
      */
     public List<Project> getProjectsByUser() {
-        List<Project> projectByUser = new ArrayList<Project>();
+        
         int userID = util.Support.getCurrentUser().getUserId();
         User user11 = USER_SERVICE.getUserByID(userID);
-        List<ProjectUserDetails> puList = user11.getProjectUserDetails();
-        for (ProjectUserDetails projectUserDetails : puList) {
-            projectByUser.add(projectUserDetails.getProject());
-        }
-        return projectByUser;
+        List<Project> myProjects = PU_SERVICE.getMyProject(user11);
+        
+        return myProjects;
     }
 
     /**
@@ -91,11 +88,7 @@ public class ProjectBean {
         for (User user1 : userLists) {
             usersName.add(user1.getUserName());
         }
-        List<User> usersJoined = new ArrayList<>();
-        List<ProjectUserDetails> puList = p.getProjectUserDetailses();
-        for (ProjectUserDetails projectUserDetails : puList) {
-            usersJoined.add(projectUserDetails.getUser());
-        }
+        List<User> usersJoined = p.getUsers();
 
         List<String> usersNameJoined = new ArrayList<>();
         for (User user2 : usersJoined) {
@@ -134,17 +127,27 @@ public class ProjectBean {
      */
     public void createProject(ActionEvent event) {
         String msg = "";
-        if (PROJECT_SERVICE.createProject(this.project)) {
-            User user2 = util.Support.getCurrentUser();
-            if (user2 == null) {
+        Type t = this.project.getType();
+        String projectName = this.project.getProjectName();
+        String description = this.project.getDescription();
+        Date startDate = this.project.getStartDate();
+        int duration = this.project.getDuration();
+        
+        Project newProject = new Project(t, projectName, description, startDate, duration, true, null);
+        if (PROJECT_SERVICE.createProject(newProject)) {
+            User currentUser = util.Support.getCurrentUser();
+            if (currentUser == null) {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN,
                         "Invalid Login!", "Please try again!"));
             } else {
-                List<Project> projectList = PROJECT_SERVICE.getProjectByName(this.project.getProjectName());
+                List<Project> projectList = PROJECT_SERVICE.getProjectByName(newProject.getProjectName());
                 Project pro = projectList.get(projectList.size() - 1);
-                ProjectUserDetails pud = new ProjectUserDetails(pro, user2, true);
+                ProjectUserDetails pud = new ProjectUserDetails(pro, currentUser, true);
                 if (PU_SERVICE.createPUD(pud)) {
-                    msg += "Project created successfully by: " + user2.getFullName() + "\n";
+//                    pro.getUsers().add(currentUser);
+//                    t.getProjects().add(pro);
+//                    currentUser.getProjects().add(pro);
+                    msg += "Project created successfully by: " + currentUser.getFullName() + "\n";
                 } else {
                     msg += "Create creater for project failed. \n";
                 }
@@ -172,7 +175,7 @@ public class ProjectBean {
         int duration = this.project.getDuration();
         Type type = this.project.getType();
         boolean active = getProject().isActive();
-        List<ProjectUserDetails> puList = getProject().getProjectUserDetailses();
+        List<User> puList = this.project.getUsers();
         Project pro = new Project(projectID, type, projectName, description, startDate, duration, active, puList);
         if (PROJECT_SERVICE.updateProject(pro)) {
             msg = "Project updated successfully!";

@@ -13,7 +13,7 @@
     <property name="active" type="boolean">
       <column name="active" not-null="true"/>
     </property>
-    <set fetch="select" inverse="true" lazy="true" name="posts" table="post">
+    <set fetch="select" inverse="true" lazy="false" name="posts" table="post">
       <key>
         <column name="categoryID" not-null="true"/>
       </key>

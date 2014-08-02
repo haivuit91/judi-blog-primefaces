@@ -19,7 +19,7 @@
                     </h:form>
                     <h:form id="formProjectList">
 
-                        <p:dataTable id="projects" var="project" value="#{projectBean.projects}" widgetVar="dtProjects" 
+                        <p:dataTable id="projects" var="project" value="#{projectBean.projectsByUser}" widgetVar="dtProjects" 
                                      filteredValue="#{projectBean.filteredProjects}"
                                      emptyMessage="No project found with given criteria" 
                                      paginator="true" rows="10" paginatorPosition="bottom" 
@@ -78,8 +78,8 @@
                                                  style="float:right" oncomplete="PF('dialogUserJoining').show()" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />                        
                                 </p:commandButton>
-                                <ui:repeat value="#{project.projectUserDetailses}" var="pu">
-                                    <h:outputText value="#{pu.user.userName}" />
+                                <ui:repeat value="#{project.users}" var="user">
+                                    <h:outputText value="#{user.userName}" />
                                     <h:outputText value=" " />
                                 </ui:repeat>
                             </p:column>
@@ -94,23 +94,7 @@
                                 </p:commandButton>
 
                             </p:column>
-                            <p:column headerText="Choose" width="98" style="font-size: small"  >
-
-                                <!--                        <p:splitButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
-                                                            <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
-                                                            <p:menuitem value="Edit" update=":formUpdate" oncomplete="PF('updateProject').show()"
-                                                                        icon="ui-icon-arrowrefresh-1-w" title="Edit" >
-                                                                <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
-                                                            </p:menuitem>
-                                                            <p:menuitem value="Delete" update=":formDelete" oncomplete="PF('dialogDeleteProject').show()" 
-                                                                        icon="ui-icon-circle-close" title="Delete" >
-                                                                <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
-                                                            </p:menuitem>
-                                
-                                                        </p:splitButton>-->
-
-
-                                <p:commandButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
+                            <p:column headerText="Choose" width="98" style="font-size: small"  ><p:commandButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                                 </p:commandButton>
                                 <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-arrowrefresh-1-w" title="Edit">
@@ -220,6 +204,7 @@
                                 </p:inplace>
                                 <p:message for="projectType"  />
 
+                                <h:inputHidden value="#{projectBean.project.active}" />
                                 <f:facet name="footer">
                                     <p:separator />
                                     <p:commandButton value="Save" update=":formProjectList, :messageProject" oncomplete="PF('updateProject').hide()"
@@ -302,8 +287,8 @@
                                 <p:outputLabel value="#{projectBean.project.type.typeName}"  />
 
                                 <p:outputLabel value="Users Joined:"  />
-                                <ui:repeat value="#{projectBean.project.projectUserDetailses}" var="pu">
-                                    <p:outputLabel value="#{pu.user.userName} "  />
+                                <ui:repeat value="#{projectBean.project.users}" var="user">
+                                    <p:outputLabel value="#{user.userName} "  />
                                 </ui:repeat>
 
                                 <f:facet name="footer">

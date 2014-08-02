@@ -44,10 +44,6 @@ public class ProjectTypeDAOImpl implements TypeDAO{
             String sql = "FROM Type";
             Query query = session.createQuery(sql);
             types = query.list();
-            for (Type type : types) {
-                type.setProjects(ProjectDAOImpl.getInstance().getProjectByType(type.getTypeId()));
-            }
-            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -68,7 +64,6 @@ public class ProjectTypeDAOImpl implements TypeDAO{
         try {
             tx = session.beginTransaction();
             type = (Type) session.get(Type.class, typeID);
-            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
@@ -92,7 +87,6 @@ public class ProjectTypeDAOImpl implements TypeDAO{
             Query query = session.createQuery(sql);
             query.setParameter("typeName", typeName);
             type = (Type) query.uniqueResult();
-            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {

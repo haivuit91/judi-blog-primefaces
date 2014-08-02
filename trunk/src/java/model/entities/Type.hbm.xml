@@ -13,7 +13,7 @@
     <property name="active" type="boolean">
       <column name="active" not-null="true"/>
     </property>
-    <list cascade="all" inverse="true" name="projects" table="project">
+    <list cascade="all" inverse="true" name="projects" table="project" lazy="false">
       <key column="typeID"/>
       <list-index column="idx"/>
       <one-to-many class="model.entities.Project"/>

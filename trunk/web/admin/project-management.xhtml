@@ -61,8 +61,8 @@
                                     <h:outputText value="#{projectList.description}" />
                                 </p:column >
                                 <p:column headerText="Users Create" style="font-size: small" width="100">
-                                    <ui:repeat value="#{projectList.projectUserDetailses}" var="userHibernate">
-                                        <h:outputText value="#{userHibernate.user.userName}" />
+                                    <ui:repeat value="#{projectList.users}" var="user">
+                                        <h:outputText value="#{user.userName}" />
                                     </ui:repeat>
                                 </p:column>
                                 <p:column headerText="Status" width="35" style="font-size: small;"  >

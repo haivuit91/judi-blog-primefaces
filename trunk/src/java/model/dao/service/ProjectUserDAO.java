@@ -44,8 +44,25 @@ public interface ProjectUserDAO {
      * @param user id of User
      * @return Project list
      */
-    public List<ProjectUserDetails> getPUByUser(User user);
+    public List<Project> getMyProject(User user);
 
+    /**
+     * get list project by user
+     *
+     * @param user id of User
+     * @return Project list
+     */
+    public List<Project> getProjectsByUser(User user);
+    
+    /**
+     * get list user by project
+     *
+     * @param project instance of Project
+     * @return Project list
+     */
+    public List<User> getUsersByProject(Project project);
+    
+    
     /**
      * check is exist of user in one project
      *
