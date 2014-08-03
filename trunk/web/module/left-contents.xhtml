@@ -38,7 +38,7 @@
                         <p:submenu label="Active" style="background: #ccccff">
                             <p:menuitem value="Admin" icon="ui-icon-person" url="/admin/users-manager.jsf"
                                         rendered="#{sessionScope.currentUser.role.roleId == 1?'true':'false'}" />
-                            <p:menuitem value="My Profile" url="/member/profile-management.jsf" icon="ui-icon-star" />
+                            <p:menuitem value="My Profile" url="/member/my-profile.jsf" icon="ui-icon-star" />
                             <p:menuitem value="My Project" url="/member/my-projects.jsf"  icon="ui-icon-heart"/>
                             <p:menuitem value="My Post" url="/member/my-posts.jsf" icon="ui-icon-heart"/>
                             <p:menuitem value="Logout" action="#{loginBean.logout()}" ajax="false" icon="ui-icon-extlink"/>
