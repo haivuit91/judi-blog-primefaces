@@ -360,7 +360,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User as u set u.active = false WHERE u.userID = :userID";
+            String sql = "UPDATE User set active = false WHERE userID = :userID";
             Query query = session.createQuery(sql);
             query.setParameter("userID", user.getUserId());
             query.executeUpdate();
@@ -384,7 +384,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User as u set u.active = true WHERE u.userID = :userID";
+            String sql = "UPDATE User set active = true WHERE userID = :userID";
             Query query = session.createQuery(sql);
             query.setParameter("userID", user.getUserId());
             query.executeUpdate();
@@ -402,13 +402,17 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean deleteUser(int userID) {
+    public boolean deleteUser(User user) {
         boolean isCheck = false;
         session = util.getSessionFactory().openSession();
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            session.delete(userID);
+
+            String sql = "DELETE from User WHERE userID = :userID";
+            Query query = session.createQuery(sql);
+            query.setParameter("userID", user.getUserId());
+            query.executeUpdate();
             tx.commit();
             isCheck = true;
         } catch (HibernateException e) {

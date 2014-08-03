@@ -101,7 +101,7 @@ public class UserManagerBean implements Serializable {
         User editUser = new User(this.user.getUserId(), this.user.getRole(), this.user.getUserName(), this.user.getPwd(), this.user.getFullName(),
                 this.user.getBirthOfDay(), this.user.isGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(),
                 this.user.getPhoneNumber(), this.user.getImagePath(), null, this.user.isActive());
-        if (USER_SERVICE.updateProfile(editUser)) {
+        if (USER_SERVICE.updateUserByAdmin(editUser)) {
             msg = "Edit user successfully!";
         } else {
             msg = "Edit user failed!";
@@ -135,20 +135,13 @@ public class UserManagerBean implements Serializable {
      */
     public void deleteUser(ActionEvent event) {
         String msg;
-        session = hu.getSessionFactory().openSession();
-        session.beginTransaction();
-        try {
-            user = (User) session.get(User.class, this.user.getUserId());
-            session.delete(user);
-            session.getTransaction().commit();
-            msg = "Deleted user successfully!";
-        } catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-            msg = "Deleted user failed!";
-        } finally {
-            session.close();
+        if (USER_SERVICE.deleteUser(this.user)) {
+            msg = "Deleted use succesfully!";
+        } else {
+            msg = "Deleted use failed!";
         }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     /**
