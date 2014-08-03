@@ -115,14 +115,6 @@ public interface UserDAO {
      * remove The User's active
      *
      * @param user
-     * @return true if reset password successful. false if failed!
-     */
-    public boolean resetPass(User user);
-    
-    /**
-     * remove The User's active
-     *
-     * @param user
      * @return true if remove The user's status successful. false if failed!
      */
     public boolean removeUser(User user);

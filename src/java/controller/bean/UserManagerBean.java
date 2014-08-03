@@ -116,16 +116,19 @@ public class UserManagerBean implements Serializable {
      * @param event
      */
     public void resetPass(ActionEvent event) {
-//        String msg;
-//        System.out.println(this.user.getUserId());
-//        String pwd = util.Support.encryptMD5("123456");
-//        if (USER_SERVICE.resetPass(this.user.getUserId(), pwd)) {
-//            msg = "Reset password successfully!";
-//        } else {
-//            msg = "Reset password failed!";
-//        }
-//        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
-//        FacesContext.getCurrentInstance().addMessage(null, message);
+        String msg;
+        String pwd = util.Support.encryptMD5("123456");
+        User editUser = new User(this.user.getUserId(), this.user.getRole(), this.user.getUserName(), pwd, this.user.getFullName(),
+                this.user.getBirthOfDay(), this.user.isGender(), this.user.getIdCard(), this.user.getAddress(), this.user.getEmail(),
+                this.user.getPhoneNumber(), this.user.getImagePath(), null, this.user.isActive());
+        System.out.println(this.user.getUserId());
+        if (USER_SERVICE.updatePassword(this.user)) {
+            msg = "Reset password successfully!";
+        } else {
+            msg = "Reset password failed!";
+        }
+        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
+        FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
     /**
