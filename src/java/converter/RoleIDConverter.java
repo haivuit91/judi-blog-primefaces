@@ -24,7 +24,6 @@ public class RoleIDConverter implements Converter {
             role = ROLE_SERVICE.getRoleByName(value);
             role.setRoleName(value);
         }
-        System.out.println("get: " + role.getRoleName() + " - " + role.getRoleId());
         return role;
     }
 
@@ -34,10 +33,8 @@ public class RoleIDConverter implements Converter {
         if (value instanceof Role) {
             Role role = (Role) value;
             name = role.getRoleName();
-            System.out.println("if: " + name);
         } else if (value instanceof String) {
             name = (String) value;
-            System.out.println("else: " + name);
         }
         return name;
     }
