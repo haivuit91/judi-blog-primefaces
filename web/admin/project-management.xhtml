@@ -60,11 +60,10 @@
                                     <f:facet name="header">Description</f:facet>
                                     <h:outputText value="#{projectList.description}" />
                                 </p:column >
-                                <p:column headerText="Users Create" style="font-size: small" width="100">
-                                    <ui:repeat value="#{projectList.users}" var="user">
-                                        <h:outputText value="#{user.userName}" />
-                                    </ui:repeat>
-                                </p:column>
+                                <p:column filterBy="#{projectBean.getCreator(projectList)}" width="200">
+                                    <f:facet name="header">Creator</f:facet>
+                                    <h:outputText value="#{projectBean.getCreator(projectList)}" />
+                                </p:column >
                                 <p:column headerText="Status" width="35" style="font-size: small;"  >
                                     <p:commandButton update=":formUnactive" rendered="#{projectList.active == true?'true':'false'}"
                                                      oncomplete="PF('Unactive').show()"  icon="ui-icon-unlocked" title="Active" >

@@ -42,7 +42,7 @@
 
                     <p:outputLabel for="birthday" value="Birth Of Date: " />
                     <p:calendar id="birthday" value="#{userBean.user.birthOfDay}" required="true" pattern="dd/MM/yyyy" 
-                                size="10" maxdate="#{utilBean.date}" navigator="true" >
+                                size="10" maxdate="#{utilBean.date}" navigator="true" yearRange="1910:c" >
                         <f:convertDateTime pattern="dd/MM/yyyy" />
                     </p:calendar>
                     <p:message for="birthday" />
