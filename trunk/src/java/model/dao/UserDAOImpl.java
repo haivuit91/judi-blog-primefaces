@@ -307,10 +307,10 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User as u set u.pwd = :pwd WHERE u.userID = :userID";
+            String sql = "UPDATE User set pwd = :pwd WHERE userID = :userID";
             Query query = session.createQuery(sql);
-            query.setParameter("userID", user.getUserId());
             query.setParameter("pwd", user.getPwd());
+            query.setParameter("userID", user.getUserId());
             query.executeUpdate();
             tx.commit();
             isCheck = true;
@@ -346,11 +346,6 @@ public class UserDAOImpl implements UserDAO {
             session.close();
         }
         return isCheck;
-    }
-
-    @Override
-    public boolean resetPass(User user) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
