@@ -26,7 +26,7 @@ public class TypeConverter implements Converter {
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
         Type projectType = null;
         if (value != null) {
-            projectType = TYPE_SERVICE.getTypeByID(Integer.valueOf(value));
+            projectType = TYPE_SERVICE.getTypeByName(value);
         }
         return projectType;
     }
@@ -34,7 +34,7 @@ public class TypeConverter implements Converter {
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
         Type t = (Type)value;
-        return t.getTypeId() +"";
+        return t.getTypeName();
     }
 
 }
