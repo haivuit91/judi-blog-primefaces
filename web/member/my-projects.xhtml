@@ -84,23 +84,28 @@
                                 </ui:repeat>
                             </p:column>
                             <p:column headerText="Status" width="35" style="font-size: small;" >
-                                <p:commandButton update=":formInactive" rendered="#{project.active}"
-                                                 icon="ui-icon-unlocked" oncomplete="PF('dialogInactiveProject').show()"  title="Active" >
+                                
+                                <p:commandButton update=":formInactive" rendered="#{project.active and projectBean.isCreator(project)}"
+                                                 icon="ui-icon-unlocked" oncomplete="PF('dialogInactiveProject').show()"  title="Enable" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                                 </p:commandButton>
-                                <p:commandButton update=":formActive" rendered="#{!project.active}"
-                                                 icon="ui-icon-locked" oncomplete="PF('dialogActiveProject').show()" title="Inactive" >
+                                <p:commandButton update=":formActive" rendered="#{!project.active and projectBean.isCreator(project)}"
+                                                 icon="ui-icon-locked" oncomplete="PF('dialogActiveProject').show()" title="Disable" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                                 </p:commandButton>
 
                             </p:column>
-                            <p:column headerText="Choose" width="98" style="font-size: small"  ><p:commandButton update=":formDetails" oncomplete="PF('projectDetails').show()" icon="ui-icon-search" title="View">
+                            <p:column headerText="Choose" width="98" style="font-size: small" >
+                                <p:commandButton update=":formDetails" oncomplete="PF('projectDetails').show()" 
+                                                 icon="ui-icon-search" title="View" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                                 </p:commandButton>
-                                <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" icon="ui-icon-arrowrefresh-1-w" title="Edit">
+                                <p:commandButton update=":formUpdate" oncomplete="PF('updateProject').show()" 
+                                                 icon="ui-icon-arrowrefresh-1-w" title="Edit" rendered="#{projectBean.isCreator(project)}" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                                 </p:commandButton>
-                                <p:commandButton update=":formDelete" oncomplete="PF('dialogDeleteProject').show()" icon="ui-icon-circle-close" title="Delete">
+                                <p:commandButton update=":formDelete" oncomplete="PF('dialogDeleteProject').show()" 
+                                                 icon="ui-icon-circle-close" title="Delete" rendered="#{projectBean.isCreator(project)}" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
                                 </p:commandButton>
                             </p:column>

@@ -72,11 +72,21 @@ public class ProjectBean {
         
         int userID = util.Support.getCurrentUser().getUserId();
         User user11 = USER_SERVICE.getUserByID(userID);
-        List<Project> myProjects = PU_SERVICE.getMyProject(user11);
-        
+//        List<Project> myProjects = PU_SERVICE.getMyProject(user11);
+        List<Project> myProjects = user11.getProjects();
         return myProjects;
     }
 
+    public boolean isCreator(Project p){
+        boolean check = false;
+        int userID = util.Support.getCurrentUser().getUserId();
+        User user11 = USER_SERVICE.getUserByID(userID);
+        if(user11.getUserName().equals(this.getCreator(p))){
+            check = true;
+        }
+        return check;
+    }
+    
     /**
      *
      * @param p the project
@@ -109,7 +119,7 @@ public class ProjectBean {
      * @param p the project
      * @return
      */
-    public String getCreater(Project p) {
+    public String getCreator(Project p) {
         List<ProjectUserDetails> puList = PU_SERVICE.getPUByProject(p);
         String creator = "";
         for (ProjectUserDetails projectUserDetails : puList) {
@@ -217,9 +227,9 @@ public class ProjectBean {
     public void activeProject(ActionEvent event) {
         String msg;
         if (PROJECT_SERVICE.activeProject(this.project)) {
-            msg = "Project actived succesfully !";
+            msg = "Project enabled succesfully !";
         } else {
-            msg = "Project actived failed !";
+            msg = "Project failed enable!";
         }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);
@@ -233,9 +243,9 @@ public class ProjectBean {
     public void inactiveProject(ActionEvent event) {
         String msg;
         if (PROJECT_SERVICE.inactiveProject(this.project)) {
-            msg = "Project inactived succesfully !";
+            msg = "Project disabled succesfully !";
         } else {
-            msg = "Project inactived failed !";
+            msg = "Project failed disable!";
         }
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, msg, "Message!");
         FacesContext.getCurrentInstance().addMessage(null, message);

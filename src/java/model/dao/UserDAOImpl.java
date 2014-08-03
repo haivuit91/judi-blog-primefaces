@@ -282,7 +282,7 @@ public class UserDAOImpl implements UserDAO {
         Transaction tx = null;
         try {
             tx = session.beginTransaction();
-            String sql = "UPDATE User as u set u.imagePath = :image WHERE u.userID = :userID";
+            String sql = "UPDATE User as u set u.imagePath = :image WHERE u.userId = :userID";
             Query query = session.createQuery(sql);
             query.setParameter("userID", user.getUserId());
             query.setParameter("image", user.getImagePath());
