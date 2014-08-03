@@ -138,10 +138,10 @@ public interface UserDAO {
     /**
      * Delete User
      *
-     * @param userID UserID will be delete
+     * @param user
      * @return true if delete The user's status successful. false if failed!
      */
-    public boolean deleteUser(int userID);
+    public boolean deleteUser(User user);
 
     /**
      *
