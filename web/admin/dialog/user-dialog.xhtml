@@ -38,8 +38,10 @@
                     <h:outputText value="#{userManager.user.role.roleName}" />
                 </p:panelGrid>
             </p:outputPanel>
-            <p:commandButton id="confirm" value="Reset pass" update=":formList" 
-                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('viewDialog').hide()"/>                    
+            <p:commandButton id="confirm" value="Reset pass" update=":passReset" onclick="PF('viewDialog').hide()"
+                             oncomplete="PF('passDialog').show()" styleClass="ui-confirmdialog-yes" icon="ui-icon-check">
+                <f:setPropertyActionListener value="#{userManager.user.userId}" target="#{userManager.user}" />
+            </p:commandButton>                    
             <p:commandButton id="cancel" value="Cancel" onclick="PF('viewDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
         </p:dialog>
@@ -123,7 +125,7 @@
                     <p:outputLabel for="birthday" value="Birthday:"/>
                     <p:inplace>
                         <p:calendar size="30" id="birthday" value="#{userManager.user.birthOfDay}" pattern="dd-MM-yyyy" 
-                                    navigator="true" mask="true" effect="fold" >
+                                    navigator="true" mask="true" effect="fold" yearRange="1910:c">
                             <f:convertDateTime pattern="dd-MM-yyyy" />
                         </p:calendar>
                     </p:inplace>
@@ -131,8 +133,8 @@
                     <p:outputLabel for="gender" value="Gender:" />
                     <p:inplace>
                         <p:selectOneMenu id="gender" value="#{userManager.user.gender}" >
-                            <f:selectItem itemLabel="Male" itemValue="0"/>
-                            <f:selectItem itemLabel="Female" itemValue="1"/>
+                            <f:selectItem itemLabel="Male" itemValue="true"/>
+                            <f:selectItem itemLabel="Female" itemValue="false"/>
                         </p:selectOneMenu>
                     </p:inplace>
 
@@ -161,8 +163,8 @@
                     <p:outputLabel for="roleId" value="Role:" />
                     <p:inplace>
                         <p:selectOneMenu id="roleId" value="#{userManager.user.role}" converter="roleConverter" >
-                            <f:selectItems value="#{userManager.roles}" var="role" itemValue="#{role}" 
-                                           itemLabel="#{role.roleName}"/>
+                            <f:selectItems value="#{userManager.roles}" var="role"
+                                           itemValue="#{role}" itemLabel="#{role.roleName}" />
                         </p:selectOneMenu>
                     </p:inplace>
                 </p:panelGrid>
@@ -176,6 +178,18 @@
             <p:commandButton id="cancel" value="Cancel" onclick="PF('editDialog').hide()"
                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
         </p:dialog>
+    </h:form>
+
+    <h:form id="passReset">
+        <p:confirmDialog id="confirmDialog" message="are you really want to reset password?"
+                         header="Reset password" severity="alert" widgetVar="passDialog" showEffect="fade" hideEffect="explode">
+            <h:inputHidden value="#{userManager.user.userId}"/>
+            <h:outputText value="#{userManager.user.userId}"/>
+            <p:commandButton id="confirm" value="Yes" update=":formList" actionListener="#{userManager.resetPass(event)}"
+                             styleClass="ui-confirmdialog-yes" icon="ui-icon-check" oncomplete="PF('passDialog').hide()"/>                    
+            <p:commandButton id="cancel" value="Cancel" onclick="PF('passDialog').hide()"
+                             styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
+        </p:confirmDialog>
     </h:form>
 
     <h:form id="userDelete">
