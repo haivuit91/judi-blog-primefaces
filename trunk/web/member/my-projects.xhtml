@@ -74,17 +74,18 @@
                                 <h:outputText value="#{project.type.typeName}" />
                             </p:column>
                             <p:column headerText="Users Joined" style="font-size: small" width="100" >
-                                <p:commandButton update=":formUserJoining" icon="ui-icon-refresh" title="Edit users" 
-                                                 style="float:right" oncomplete="PF('dialogUserJoining').show()" >
-                                    <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />                        
-                                </p:commandButton>
                                 <ui:repeat value="#{project.users}" var="user">
                                     <h:outputText value="#{user.userName}" />
                                     <h:outputText value=" " />
                                 </ui:repeat>
+                                <p:commandButton update=":addUsers" oncomplete="PF('dialogAddUsers').show()" 
+                                                 icon="ui-icon-arrowrefresh-1-w" title="Edit" style="float: right"
+                                                 rendered="#{projectBean.isCreator(project)}" >
+                                    <f:setPropertyActionListener value="#{project}" target="#{pickListView.project}" />
+                                </p:commandButton>
                             </p:column>
                             <p:column headerText="Status" width="35" style="font-size: small;" >
-                                
+
                                 <p:commandButton update=":formInactive" rendered="#{project.active and projectBean.isCreator(project)}"
                                                  icon="ui-icon-unlocked" oncomplete="PF('dialogInactiveProject').show()"  title="Enable" >
                                     <f:setPropertyActionListener value="#{project}" target="#{projectBean.project}" />
@@ -232,7 +233,6 @@
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
                         </p:confirmDialog>
                     </h:form>
-
                     <h:form id="formActive">
                         <p:confirmDialog id="confirmDialog" message="Are you really want to active project:
                                          #{projectBean.project.projectName} ?" header="Active project" severity="alert"
@@ -246,8 +246,6 @@
                                              styleClass="ui-confirmdialog-yes" icon="ui-icon-close" type="button"/>
                         </p:confirmDialog>
                     </h:form>
-
-
                     <h:form id="formInactive">
                         <p:confirmDialog id="confirmDialog" message="Are you really want to inactive project:
                                          #{projectBean.project.projectName} ?" header="Inactive project" severity="alert"
@@ -262,11 +260,37 @@
                         </p:confirmDialog>
                     </h:form>
 
-                    <h:form id="formUserJoining">
-                        <p:dialog header="Edit user joining project" widgetVar="dialogUserJoining" showEffect="fold" 
-                                  hideEffect="fold" modal="true" resizable="true">
-                            <p:commandButton value="Submit" style="margin-top:5px" />
+                    <h:form id="addUsers">
+                        <p:dialog position="center" header="Add user to project" widgetVar="dialogAddUsers" showEffect="fode" 
+                                  hideEffect="blind" modal="false" resizable="true">
+                            <h3 style="margin-top: 0">Basic PickList</h3>
+                            <p:pickList id="pickList" value="#{pickListView.users}" var="users" itemLabel="#{users.userName}" itemValue="#{users}" />
+                            <p:commandButton id="citySubmit" value="Submit" update="confirmDialog" style="margin-top:5px" 
+                                             oncomplete="PF('confirmUsersDialog').show()" >
+                                <f:setPropertyActionListener value="#{pickListView.users.target}" target="#{pickListView.usersJoined}" />
+                            </p:commandButton>
 
+
+                            <p:dialog modal="false" showEffect="fade" hideEffect="fade" widgetVar="confirmUsersDialog">
+                                <h:panelGrid id="confirmDialog" columns="2">
+                                    <h:outputText value="Source: " style="font-weight:bold" />
+                                    <ui:repeat value="#{pickListView.users.source}" var="item">
+                                        <h:outputText value="#{item.userName}" style="margin-right:5px" />
+                                    </ui:repeat>
+
+                                    <h:outputText value="Target: " style="font-weight:bold" />
+                                    <ui:repeat value="#{pickListView.usersJoined}" var="item">
+                                        <h:outputText value="#{item.userName}" style="margin-right:5px" />
+                                    </ui:repeat>
+                                    <h:outputText value="#{pickListView.project.active}" style="font-weight:bold" />
+                                    <h:outputText value="#{pickListView.project.projectId} ID" style="font-weight:bold" />
+                                    <h:outputText value="#{pickListView.project.projectName} Name" style="font-weight:bold" />
+                                    <h:outputText value="#{pickListView.project.description} Des" style="font-weight:bold" />
+                                    <h:outputText value="#{pickListView.project.duration} Du" style="font-weight:bold" />
+                                    <h:outputText value="#{pickListView.project.startDate} Dae" style="font-weight:bold" />
+                                    
+                                </h:panelGrid>
+                            </p:dialog>
                         </p:dialog>
                     </h:form>
                     <h:form id="formDetails">
