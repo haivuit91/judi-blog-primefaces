@@ -5,6 +5,7 @@
  */
 package util;
 
+import java.util.Date;
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
@@ -18,22 +19,29 @@ import javax.servlet.http.HttpServletResponse;
 public class CacheControlPhaseListener implements PhaseListener {
 
     @Override
-    public void afterPhase(PhaseEvent event) {
+    public PhaseId getPhaseId()
+    {
+        return PhaseId.RENDER_RESPONSE;
     }
-
+ 
     @Override
-    public void beforePhase(PhaseEvent event) {
+    public void afterPhase(PhaseEvent event)
+    {
+    }
+ 
+    @Override
+    public void beforePhase(PhaseEvent event)
+    {
         FacesContext facesContext = event.getFacesContext();
         HttpServletResponse response = (HttpServletResponse) facesContext
                 .getExternalContext().getResponse();
-        response.setHeader("Pragma", "no-cache");
-        response.setHeader("Cache-Control", "no-cache");
-        response.setDateHeader("Expires", 0);
-    }
-
-    @Override
-    public PhaseId getPhaseId() {
-        return PhaseId.RENDER_RESPONSE;
+        response.addHeader("Pragma", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        // Stronger according to blog comment below that references HTTP spec
+        response.addHeader("Cache-Control", "no-store");
+        response.addHeader("Cache-Control", "must-revalidate");
+        // some date in the past
+        response.addHeader("Expires", String.valueOf(new Date()));
     }
 
 }
