@@ -134,6 +134,11 @@ public class ProjectUserDAOImpl implements ProjectUserDAO{
             Query query = session.createQuery(sql);
             query.setParameter("user", user);
             projects = query.list();
+            session.close();
+            for (Project project : projects) {
+                project.setUsers(ProjectUserDAOImpl.getInstance().getUsersByProject(project));
+            }
+            session = util.getSessionFactory().openSession();
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) {
